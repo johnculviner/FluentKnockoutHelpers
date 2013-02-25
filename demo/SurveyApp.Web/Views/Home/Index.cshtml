@@ -1,0 +1,30 @@
+﻿@using System.Web.Optimization
+@using SurveyApp.Web
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Loading Survey App...</title>
+        
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+        <meta name="format-detection" content="telephone=no"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        
+        @Styles.Render(BundleConfig.Css.All)
+        
+    </head>
+    <body>
+        <div id="applicationHost">
+            @Html.Partial("_splash")
+        </div>
+        
+        @Scripts.Render(BundleConfig.Scripts.All)
+        
+        @if(HttpContext.Current.IsDebuggingEnabled) {
+            <script type="text/javascript" src="~/App/durandal/amd/require.js" data-main="@Url.Content("~/App/main")"></script>
+        } else {
+            <script type="text/javascript" src="~/App/main-built.js"></script>
+        }
+    </body>
+</html>

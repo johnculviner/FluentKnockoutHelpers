@@ -1,0 +1,20 @@
+﻿@using SurveyApp.Web.Models.Api.Survey
+@{
+    var toDelete = Html.KnockoutHelperForType<SurveySummary>();
+}
+
+<div class="messageBox autoclose" style="max-width: 425px">
+    <div class="modal-body">
+        <p>Are you sure you want to delete the survey for:</p>
+        <p>
+            <b>
+                <span @toDelete.DataBind(db => db.Text(x => x.LastName))></span>,
+                <span @toDelete.DataBind(db => db.Text(x => x.FirstName))></span>
+            </b>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-bind="click: function () { this.modal.close() }">Close</button>
+        <button class="btn btn-danger" data-bind="click: deleteSurvey">Delete</button>
+    </div>
+</div>

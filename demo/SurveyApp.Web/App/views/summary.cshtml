@@ -1,0 +1,75 @@
+﻿@using SurveyApp.Web.Models.Api.Survey
+
+<section>
+    <h3>
+        Survey Summary
+    </h3>
+
+    @*SURVEYS LIST*@
+    @{
+        var summary = Html.KnockoutHelperForType<SurveySummary>();
+    }
+    <table style="float: left;" class="table table-bordered" data-bind="css: { 'item-selected': selectedSurvey() != null }">
+        <thead>
+            <tr>
+                <th>@summary.DisplayNameFor(x => x.LastName)</th>
+                <th>@summary.DisplayNameFor(x => x.FirstName)</th>
+                <th>@summary.DisplayNameFor(x => x.DateOfBirth)</th>
+                <th>@summary.DisplayNameFor(x => x.Gender)</th>
+                <th class="actions"></th>
+            </tr>
+        </thead>
+    
+        <tbody>
+            
+            <!-- ko foreach: surveySummaries-->
+            <tr data-bind="click: $parent.toggleSelected, css: { selected: $root.selectedSurvey() == $data }">
+                <td @summary.DataBind(db => db.Text(x => x.LastName))></td>
+                <td @summary.DataBind(db => db.Text(x => x.FirstName))></td>
+                <td @summary.DataBind(db => db.Text(x => x.DateOfBirth))></td>
+                <td @summary.DataBind(db => db.Text(x => x.Gender))></td>
+                <td class="actions">
+                    <button class="btn btn-info" data-bind="click: $root.editSurvey, clickBubble: false"><i class="icon-edit"></i></button>
+                    <button class="btn btn-danger" data-bind="click: $root.deleteSurvey, clickBubble: false"><i class="icon-remove-sign"></i></button>
+                </td>
+            </tr>
+            <!-- /ko -->
+
+            <tr data-bind="if: !loading() && surveySummaries().length == 0">
+                <td colspan="5" style="text-align: center">
+                    No surveys found
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="spinner" data-bind="visible: loading"></div>
+    
+
+    
+    @*SELECTED SURVEY DETAIL*@
+    @{
+        var detail = Html.KnockoutHelperForType<SurveySummary>("selectedSurvey()");
+    }
+    <fieldset style="padding-left: 20px;" data-bind="if: selectedSurvey() != null">
+        <legend><span @detail.DataBind(db => db.Text(x => x.LastName))></span>, <span @detail.DataBind(db => db.Text(x => x.FirstName))></span></legend>
+        <form class ="form-horizontal">
+            <div class="control-group">
+                <label class="control-label">@detail.DisplayNameFor(x => x.State)</label>
+                <div @detail.DataBind(db => db.Text(x => x.State)).Class("uneditable controls")></div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">@detail.DisplayNameFor(x => x.NumberOfTechProducts)</label>
+                <div @detail.DataBind(db => db.Text(x => x.NumberOfTechProducts)).Class("uneditable controls")></div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">@detail.DisplayNameFor(x => x.NumberOfChildren)</label>
+                <div @detail.DataBind(db => db.Text(x => x.NumberOfChildren)).Class("uneditable controls")></div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">@detail.DisplayNameFor(x => x.OverallHealthyScore)</label>
+                <div @detail.DataBind(db => db.Text(x => x.OverallHealthyScore)).Class("uneditable controls")></div>
+            </div>
+        </form>
+    </fieldset>
+</section>
