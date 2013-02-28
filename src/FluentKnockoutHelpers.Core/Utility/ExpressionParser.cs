@@ -44,5 +44,11 @@ namespace FluentKnockoutHelpers.Core.Utility
 
             return propMetadata.DisplayName ?? propMetadata.PropertyName;
         }
+
+        //TODO remove dependency on MVC
+        public static string GetExpressionText(LambdaExpression le)
+        {
+            return ExpressionHelper.GetExpressionText(le);
+        }
     }
 }

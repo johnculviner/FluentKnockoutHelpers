@@ -75,8 +75,6 @@
     <Compile Include="AttributeBuilding\InnerKeyValue.cs" />
     <Compile Include="AttributeBuilding\NoInnerKeyValue.cs" />
     <Compile Include="Builders\DisposableBuilder.cs" />
-    <Compile Include="IHtmlHelperAdapter.cs" />
-    <Compile Include="MvcHtmlHelperAdapter.cs" />
     <Compile Include="Utility\ExpressionParser.cs" />
     <Compile Include="WebPagesHtmlHelpers.cs" />
     <Compile Include="Builders\ForEachBuilder.cs" />

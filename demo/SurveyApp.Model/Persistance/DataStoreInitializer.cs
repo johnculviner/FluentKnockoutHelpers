@@ -100,7 +100,7 @@ namespace SurveyApp.Model.Persistance
 			
 			context.FoodGroups.Add(new FoodGroup
             {
-                Name = "",
+                Name = "Protein Foods",
                 Foods = new List<Food>
                 {
 					new Food{Name = "Bacon", HealthyScore = 6},		
@@ -113,7 +113,7 @@ namespace SurveyApp.Model.Persistance
 			
 			context.FoodGroups.Add(new FoodGroup
             {
-                Name = "",
+                Name = "Dairy",
                 Foods = new List<Food>
                 {
                     new Food{Name = "Milk", HealthyScore = 5},
@@ -143,7 +143,7 @@ namespace SurveyApp.Model.Persistance
                     FirstName = "Bill",
                     LastName = "Gates",
                     DateOfBirth = new DateTime(1955, 10, 28),
-                    FavoriteColor = KnownColor.Gold,
+                    FavoriteColor = KnownColor.Green,
                     FavoriteFoods = new List<Food>
                         {
                             context.Foods.Local.Single(f => f.Name == "Broccoli"), 
@@ -185,6 +185,26 @@ namespace SurveyApp.Model.Persistance
 
             context.Surveys.Add(new Survey
             {
+                FirstName = "Marissa",
+                LastName = "Mayer",
+                DateOfBirth = new DateTime(1975, 5, 30),
+                FavoriteColor = KnownColor.Red,
+                FavoriteFoods = new List<Food>
+                        {
+                            context.Foods.Local.Single(f => f.Name == "Yogurt"), 
+                            context.Foods.Local.Single(f => f.Name == "Carrots")
+                        },
+                Children = new List<Relation>
+                        {
+                            new Relation{Name = "Macallister"},
+                        },
+                Gender = Gender.Female,
+                TechProducts = context.TechProducts.Local.ToList(),
+                ZipCode = 94303,
+            });
+
+            context.Surveys.Add(new Survey
+            {
                 FirstName = "Mark",
                 LastName = "Zuckerberg",
                 DateOfBirth = new DateTime(1984, 5, 14),
@@ -201,16 +221,29 @@ namespace SurveyApp.Model.Persistance
 
             context.Surveys.Add(new Survey
             {
-                FirstName = "Steve",
-                LastName = "Ballmer",
-                DateOfBirth = new DateTime(1956, 3, 24),
-                FavoriteColor = KnownColor.Red,
+                FirstName = "Queen Elizabeth",
+                LastName = "II",
+                DateOfBirth = new DateTime(1926, 4, 21),
+                FavoriteColor = KnownColor.Gold,
                 FavoriteFoods = new List<Food>
                         {
-                            context.Foods.Local.Single(f => f.Name == "Bacon"), 
-                            context.Foods.Local.Single(f => f.Name == "Beef")
+                            context.Foods.Local.Single(f => f.Name == "Ice Cream"), 
+                            context.Foods.Local.Single(f => f.Name == "Cheese")
                         },
-                Gender = Gender.Male,
+                Children = new List<Relation>
+                        {
+                            new Relation{Name = "Princess Anne", Children = new List<Relation>
+                                {
+                                    new Relation{Name = "Peter Phillips"},
+                                    new Relation{Name = "Zara Phillips"}
+                                }},
+                            new Relation{Name = "Prince Charles", Children = new List<Relation>
+                                {
+                                    new Relation{Name = "Prince William"},
+                                    new Relation{Name = "Prince Henry"}
+                                }},
+                        },
+                Gender = Gender.Female,
                 TechProducts = context.TechProducts.Local.ToList(),
                 ZipCode = 98004,
             });

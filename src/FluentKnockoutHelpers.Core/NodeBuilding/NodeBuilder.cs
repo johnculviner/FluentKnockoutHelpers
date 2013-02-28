@@ -13,12 +13,12 @@ namespace FluentKnockoutHelpers.Core.NodeBuilding
             _node = node;
         }
 
-        public string GetNodeBegin()
+        public override string GetContents()
         {
             var sb = new StringBuilder();
 
             sb.Append(_node.BeginTagBegin);
-            sb.Append(base.ToString());
+            sb.Append(base.GetContents());
             sb.Append(_node.BeginTagEnd);
 
             return sb.ToString();

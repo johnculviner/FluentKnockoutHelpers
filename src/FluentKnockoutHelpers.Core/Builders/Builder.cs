@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
-using FluentKnockoutHelpers.Core.AttributeBuilding;
+using System.Web.WebPages;
 using FluentKnockoutHelpers.Core.NodeBuilding;
 using FluentKnockoutHelpers.Core.Utility;
 
@@ -10,87 +10,114 @@ namespace FluentKnockoutHelpers.Core.Builders
 {
     public class Builder<TModel>
     {
-        internal readonly string ViewModelPropertyName;
-        internal AttributeBuilder AttributeBuilder;
-        internal IHtmlHelperAdapter HtmlHelper;
+        public readonly string ViewModelPropertyName;
+        public WebPageBase WebPage;
 
-        public Builder(IHtmlHelperAdapter htmlHelper)
-            : this(htmlHelper, null)
+        public Builder(WebPageBase webPage)
+            : this(webPage, null)
         {
         }
 
-        public Builder(IHtmlHelperAdapter htmlHelper, string viewModelPropertyName)
+        public Builder(WebPageBase webPage, string viewModelPropertyName)
         {
-            HtmlHelper = htmlHelper;
+            WebPage = webPage;
             ViewModelPropertyName = viewModelPropertyName;
         }
 
         protected Builder(Builder<TModel> builder)
         {
             ViewModelPropertyName = builder.ViewModelPropertyName;
-            AttributeBuilder = builder.AttributeBuilder;
-            HtmlHelper = builder.HtmlHelper;
+            WebPage = builder.WebPage;
         }
 
-        public DisposableBuilder<TModel> Element(string tag, Action<StringReturningBuilder<TModel>> builder)
+        public virtual DisposableBuilder<TModel> Element(string tag, Action<StringReturningBuilder<TModel>> builder)
         {
-            AttributeBuilder = new NodeBuilder(Node.Element(tag, TagClosingMode.OnDispose));
-            var element = new StringReturningBuilder<TModel>(this);
+            var nodeBuilder = new NodeBuilder(new DisposeClosingElement(tag));
+            var element = new StringReturningBuilder<TModel>(this, nodeBuilder);
             builder(element);
-            ImmediatelyWriteToResponse(element.ToHtmlString());
-            return new DisposableBuilder<TModel>(this);
+            return new DisposableBuilder<TModel>(this, nodeBuilder);
         }
 
-        public StringReturningBuilder<TModel> SelfClosingElement(string tag)
+        public virtual StringReturningBuilder<TModel> SelfClosingElement(string tag)
         {
-            AttributeBuilder = new NodeBuilder(Node.Element(tag, TagClosingMode.Self));
-            return new StringReturningBuilder<TModel>(this);
+            return new StringReturningBuilder<TModel>(this, new NodeBuilder(new SelfClosingElement(tag)));
         }
 
-        public StringReturningBuilder<TModel> DataBind(Action<DataBindBuilder<TModel>> builder)
+        public virtual StringReturningBuilder<TModel> SelfClosingElement(string tag, string innerHtml)
+        {
+            return new StringReturningBuilder<TModel>(this, new NodeBuilder(new SelfClosingElement(tag, innerHtml)));
+        }
+
+        public virtual StringReturningBuilder<TModel> DataBind(Action<DataBindBuilder<TModel>> builder)
         {
             var stringBuilder = new StringReturningBuilder<TModel>(this);
             builder(new DataBindBuilder<TModel>(stringBuilder));
             return stringBuilder;
         }
 
-        public ForEachBuilder<TModel, TInner> ForEach<TInner>(Node node, Action<StringReturningBuilder<TModel>> builder)
+        public virtual StringReturningBuilder<TModel> LabelFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
         {
-            AttributeBuilder = new NodeBuilder(node);
-            var element = new StringReturningBuilder<TModel>(this);
-            builder(element);
-            ImmediatelyWriteToResponse(element.ToHtmlString());
-            return new ForEachBuilder<TModel, TInner>(this);
+            return SelfClosingElement("label", DisplayNameFor(propExpr).ToString()).Attr("for", ExpressionParser.GetExpressionText(propExpr));
         }
 
+        public virtual StringReturningBuilder<TModel> BoundTextBoxFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
+        {
+            var exprText = ExpressionParser.GetExpressionText(propExpr); //avoid 2x expr parsing
+            //TODO: Multiple databinds broken!
+            return SelfClosingElement("input").Attr("type", "text").Id(exprText).DataBind(db => db.Value(exprText).ValueUpdate(ValueUpdate.KeyUp));
+        }
 
-        public IHtmlString DisplayNameFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
+        public virtual IHtmlString DisplayNameFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
         {
             return new HtmlString(ExpressionParser.DisplayNameFor(propExpr));
         }
 
-        protected void ImmediatelyWriteToResponse(string s)
-        {
-            HtmlHelper.WriteToOutput(s);
-        }
-
-        public IHtmlString AssignObservableFor<TProp>(Expression<Func<TModel, TProp>> propExpr, string arg)
+        public virtual IHtmlString AssignObservableFor<TProp>(Expression<Func<TModel, TProp>> propExpr, string arg)
         {
             return new HtmlString(string.Format("{0}({1})", EmitPropTextFor(propExpr), arg));
         }
 
-        public IHtmlString EvalObservableFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
+        public virtual IHtmlString EvalObservableFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
         {
             return new HtmlString(string.Format("{0}()", EmitPropTextFor(propExpr)));
         }
 
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        //TODO remove dependency on MVC
-        public IHtmlString EmitPropTextFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
+        public virtual IHtmlString EmitPropTextFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
         {
             return string.IsNullOrWhiteSpace(ViewModelPropertyName) ?
-                new HtmlString(ExpressionHelper.GetExpressionText(propExpr)) :
+                new HtmlString(ExpressionParser.GetExpressionText(propExpr)) :
                 new HtmlString(string.Format("{0}.{1}", ViewModelPropertyName, ExpressionHelper.GetExpressionText(propExpr)));
         }
+
+
+        protected void ImmediatelyWriteToResponse(string s)
+        {
+            WebPage.WriteLiteral(s);
+        }
+
+
+        //public ForEachBuilder<TModel, TInner> ForEach<TInner>(Node node, Action<StringReturningBuilder<TModel>> builder)
+        //{
+        //    var element = new StringReturningBuilder<TModel>(this, new NodeBuilder(node));
+        //    builder(element);
+        //    ImmediatelyWriteToResponse(element.ToHtmlString());
+        //    return new ForEachBuilder<TModel, TInner>(this);
+        //}
+
+
+        //Ugly way, but works
+        //public IHtmlString LabelFor<TProp>(Expression<Func<TModel, TProp>> propExpr, Action<StringReturningBuilder<TModel>> builder)
+        //{
+        //    using (var label = Element("label", b =>
+        //        {
+        //            b.Attr("for", ExpressionParser.GetExpressionText(propExpr));
+        //            builder(b); //tack on add'l provided attributes
+        //        }))
+        //    {
+        //        label.WebPage.WriteLiteral(DisplayNameFor(propExpr).ToString());
+        //    }
+        //    return null; //all writing is done directly against the page
+        //}
     }
 }

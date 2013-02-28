@@ -1,4 +1,4 @@
-﻿define(['durandal/app', '../api/survey'], function (app, surveyApi) {
+﻿define(['durandal/app', '../api/survey', 'viewmodels/deleteModal', 'viewmodels/createEditModal'], function (app, surveyApi, DeleteModal, CreateEditModal) {
     return function () {
         var self = this;
 
@@ -26,25 +26,15 @@
         };
 
         self.editSurvey = function (survey) {
-            Helpers.injectView(app.surveyApiRoot + '/' + survey.SurveyId());
+            app.showModal(new CreateEditModal(survey));
         };
 
         self.deleteSurvey = function (survey) {
-            survey.viewUrl = 'views/delete-modal';
-            survey.deleteSurvey = function() {
-                surveyApi
-                    .delete(survey.SurveyId())
-                    .done(function() {
-                        if (self.selectedSurvey() == survey)
-                            self.selectedSurvey(null);
-
-                        self.surveySummaries.remove(survey);
-                    });
-
-                this.modal.close();
-            };
-
-            app.showModal(survey);
+            app.showModal(new DeleteModal(survey))
+                .then(function(deletedSurvey) {
+                    if (deletedSurvey !== null)
+                        self.surveySummaries.remove(deletedSurvey);
+                });
         };
     };
 });

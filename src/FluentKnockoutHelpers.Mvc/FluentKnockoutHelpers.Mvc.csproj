@@ -42,7 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builders\InstanceBuilder.cs" />
-    <Compile Include="MvcHtmlHelperAdapter.cs" />
     <Compile Include="MvcHtmlHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

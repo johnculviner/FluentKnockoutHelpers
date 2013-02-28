@@ -1,12 +1,21 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using FluentKnockoutHelpers.Core.AttributeBuilding;
 
 namespace FluentKnockoutHelpers.Core.Builders
 {
     public class StringReturningBuilder<TModel> : Builder<TModel>, IHtmlString
     {
+        internal AttributeBuilder AttributeBuilder;
+
         public StringReturningBuilder(Builder<TModel> builder) : base(builder)
         {
+        }
+
+        public StringReturningBuilder(Builder<TModel> builder, AttributeBuilder attributeBuilder)
+            : base(builder)
+        {
+            AttributeBuilder = attributeBuilder;
         }
 
         public StringReturningBuilder<TModel> Class(string @class)
@@ -47,6 +56,21 @@ namespace FluentKnockoutHelpers.Core.Builders
             return this;
         }
 
+        public StringReturningBuilder<TModel> Id(string id)
+        {
+            EnsureAttributeBuilder();
+
+            AttributeBuilder.Attr("id", id);
+
+            return this;
+        }
+
+        public override StringReturningBuilder<TModel> DataBind(Action<DataBindBuilder<TModel>> builder)
+        {
+            builder(new DataBindBuilder<TModel>(this));
+            return this;
+        }
+
         protected void EnsureAttributeBuilder()
         {
             if (AttributeBuilder == null)
@@ -55,7 +79,7 @@ namespace FluentKnockoutHelpers.Core.Builders
 
         protected string FlushAttributeBuilder()
         {
-            var result = AttributeBuilder.GetAttributes();
+            var result = AttributeBuilder.GetContents();
             AttributeBuilder = null;
             return result;
         }

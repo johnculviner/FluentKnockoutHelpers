@@ -1939,12 +1939,11 @@ input.search-query {
 }
 
 legend + .control-group {
-  margin-top: 20px;
   -webkit-margin-top-collapse: separate;
 }
 
 .form-horizontal .control-group {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   *zoom: 1;
 }
 

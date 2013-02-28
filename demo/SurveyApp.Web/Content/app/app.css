@@ -64,10 +64,22 @@ table.table tr.selected {
     background-color: #ebebeb;
 }
 
+table.table tr:hover {
+    background-color: #f3f3f3;
+}
+
 table.table.item-selected {
     width: 50%
 }
 
+td.actions {
+    width: 84px;
+}
+
 div.controls.uneditable {
     margin-top: 5px;
+}
+
+.messageBox .form-horizontal {
+    margin: 0px;
 }

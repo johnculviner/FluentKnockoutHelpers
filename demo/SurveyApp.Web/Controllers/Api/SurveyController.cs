@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
+using SurveyApp.Model.Models;
 using SurveyApp.Model.Persistance;
 using SurveyApp.Web.Models.Api.Survey;
+using System.Data.Entity;
 
 namespace SurveyApp.Web.Controllers.Api
 {
@@ -22,9 +25,15 @@ namespace SurveyApp.Web.Controllers.Api
         }
 
         // GET api/survey/5
-        public string Get(int id)
+        public Survey Get(int id)
         {
-            return "value";
+            return _unitOfWork.Surveys
+                    .Include(x => x.TechProducts)
+                    .Include(x => x.Children)
+                    .Include("Children.Children")
+                    .Include(x => x.FavoriteFoods)
+                    .Include("FavoriteFoods.FoodGroup")
+                    .First(x => x.SurveyId == id);
         }
 
         // POST api/survey

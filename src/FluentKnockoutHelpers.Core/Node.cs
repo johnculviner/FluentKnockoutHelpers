@@ -8,22 +8,9 @@ namespace FluentKnockoutHelpers.Core
         public abstract string BeginTagBegin { get; }
         public abstract string BeginTagEnd { get; }
 
-        internal static Node Element(string tag, TagClosingMode closingMode)
-        {
-            switch (closingMode)
-            {
-                case TagClosingMode.Self:
-                    return new SelfClosingElement(tag);
-                case TagClosingMode.OnDispose:
-                    return new DisposeClosingElement(tag);
-                default:
-                    throw new ArgumentOutOfRangeException("closingMode");
-            }
-        }
-
         public static Node Element(string tag)
         {
-            return Element(tag, TagClosingMode.OnDispose);
+            return new DisposeClosingElement(tag);
         }
 
         public static KoComment KoComment()

@@ -104,12 +104,14 @@ namespace FluentKnockoutHelpers.Core.AttributeBuilding
                 if (innerKeyValue.InnerKvps.Any(inner => inner.Key.Equals(innerKey)))
                     throw new ArgumentOutOfRangeException("innerKey", innerKey,
                                       "The innerKey already exists for the given attribute and is only allowed once");
+                
+                innerKeyValue.InnerKvps.Add(new KeyValuePair<string, string>(innerKey, innerValue));
             }
         }
 
         #endregion
 
-        public string GetAttributes()
+        public virtual string GetContents()
         {
             var sb = new StringBuilder();
 

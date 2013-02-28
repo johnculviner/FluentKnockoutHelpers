@@ -1,6 +1,6 @@
 ﻿@using SurveyApp.Web.Models.Api.Survey
 @{
-    var toDelete = Html.KnockoutHelperForType<SurveySummary>();
+    var toDelete = this.KnockoutHelperForType<SurveySummary>("survey", true);
 }
 
 <div class="messageBox autoclose" style="max-width: 425px">
@@ -14,7 +14,7 @@
         </p>
     </div>
     <div class="modal-footer">
-        <button class="btn" data-bind="click: function () { this.modal.close() }">Close</button>
+        <button class="btn" data-bind="click: close">Close</button>
         <button class="btn btn-danger" data-bind="click: deleteSurvey">Delete</button>
     </div>
 </div>

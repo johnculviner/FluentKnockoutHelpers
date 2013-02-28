@@ -175,9 +175,12 @@
     <Content Include="App\durandal\viewModelBinder.js" />
     <Content Include="App\durandal\widget.js" />
     <Content Include="App\main.js" />
+    <Content Include="App\viewmodels\createEditModal.js" />
+    <Content Include="App\viewmodels\deleteModal.js" />
     <Content Include="App\viewmodels\shell.js" />
     <Content Include="App\viewmodels\summary.js" />
-    <Content Include="App\views\delete-modal.cshtml" />
+    <Content Include="App\views\deleteModal.cshtml" />
+    <Content Include="App\views\createEditModal.cshtml" />
     <None Include="App\views\shell.cshtml" />
     <Content Include="App\views\summary.cshtml" />
     <Content Include="Content\app\app.css" />

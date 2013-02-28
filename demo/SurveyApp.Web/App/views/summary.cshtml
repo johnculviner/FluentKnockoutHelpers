@@ -2,13 +2,17 @@
 
 <section>
     <h3>
-        Survey Summary
+        Summary
     </h3>
 
     @*SURVEYS LIST*@
     @{
-        var summary = Html.KnockoutHelperForType<SurveySummary>();
+        var summary = this.KnockoutHelperForType<SurveySummary>();
     }
+    <div id="foo">
+        @summary.SelfClosingElement("div").Class("awesome").Style("display", "block")
+    </div>
+
     <table style="float: left;" class="table table-bordered" data-bind="css: { 'item-selected': selectedSurvey() != null }">
         <thead>
             <tr>
@@ -49,7 +53,7 @@
     
     @*SELECTED SURVEY DETAIL*@
     @{
-        var detail = Html.KnockoutHelperForType<SurveySummary>("selectedSurvey()");
+        var detail = this.KnockoutHelperForType<SurveySummary>("selectedSurvey", true);
     }
     <fieldset style="padding-left: 20px;" data-bind="if: selectedSurvey() != null">
         <legend><span @detail.DataBind(db => db.Text(x => x.LastName))></span>, <span @detail.DataBind(db => db.Text(x => x.FirstName))></span></legend>
