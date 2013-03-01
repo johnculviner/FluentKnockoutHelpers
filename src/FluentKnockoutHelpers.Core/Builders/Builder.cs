@@ -8,6 +8,10 @@ using FluentKnockoutHelpers.Core.Utility;
 
 namespace FluentKnockoutHelpers.Core.Builders
 {
+    /// <summary>
+    /// A builder for a generic type
+    /// </summary>
+    /// <typeparam name="TModel">The type of model to create a builder for</typeparam>
     public class Builder<TModel>
     {
         public readonly string ViewModelPropertyName;
