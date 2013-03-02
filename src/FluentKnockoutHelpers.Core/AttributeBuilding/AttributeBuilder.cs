@@ -151,7 +151,7 @@ namespace FluentKnockoutHelpers.Core.AttributeBuilding
 
 
         /// <summary>
-        /// Gets the attributes
+        /// Get the contained attributes as an html string
         /// </summary>
         /// <returns></returns>
         public virtual string GetContents()
