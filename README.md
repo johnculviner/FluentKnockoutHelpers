@@ -1,6 +1,8 @@
 #Fluent Knockout Helpers
 ##with Survey App Demo SPA using Durandal.js
 
+##Demo located at /demo/SurveyApp.sln##
+
 Knockout.js allows for a very powerful MVVM style binding that makes it very easy to create rich web applications very quickly and with little code. One downside coming from the world of .NET and strong typing is that Knockout bindings use lots of "magic strings". This is where Fluent Knockout Helpers comes in as an attempt to bring all the goodness of ASP.NET MVC-like property expressions to Knockout.
 
 Instead of resorting to magic strings, no compile-time support and little intellisense when working with Knockout you can use Fluent Knockout Helpers to create property binding expressions just like how MVC does it for all the .NET defined types you are already using on the server to interact with your Knockout web client.
