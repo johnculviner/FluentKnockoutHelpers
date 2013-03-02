@@ -5,8 +5,16 @@ using System.Web.Mvc;
 
 namespace FluentKnockoutHelpers.Core.Utility
 {
+    /// <summary>
+    /// Parses Expressions
+    /// </summary>
     public static class ExpressionParser
     {
+        /// <summary>
+        /// This will return a member expression from a lambda expression
+        /// </summary>
+        /// <param name="expr">the lambda expression</param>
+        /// <returns></returns>
         private static MemberExpression ToMemberExpression(LambdaExpression expr)
         {
             if (expr.Body is UnaryExpression)

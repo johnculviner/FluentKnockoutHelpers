@@ -5,11 +5,20 @@ using System.Text;
 
 namespace FluentKnockoutHelpers.Core.AttributeBuilding
 {
+    /// <summary>
+    /// This class builds an attribute for use in an html tag
+    /// </summary>
     public class AttributeBuilder
     {
         //list instead of dictionary use to allow attribute emission in developer specified order (kind of nice when looking at HTML source)
         private readonly List<HtmlAttribute> _attrs = new List<HtmlAttribute>();
 
+        /// <summary>
+        /// This will set the attribute's key and value.
+        /// Validates that only one 'id' and 'class' attribute exists
+        /// </summary>
+        /// <param name="attrKey">the attribute key</param>
+        /// <param name="attrValue">the attribute value</param>
         public void Attr(string attrKey, string attrValue)
         {
             Ensure.NotNullEmptyOrWhiteSpace(attrKey, "attrKey");
@@ -37,6 +46,12 @@ namespace FluentKnockoutHelpers.Core.AttributeBuilding
 
         }
 
+        /// <summary>
+        /// This will set the attribute's key and value.
+        /// </summary>
+        /// <param name="attrKey">the attribute key</param>
+        /// <param name="innerKey">the inner key</param>
+        /// <param name="innerValue">the inner value</param>
         public void Attr(string attrKey, string innerKey, string innerValue)
         {
             Ensure.NotNullEmptyOrWhiteSpace(attrKey, "attrKey");
@@ -61,6 +76,11 @@ namespace FluentKnockoutHelpers.Core.AttributeBuilding
             }
         }
 
+        /// <summary>
+        /// Validates the arguments of an attribute
+        /// </summary>
+        /// <param name="argValue">the argument value</param>
+        /// <param name="argName">the argument name</param>
         private static void ValidateArg(string argValue, string argName)
         {
             if (argValue.Contains("\""))
@@ -69,7 +89,12 @@ namespace FluentKnockoutHelpers.Core.AttributeBuilding
 
         #region AttrFuncs
 
-        //ex id="foo"
+        /// <summary>
+        /// This will add a single attribute key and value.  If the attribute exists already it will throw an error.
+        /// </summary>
+        /// <param name="attrKey">the attribute key</param>
+        /// <param name="attrValue">the attribute value</param>
+        /// <example>ex id="foo"</example>
         private void NoInnerKeyValue_OneSetOnlyAllowed(string attrKey, string attrValue)
         {
             if (_attrs.Exists(x => attrKey.Equals(x.Key)))
@@ -79,7 +104,12 @@ namespace FluentKnockoutHelpers.Core.AttributeBuilding
             _attrs.Add(new NoInnerKeyValue(attrKey, attrValue));
         }
 
-        //ex class="foo bar"
+        /// <summary>
+        /// This will add an attribute key and value.  If the attribute exists it will add the value to the current value separated with a space.
+        /// </summary>
+        /// <param name="attrKey">the attribute key</param>
+        /// <param name="attrValue">the attribute value</param>
+        /// <example>class="foo bar"</example>
         private void NoInnerKeyValue_AppendingSpaceSet(string attrKey, string attrValue)
         {
             var key = _attrs.SingleOrDefault(x => attrKey.Equals(x.Key));
@@ -90,7 +120,15 @@ namespace FluentKnockoutHelpers.Core.AttributeBuilding
                 ((NoInnerKeyValue)key).Value += " " + attrValue; ;
         }
 
-        //ex style="background-color: green; ..." OR data-bind="visible: foo(), ..."
+        /// <summary>
+        /// This will add an attribute key and value.  If the attribute exists, it will try to add the value to the current values and will throw an error if inner key already exists.
+        /// </summary>
+        /// <param name="attrKey">the attribute key</param>
+        /// <param name="innerKey">the attribute inner key</param>
+        /// <param name="innerValue">the attribute inner value</param>
+        /// <param name="pairSeparator">the inner key/value separator to use</param>
+        /// <param name="outerDelimeter">the delimeter to use between new key/value pairs</param>
+        /// <example>style="background-color: green; ..." OR data-bind="visible: foo(), ..."</example>
         private void InnerKeyValue_MultiInnerKeyNotAllowed(string attrKey, string innerKey, string innerValue, string pairSeparator, string outerDelimeter)
         {
             var key = _attrs.SingleOrDefault(x => attrKey.Equals(x.Key));
@@ -111,6 +149,11 @@ namespace FluentKnockoutHelpers.Core.AttributeBuilding
 
         #endregion
 
+
+        /// <summary>
+        /// Gets the attributes
+        /// </summary>
+        /// <returns></returns>
         public virtual string GetContents()
         {
             var sb = new StringBuilder();

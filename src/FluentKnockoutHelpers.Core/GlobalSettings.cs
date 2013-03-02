@@ -1,5 +1,8 @@
 ﻿namespace FluentKnockoutHelpers.Core
 {
+    /// <summary>
+    /// The global settings of fluent knockout helpers
+    /// </summary>
     public static class GlobalSettings
     {
         private static IJsonSerializer _jsonSerializer = new DefaultJsonSerializer();
