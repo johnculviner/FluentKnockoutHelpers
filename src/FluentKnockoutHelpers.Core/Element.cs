@@ -12,9 +12,9 @@ namespace FluentKnockoutHelpers.Core
         /// </summary>
         /// <param name="tagName">the name of the tag</param>
         /// <returns></returns>
-        public static SelfClosingElement SelfClosing(string tagName)
+        public static SelfClosingHtmlElement SelfClosing(string tagName)
         {
-            return new SelfClosingElement(tagName);
+            return new SelfClosingHtmlElement(tagName);
         }
 
         /// <summary>
@@ -22,9 +22,9 @@ namespace FluentKnockoutHelpers.Core
         /// </summary>
         /// <param name="tagName">the name of the tag</param>
         /// <returns></returns>
-        public static DisposeClosingElement DisposeClosing(string tagName)
+        public static DisposeClosingHtmlElement DisposeClosing(string tagName)
         {
-            return new DisposeClosingElement(tagName);
+            return new DisposeClosingHtmlElement(tagName);
         }
     }
 }

@@ -3,7 +3,7 @@ namespace FluentKnockoutHelpers.Core.NodeBuilding
     /// <summary>
     /// A self closing element
     /// </summary>
-    public class SelfClosingElement : SelfClosingNode, IElement
+    public class SelfClosingHtmlElement : HtmlNode
     {
         public string TagName { get; set; }
         public string InnerHtml { get; set; }
@@ -12,7 +12,7 @@ namespace FluentKnockoutHelpers.Core.NodeBuilding
         /// constuctor
         /// </summary>
         /// <param name="tagName">the name of the element</param>
-        public SelfClosingElement(string tagName)
+        public SelfClosingHtmlElement(string tagName)
             : this(tagName, null)
         {
         }
@@ -22,7 +22,7 @@ namespace FluentKnockoutHelpers.Core.NodeBuilding
         /// </summary>
         /// <param name="tagName">the name of the element</param>
         /// <param name="innerHtml">the inner html</param>
-        public SelfClosingElement(string tagName, string innerHtml)
+        public SelfClosingHtmlElement(string tagName, string innerHtml)
         {
             TagName = tagName;
             InnerHtml = innerHtml;

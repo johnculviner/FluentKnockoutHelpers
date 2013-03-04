@@ -2,7 +2,7 @@
     return function () {
         var self = this;
 
-        self.surveySummaries = null;
+        self.surveySummaries = null; //loaded from ajax as ko.observableArray()
         self.loading = ko.observable(true);
         self.selectedSurvey = ko.observable(null);
 
@@ -13,7 +13,6 @@
                             
                             //use ko.mapping library to convert the array and it's kids to be observable for the summary view
                             self.surveySummaries = ko.mapping.fromJS(surveys);
-                    
                             self.loading(false);
                         });
         };

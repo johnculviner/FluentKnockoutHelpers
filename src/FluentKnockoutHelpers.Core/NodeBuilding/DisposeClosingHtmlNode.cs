@@ -3,7 +3,7 @@ namespace FluentKnockoutHelpers.Core.NodeBuilding
     /// <summary>
     /// The closing tag of a node
     /// </summary>
-    public abstract class DisposeClosingNode : Node
+    public abstract class DisposeClosingHtmlNode : HtmlNode
     {
         /// <summary>
         /// the closing tag of a node

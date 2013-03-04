@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace FluentKnockoutHelpers.Core.AttributeBuilding
 {
@@ -13,6 +14,13 @@ namespace FluentKnockoutHelpers.Core.AttributeBuilding
         //list instead of dictionary use to allow attribute emission in developer specified order (kind of nice when looking at HTML source)
         private readonly List<HtmlAttribute> _attrs = new List<HtmlAttribute>();
 
+        //Signals to the attribute builder that it is the 'special' KoComment mode. In this mode it
+        //will only accept data-binds. Furthermore data-binds are written directly to the element
+        //and do not go in a data-bind attribute as it is the syntax for knockout comments.
+        //Can't think of a better way to do this without making a huge mess of the code for this exception case
+        //which would probably end up making all of it harder to maintain and understand
+        protected bool InKoCommentMode = false;
+
         /// <summary>
         /// This will set the attribute's key and value.
         /// Validates that only one 'id' and 'class' attribute exists
@@ -23,6 +31,8 @@ namespace FluentKnockoutHelpers.Core.AttributeBuilding
         {
             Ensure.NotNullEmptyOrWhiteSpace(attrKey, "attrKey");
             Ensure.NotNullEmptyOrWhiteSpace(attrValue, "attrValue");
+
+            ValidateForKoCommentMode(attrKey);
 
             ValidateArg(attrKey, "attrKey");
             ValidateArg(attrValue, "attrValue");
@@ -58,6 +68,8 @@ namespace FluentKnockoutHelpers.Core.AttributeBuilding
             Ensure.NotNullEmptyOrWhiteSpace(innerKey, "innerKey");
             Ensure.NotNullEmptyOrWhiteSpace(innerValue, "innerValue");
 
+            ValidateForKoCommentMode(attrKey);
+
             ValidateArg(attrKey, "attrKey");
             ValidateArg(innerKey, "innerKey");
             ValidateArg(innerValue, "innerValue");
@@ -74,6 +86,16 @@ namespace FluentKnockoutHelpers.Core.AttributeBuilding
                     InnerKeyValue_MultiInnerKeyNotAllowed(attrKey, innerKey, innerValue, ": ", ", ");
                     break;
             }
+        }
+
+        //see comment on InKoCommentMode above for rationalization
+        private void ValidateForKoCommentMode(string attrKey)
+        {
+            if(InKoCommentMode && attrKey.ToLowerInvariant() != "data-bind")
+                throw new ArgumentException(string.Format(
+@"You are attempting to add an attribute '{0}' to a Knockout comment block. Only data-binds are possible on a Knockout comment block.
+Please check your syntax. This is what the block looks like so far to help you find it: '{1}'"
+                    , attrKey, GetContents()), attrKey);
         }
 
         /// <summary>
@@ -165,7 +187,16 @@ namespace FluentKnockoutHelpers.Core.AttributeBuilding
                 if(i != _attrs.Count - 1)
                     sb.Append(" ");
             }
-            return sb.ToString();
+
+            if (InKoCommentMode)
+            {
+                //see rationalization for this in a comment on InKoCommentMode above
+                //extract the data-bind attribute value since it isn't needed in Knockout Comment blocks
+                var regex = new Regex(@"(?<=\bdata-bind="")[^""]*", RegexOptions.IgnoreCase);
+                return regex.Match(sb.ToString()).Value;
+            }
+
+            return sb.ToString();;
         }
     }
 }

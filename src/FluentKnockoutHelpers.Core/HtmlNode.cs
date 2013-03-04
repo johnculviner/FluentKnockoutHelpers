@@ -4,9 +4,9 @@ using FluentKnockoutHelpers.Core.NodeBuilding;
 namespace FluentKnockoutHelpers.Core
 {
     /// <summary>
-    /// This class is an html node and must be inherited
+    /// Represents an HtmlNode, ex. an element or comment block
     /// </summary>
-    public abstract class Node
+    public abstract class HtmlNode
     {
         /// <summary>
         /// Gets the beginning of the beginning tag
@@ -19,24 +19,24 @@ namespace FluentKnockoutHelpers.Core
         public abstract string BeginTagEnd { get; }
 
         /// <summary>
-        /// close the element
+        /// Returns a node representing a Knockout comment block that will write it's end tag on dispose of a using block
         /// </summary>
-        /// <param name="tag">the tag</param>
         /// <returns></returns>
-        public static Node Element(string tag)
+        public static DisposeClosingKoComment DisposeClosingKoComment()
         {
-            return new DisposeClosingElement(tag);
+            return new DisposeClosingKoComment();
         }
 
         /// <summary>
-        /// Get new knockout comment
+        /// Returns a node representing a Knockout comment block that will immediately write its end tag
         /// </summary>
         /// <returns></returns>
-        public static KoComment KoComment()
+        public static SelfClosingKoComment SelfClosingKoComment()
         {
-            return new KoComment();
+            return new SelfClosingKoComment();
         }
     }
+
 
     /// <summary>
     /// the closing mode of the tag

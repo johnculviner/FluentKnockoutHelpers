@@ -1,11 +1,10 @@
 namespace FluentKnockoutHelpers.Core.NodeBuilding
 {
     /// <summary>
-    /// adds a knockout comment
+    /// A node representing a Knockout comment block that will write it's end tag on dispose of a using block
     /// </summary>
-    public class KoComment : DisposeClosingNode
+    public class DisposeClosingKoComment : DisposeClosingHtmlNode, IKoComment
     {
-        //NOTE: for the purposes of this library comment nodes are treated like non self closing elements for knockout bindings
         /// <summary>
         /// Gets the beginning comment tag
         /// </summary>

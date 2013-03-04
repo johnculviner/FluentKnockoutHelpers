@@ -6,20 +6,23 @@ namespace FluentKnockoutHelpers.Core.Builders
 {
     public class DisposableBuilder<TModel> : StringReturningBuilder<TModel>, IDisposable
     {
-        public DisposableBuilder(Builder<TModel> builder, AttributeBuilder attributeBuilder)
-            : base(builder, attributeBuilder)
-        {
-            ImmediatelyWriteToResponse(GetNodeBuilder().GetContents());
-        }
+        private readonly NodeBuilder _disposableNodesBuilder;
 
-        private NodeBuilder GetNodeBuilder()
+        public DisposableBuilder(BuilderBase<TModel> builder, NodeBuilder nodeBuilder)
+            : base(builder)
         {
-            return (NodeBuilder)AttributeBuilder;
+            _disposableNodesBuilder = nodeBuilder;
+            ImmediatelyWriteToResponse(_disposableNodesBuilder.GetContents());
         }
 
         public void Dispose()
         {
-            ImmediatelyWriteToResponse(GetNodeBuilder().GetNodeEnd());
+            ImmediatelyWriteToResponse(_disposableNodesBuilder.GetNodeEnd());
+        }
+
+        protected void ImmediatelyWriteToResponse(string s)
+        {
+            WebPage.WriteLiteral(s + "\r\n");
         }
     }
 }

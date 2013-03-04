@@ -66,6 +66,13 @@ table.table tr.selected {
 
 table.table tr:hover {
     background-color: #f3f3f3;
+    cursor: default;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: -moz-none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 table.table.item-selected {

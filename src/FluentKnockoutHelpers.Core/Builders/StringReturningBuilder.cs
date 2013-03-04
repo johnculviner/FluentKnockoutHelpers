@@ -8,11 +8,11 @@ namespace FluentKnockoutHelpers.Core.Builders
     {
         internal AttributeBuilder AttributeBuilder;
 
-        public StringReturningBuilder(Builder<TModel> builder) : base(builder)
+        public StringReturningBuilder(BuilderBase<TModel> builder) : base(builder)
         {
         }
 
-        public StringReturningBuilder(Builder<TModel> builder, AttributeBuilder attributeBuilder)
+        public StringReturningBuilder(BuilderBase<TModel> builder, AttributeBuilder attributeBuilder)
             : base(builder)
         {
             AttributeBuilder = attributeBuilder;

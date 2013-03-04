@@ -9,30 +9,34 @@ namespace FluentKnockoutHelpers.Core.NodeBuilding
     /// </summary>
     public class NodeBuilder : AttributeBuilder
     {
-        private Node _node;
+        private HtmlNode _htmlNode;
 
-        public NodeBuilder(Node node)
+        public NodeBuilder(HtmlNode htmlNode)
         {
-            _node = node;
+            _htmlNode = htmlNode;
+
+            //kind of yuck, not sure of a better way though...
+            if (htmlNode is IKoComment)
+                InKoCommentMode = true;
         }
 
         public override string GetContents()
         {
             var sb = new StringBuilder();
 
-            sb.Append(_node.BeginTagBegin);
+            sb.Append(_htmlNode.BeginTagBegin);
             sb.Append(base.GetContents());
-            sb.Append(_node.BeginTagEnd);
+            sb.Append(_htmlNode.BeginTagEnd);
 
             return sb.ToString();
         }
 
         public string GetNodeEnd()
         {
-            if (!(_node is DisposeClosingNode))
+            if (!(_htmlNode is DisposeClosingHtmlNode))
                 throw new InvalidOperationException();
 
-            return ((DisposeClosingNode)_node).EndTag;
+            return ((DisposeClosingHtmlNode)_htmlNode).EndTag;
         }
     }
 }

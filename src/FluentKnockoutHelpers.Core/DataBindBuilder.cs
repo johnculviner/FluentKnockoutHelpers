@@ -28,6 +28,13 @@ namespace FluentKnockoutHelpers.Core
             return this;
         }
 
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public DataBindBuilder<TModel> AddBindingNoPrefix(string bindingName, string bindingProperty)
+        {
+            Builder.Attr("data-bind", bindingName, bindingProperty);
+            return this;
+        }
+
         private string GetDataBindPropertyName(string propName)
         {
             if (string.IsNullOrEmpty(Builder.ViewModelPropertyName))
@@ -101,14 +108,6 @@ namespace FluentKnockoutHelpers.Core
         public static DataBindBuilder<TModel> Checked<TModel>(this DataBindBuilder<TModel> @this, string bindingProperty)
         {
             return @this.AddBinding("checked", bindingProperty);
-        }
-        #endregion
-
-        #region Foreach
-
-        public static DataBindBuilder<TModel> Foreach<TModel>(this DataBindBuilder<TModel> @this, string bindingProperty)
-        {
-            return @this.AddBinding("foreach", bindingProperty);
         }
         #endregion
 

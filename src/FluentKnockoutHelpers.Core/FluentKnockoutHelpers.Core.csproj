@@ -74,7 +74,11 @@
     <Compile Include="AttributeBuilding\HtmlAttribute.cs" />
     <Compile Include="AttributeBuilding\InnerKeyValue.cs" />
     <Compile Include="AttributeBuilding\NoInnerKeyValue.cs" />
+    <Compile Include="Builders\BuilderBase.cs" />
     <Compile Include="Builders\DisposableBuilder.cs" />
+    <Compile Include="Builders\EnumerableBuilder.cs" />
+    <Compile Include="NodeBuilding\IKoComment.cs" />
+    <Compile Include="NodeBuilding\SelfClosingKoComment.cs" />
     <Compile Include="Utility\ExpressionParser.cs" />
     <Compile Include="WebPagesHtmlHelpers.cs" />
     <Compile Include="Builders\ForEachBuilder.cs" />
@@ -84,17 +88,15 @@
     <Compile Include="Element.cs" />
     <Compile Include="Ensure.cs" />
     <Compile Include="GlobalSettings.cs" />
-    <Compile Include="NodeBuilding\KoComment.cs" />
-    <Compile Include="NodeBuilding\DisposeClosingElement.cs" />
-    <Compile Include="NodeBuilding\DisposeClosingNode.cs" />
+    <Compile Include="NodeBuilding\DisposeClosingKoComment.cs" />
+    <Compile Include="NodeBuilding\DisposeClosingHtmlElement.cs" />
+    <Compile Include="NodeBuilding\DisposeClosingHtmlNode.cs" />
     <Compile Include="AttributeBuilding\AttributeBuilder.cs" />
     <Compile Include="NodeBuilding\NodeBuilder.cs" />
     <Compile Include="IJsonSerializer.cs" />
     <Compile Include="Builders\Builder.cs" />
-    <Compile Include="NodeBuilding\IElement.cs" />
-    <Compile Include="Node.cs" />
-    <Compile Include="NodeBuilding\SelfClosingElement.cs" />
-    <Compile Include="NodeBuilding\SelfClosingNode.cs" />
+    <Compile Include="HtmlNode.cs" />
+    <Compile Include="NodeBuilding\SelfClosingHtmlElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

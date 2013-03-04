@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
@@ -12,45 +13,67 @@ namespace FluentKnockoutHelpers.Core.Builders
     /// A builder for a generic type
     /// </summary>
     /// <typeparam name="TModel">The type of model to create a builder for</typeparam>
-    public class Builder<TModel>
+    public class Builder<TModel> : BuilderBase<TModel>
     {
-        public readonly string ViewModelPropertyName;
-        public WebPageBase WebPage;
-
+        #region ctor
         public Builder(WebPageBase webPage)
-            : this(webPage, null)
+            : base(webPage)
         {
         }
 
         public Builder(WebPageBase webPage, string viewModelPropertyName)
+            : base(webPage, viewModelPropertyName)
         {
-            WebPage = webPage;
-            ViewModelPropertyName = viewModelPropertyName;
         }
 
-        protected Builder(Builder<TModel> builder)
+        protected Builder(BuilderBase<TModel> builder)
+            : base(builder)
         {
-            ViewModelPropertyName = builder.ViewModelPropertyName;
-            WebPage = builder.WebPage;
         }
+        #endregion
 
-        public virtual DisposableBuilder<TModel> Element(string tag, Action<StringReturningBuilder<TModel>> builder)
+        #region HtmlNode Building
+
+        public virtual DisposableBuilder<TModel> ElementUsing(string elementTag, Action<StringReturningBuilder<TModel>> builder)
         {
-            var nodeBuilder = new NodeBuilder(new DisposeClosingElement(tag));
+            var nodeBuilder = new NodeBuilder(new DisposeClosingHtmlElement(elementTag));
             var element = new StringReturningBuilder<TModel>(this, nodeBuilder);
             builder(element);
             return new DisposableBuilder<TModel>(this, nodeBuilder);
         }
 
-        public virtual StringReturningBuilder<TModel> SelfClosingElement(string tag)
+        /// <summary>
+        /// Begin building a self closing element for the given 'elementTag'
+        /// </summary>
+        /// <param name="elementTag"></param>
+        /// <returns></returns>
+        public virtual StringReturningBuilder<TModel> ElementSelfClosing(string elementTag)
         {
-            return new StringReturningBuilder<TModel>(this, new NodeBuilder(new SelfClosingElement(tag)));
+            return new StringReturningBuilder<TModel>(this, new NodeBuilder(new SelfClosingHtmlElement(elementTag)));
         }
 
-        public virtual StringReturningBuilder<TModel> SelfClosingElement(string tag, string innerHtml)
+        /// <summary>
+        /// Begin building a self closing element for the given 'elementTag' with the specified 'innerHtml'
+        /// </summary>
+        /// <param name="elementTag"></param>
+        /// <param name="innerHtml"></param>
+        /// <returns></returns>
+        public virtual StringReturningBuilder<TModel> ElementSelfClosing(string elementTag, string innerHtml)
         {
-            return new StringReturningBuilder<TModel>(this, new NodeBuilder(new SelfClosingElement(tag, innerHtml)));
+            return new StringReturningBuilder<TModel>(this, new NodeBuilder(new SelfClosingHtmlElement(elementTag, innerHtml)));
         }
+
+        public virtual StringReturningBuilder<TModel> KoCommentSelfClosing()
+        {
+            return new StringReturningBuilder<TModel>(this, new NodeBuilder(HtmlNode.SelfClosingKoComment()));
+        }
+
+        public virtual IHtmlString KoCommentDisposable()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
 
         public virtual StringReturningBuilder<TModel> DataBind(Action<DataBindBuilder<TModel>> builder)
         {
@@ -59,23 +82,7 @@ namespace FluentKnockoutHelpers.Core.Builders
             return stringBuilder;
         }
 
-        public virtual StringReturningBuilder<TModel> LabelFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
-        {
-            return SelfClosingElement("label", DisplayNameFor(propExpr).ToString()).Attr("for", ExpressionParser.GetExpressionText(propExpr));
-        }
-
-        public virtual StringReturningBuilder<TModel> BoundTextBoxFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
-        {
-            var exprText = ExpressionParser.GetExpressionText(propExpr); //avoid 2x expr parsing
-            //TODO: Multiple databinds broken!
-            return SelfClosingElement("input").Attr("type", "text").Id(exprText).DataBind(db => db.Value(exprText).ValueUpdate(ValueUpdate.KeyUp));
-        }
-
-        public virtual IHtmlString DisplayNameFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
-        {
-            return new HtmlString(ExpressionParser.DisplayNameFor(propExpr));
-        }
-
+        #region Direct Evaluation & Assignment
         public virtual IHtmlString AssignObservableFor<TProp>(Expression<Func<TModel, TProp>> propExpr, string arg)
         {
             return new HtmlString(string.Format("{0}({1})", EmitPropTextFor(propExpr), arg));
@@ -94,11 +101,50 @@ namespace FluentKnockoutHelpers.Core.Builders
                 new HtmlString(string.Format("{0}.{1}", ViewModelPropertyName, ExpressionHelper.GetExpressionText(propExpr)));
         }
 
-
-        protected void ImmediatelyWriteToResponse(string s)
+        public virtual IHtmlString GetExpressionTextFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
         {
-            WebPage.WriteLiteral(s);
+            return new HtmlString(ExpressionParser.GetExpressionText(propExpr));
         }
+        #endregion
+
+        /// <summary>
+        /// Begin building a &lt;label for="{{passed 'propExpr'}}"&gt; {{Display attribute or property name of 'propExpr'}} &lt;/label&gt;.
+        /// </summary>
+        /// <typeparam name="TProp"></typeparam>
+        /// <param name="propExpr"></param>
+        /// <returns></returns>
+        public virtual StringReturningBuilder<TModel> LabelFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
+        {
+            return ElementSelfClosing("label", DisplayNameFor(propExpr).ToString()).Attr("for", ExpressionParser.GetExpressionText(propExpr));
+        }
+
+
+
+        #region Bound{{...}}For
+        /// <summary>
+        /// Begin building a &lt;input type=text .../&gt; bound to the passed 'propExpr' via Knockout
+        /// </summary>
+        /// <typeparam name="TProp"></typeparam>
+        /// <param name="propExpr"></param>
+        /// <returns></returns>
+        public virtual StringReturningBuilder<TModel> BoundTextBoxFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
+        {
+            var exprText = ExpressionParser.GetExpressionText(propExpr); //avoid 2x expr parsing
+            return ElementSelfClosing("input").Attr("type", "text").Id(exprText).DataBind(db => db.Value(exprText).ValueUpdate(ValueUpdate.KeyUp));
+        }
+
+        /// <summary>
+        /// Emits a ko comment block (no element) with it's text bound to the 'propExpr' via Knockout
+        /// </summary>
+        /// <typeparam name="TProp"></typeparam>
+        /// <param name="propExpr"></param>
+        /// <returns></returns>
+        public virtual IHtmlString BoundTextFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
+        {
+            return KoCommentSelfClosing().DataBind(db => db.Text(propExpr));
+        }
+
+        #endregion
 
 
         //public ForEachBuilder<TModel, TInner> ForEach<TInner>(Node node, Action<StringReturningBuilder<TModel>> builder)

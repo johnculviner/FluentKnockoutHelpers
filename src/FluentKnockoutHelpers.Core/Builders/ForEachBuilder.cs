@@ -1,9 +1,12 @@
-﻿namespace FluentKnockoutHelpers.Core.Builders
+﻿using FluentKnockoutHelpers.Core.AttributeBuilding;
+using FluentKnockoutHelpers.Core.NodeBuilding;
+
+namespace FluentKnockoutHelpers.Core.Builders
 {
-    //public class ForEachBuilder<TModel, TInner> : DisposableBuilder<TModel>
-    //{
-    //    public ForEachBuilder(Builder<TModel> builder) : base(builder)
-    //    {
-    //    }
-    //}
+    public class ForEachBuilder<TModel> : DisposableBuilder<TModel>
+    {
+        public ForEachBuilder(BuilderBase<TModel> builder, NodeBuilder attributeBuilder) : base(builder, attributeBuilder)
+        {
+        }
+    }
 }
