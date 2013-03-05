@@ -74,7 +74,7 @@ Well maybe that felt a little weird or you aren't using WebAPI or MVC. No proble
 
 ##Putting it all together
 Here is the bread and butter of FluentKnockoutHelpers. Since we have created a strongly-typed helper we now can use it to create strongly-typed expressions that at run time yield plain old Knockout code sans the magic strings. Since everyone likes to do their HTML in many different ways FluentKnockoutHelpers is flexible and extensible to accomodate many different ways of accomplishing the same markup result.
-###The markup we want (what is generated at run-time)
+###The markup we want to generate
 ```html
 <p>
 	First name: 
@@ -91,7 +91,7 @@ Here is the bread and butter of FluentKnockoutHelpers. Since we have created a s
 </h2>
 ```
 
-###Minimalistic markup generation (Option A)
+###Minimalistic markup generation via FluentKnockoutHelpers (Option A)
 Minimilastic markup for those that like almost vanilla HTML and/or lots of typing
 ```html
 <!-- Creation of the strongly-typed helper -->
@@ -113,12 +113,12 @@ Minimilastic markup for those that like almost vanilla HTML and/or lots of typin
 </h2>
 ```
 
-###All out C# (Option B)
-We all love MVC (right?) lets pay it some hommage with a fluent twist! Note the DisplayNameFor(..) pulls from the [Display(..)] attribute (Don't worry there is a LabelFor(...) too)
+###All out C# via FluentKnockoutHelpers (Option B)
+We all love MVC (right?) lets pay it some hommage with a fluent twist! Note the DisplayNameFor(..) pulls from the [Display(..)] attribute. Don't worry there is a LabelFor(...) too..
 ```html
 <!-- Creation of the strongly-typed helper -->
 @{
-  var person = this.KnockoutHelperForApi<SurveyController>().Endpoint(api => api.Get(default(int)), "person", true);
+  var person = this.KnockoutHelperForApi<PersonController>().Endpoint(api => api.Get(default(int)), "person", true);
 }
 
 <p>
