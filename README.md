@@ -33,7 +33,7 @@ public class PersonController : ApiController
 }
 ```
 
-##JavaScript ViewModel
+##Knockout JavaScript ViewModel
 ```javascript
 var PersonViewModel = function(personId) {
 	var self = this;
@@ -59,7 +59,7 @@ Here we create a Knockout helper bound the the WebAPI endpoint that we know the 
 ```html
 <!-- The top of our CSHTML file -->
 @{
-  var person = this.KnockoutHelperForApi<SurveyController>().Endpoint(api => api.Get(default(int)), "person", true);
+  var person = this.KnockoutHelperForApi<PersonController>().Endpoint(api => api.Get(default(int)), "person", true);
 }
 ```
 
