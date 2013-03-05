@@ -41,7 +41,7 @@ var PersonViewModel = function(personId) {
 	self.person = ko.observable();
 
 	//ctor
-	$.getJSON('survey/' + personId)
+	$.getJSON('person/' + personId)
 		.then(function(person) {
 		
 			//the ko.mapping plugin below converts the entire JSON
