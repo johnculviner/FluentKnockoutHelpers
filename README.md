@@ -96,7 +96,7 @@ Minimilastic markup for those that like almost vanilla HTML and/or lots of typin
 ```html
 <!-- Creation of the strongly-typed helper -->
 @{
-  var person = this.KnockoutHelperForApi<SurveyController>().Endpoint(api => api.Get(default(int)), "person", true);
+  var person = this.KnockoutHelperForApi<PersonController>().Endpoint(api => api.Get(default(int)), "person", true);
 }
 
 <p>
@@ -109,7 +109,7 @@ Minimilastic markup for those that like almost vanilla HTML and/or lots of typin
 <h2>
 	Hello,
 	<!-- ko text: @person.EvalObservableFor(x => x.FirstName) --><!-- /ko -->
-	<!-- ko text: @person.EvalObservableFor(x => x.FirstName) --><!-- /ko -->
+	<!-- ko text: @person.EvalObservableFor(x => x.LastName) --><!-- /ko -->
 </h2>
 ```
 
