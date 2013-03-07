@@ -4,7 +4,7 @@ using System.Linq;
 using SurveyApp.Model.Models;
 using System.Data.Entity;
 
-namespace SurveyApp.Web.Models.Api.Survey
+namespace SurveyApp.Web.ApiModels.Survey
 {
     public class SurveySummary
     {

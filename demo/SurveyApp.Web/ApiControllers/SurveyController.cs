@@ -3,10 +3,10 @@ using System.Linq;
 using System.Web.Http;
 using SurveyApp.Model.Models;
 using SurveyApp.Model.Persistance;
-using SurveyApp.Web.Models.Api.Survey;
 using System.Data.Entity;
+using SurveyApp.Web.ApiModels.Survey;
 
-namespace SurveyApp.Web.Controllers.Api
+namespace SurveyApp.Web.ApiControllers
 {
     public class SurveyController : ApiController
     {

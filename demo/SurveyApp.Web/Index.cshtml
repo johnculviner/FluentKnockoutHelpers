@@ -16,13 +16,18 @@
     </head>
     <body>
         <div id="applicationHost">
-            @Html.Partial("_splash")
+            <div class="splash">
+                <div class="message">
+                    Loading Survey App...
+                </div>
+                <i class="icon-spinner icon-2x icon-spin active"></i>
+            </div>
         </div>
 
         @Scripts.Render(BundleConfig.Scripts.All)
         
         @if(HttpContext.Current.IsDebuggingEnabled) {
-            <script type="text/javascript" src="~/App/durandal/amd/require.js" data-main="@Url.Content("~/App/main")"></script>
+            <script type="text/javascript" src="~/App/durandal/amd/require.js" data-main="@VirtualPathUtility.ToAbsolute("~/App/main")"></script>
         } else {
             <script type="text/javascript" src="~/App/main-built.js"></script>
         }
