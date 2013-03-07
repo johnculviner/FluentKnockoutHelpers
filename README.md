@@ -78,11 +78,11 @@ Here is the bread and butter of FluentKnockoutHelpers. Since we have created a s
 ```html
 <p>
 	First name: 
-	<input type="text" class="fancy" data-bind="person().FirstName" />
+	<input type="text" class="fancy" data-bind="value: person().FirstName" />
 </p>
 <p>
 	Last name:
-	<input type="text" class="fancy" data-bind="person().LastName" />
+	<input type="text" class="fancy" data-bind="value: person().LastName" />
 </p>
 <h2>
 	Hello,
