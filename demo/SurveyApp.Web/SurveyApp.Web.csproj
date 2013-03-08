@@ -175,14 +175,15 @@
     <Content Include="App\durandal\viewModelBinder.js" />
     <Content Include="App\durandal\widget.js" />
     <Content Include="App\main.js" />
-    <Content Include="App\viewmodels\createEditModal.js" />
-    <Content Include="App\viewmodels\deleteModal.js" />
+    <Content Include="App\viewmodels\survey\createEditModal.js" />
+    <Content Include="App\viewmodels\survey\deleteModal.js" />
     <Content Include="App\viewmodels\shell.js" />
-    <Content Include="App\viewmodels\summary.js" />
-    <Content Include="App\views\deleteModal.cshtml" />
-    <Content Include="App\views\createEditModal.cshtml" />
+    <Content Include="App\viewmodels\survey\shared\locationInfo.js" />
+    <Content Include="App\viewmodels\survey\summary.js" />
+    <Content Include="App\views\survey\deleteModal.cshtml" />
+    <Content Include="App\views\survey\createEditModal.cshtml" />
     <None Include="App\views\shell.cshtml" />
-    <Content Include="App\views\summary.cshtml" />
+    <Content Include="App\views\survey\summary.cshtml" />
     <Content Include="Content\app\app.css" />
     <Content Include="Content\base\bootstrap-responsive.css" />
     <Content Include="Content\base\bootstrap-responsive.min.css" />
@@ -220,6 +221,7 @@
     <Content Include="App\views\Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="App\views\survey\shared\locationInfo.cshtml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\app\knockout.extensions.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -244,7 +246,9 @@
     <Content Include="Scripts\sammy-0.7.4.js" />
     <Content Include="Scripts\sammy-0.7.4.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

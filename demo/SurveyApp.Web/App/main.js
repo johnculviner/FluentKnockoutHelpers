@@ -20,7 +20,10 @@ define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/vie
 
         //configure routing
         router.useConvention();
-        router.mapNav('summary');
+        router.mapNav({
+            url: 'survey/summary',
+            name: 'Summary'
+        });
 
         app.adaptToDevice();
         

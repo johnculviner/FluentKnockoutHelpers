@@ -1,5 +1,7 @@
-﻿define(['durandal/app', '../api/surveyApi', 'viewmodels/deleteModal', 'viewmodels/createEditModal'], function (app, surveyApi, DeleteModal, CreateEditModal) {
-    return function () {
+﻿define(['durandal/app', 'api/surveyApi', './deleteModal', './createEditModal'],
+    function (app, surveyApi, DeleteModal, CreateEditModal) {
+
+        return function () {
         var self = this;
 
         self.surveySummaries = null; //loaded from ajax as ko.observableArray()

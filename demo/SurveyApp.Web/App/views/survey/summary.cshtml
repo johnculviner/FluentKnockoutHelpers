@@ -2,10 +2,6 @@
 @using SurveyApp.Web.ApiControllers
 
 <section>
-    <h3>
-        Summary
-    </h3>
-
     @*SURVEYS LIST*@
     @{
         var summaries = this.KnockoutHelperForApi<SurveyController>().Endpoint(api => api.GetAll(), "surveySummaries", true);

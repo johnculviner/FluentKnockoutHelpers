@@ -1,11 +1,10 @@
-﻿define(['../api/surveyApi'], function (surveyApi, zipCodeLocationApi) {
+﻿define(['api/surveyApi'], function (surveyApi, zipCodeLocationApi) {
 
     var CreateEditModal = function (surveySummary) {
 
         var self = this;
 
         self.survey = ko.observable();
-        self.zipCodeLocation = ko.observable(null);
 
         //the router's activator calls this function and waits for the .complete jQuery Promise before proceding
         self.activate = function () {
