@@ -13,7 +13,7 @@ namespace SurveyApp.Web
 
         public static class Css
         {
-            public const string All = "~/Content/";
+            public const string All = "~/Content";
         }
 
         public static void RegisterBundles(BundleCollection bundles)

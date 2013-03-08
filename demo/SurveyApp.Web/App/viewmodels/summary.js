@@ -1,4 +1,4 @@
-﻿define(['durandal/app', '../api/survey', 'viewmodels/deleteModal', 'viewmodels/createEditModal'], function (app, surveyApi, DeleteModal, CreateEditModal) {
+﻿define(['durandal/app', '../api/surveyApi', 'viewmodels/deleteModal', 'viewmodels/createEditModal'], function (app, surveyApi, DeleteModal, CreateEditModal) {
     return function () {
         var self = this;
 
@@ -17,19 +17,19 @@
                         });
         };
 
-        self.toggleSelected = function (survey) {
-            if (self.selectedSurvey() == survey)
+        self.toggleSelected = function (surveySummary) {
+            if (self.selectedSurvey() == surveySummary)
                 self.selectedSurvey(null);
             else
-                self.selectedSurvey(survey);
+                self.selectedSurvey(surveySummary);
         };
 
-        self.editSurvey = function (survey) {
-            app.showModal(new CreateEditModal(survey));
+        self.editSurvey = function (surveySummary) {
+            app.showModal(new CreateEditModal(surveySummary));
         };
 
-        self.deleteSurvey = function (survey) {
-            app.showModal(new DeleteModal(survey))
+        self.deleteSurvey = function (surveySummary) {
+            app.showModal(new DeleteModal(surveySummary))
                 .then(function(deletedSurvey) {
                     if (deletedSurvey !== null)
                         self.surveySummaries.remove(deletedSurvey);

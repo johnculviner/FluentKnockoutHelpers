@@ -1,6 +1,6 @@
 ﻿define(function () {
 
-    var root = 'api/survey';
+    var root = 'api/Survey';
 
     return {
         getAll : function() {

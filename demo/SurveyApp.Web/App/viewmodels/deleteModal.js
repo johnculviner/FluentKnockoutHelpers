@@ -1,4 +1,4 @@
-﻿define(['../api/survey'], function (surveyApi) {
+﻿define(['../api/surveyApi'], function (surveyApi) {
     
     var DeleteModal = function(survey) {
         var self = this;
