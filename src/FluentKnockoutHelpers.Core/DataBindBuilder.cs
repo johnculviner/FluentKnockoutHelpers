@@ -117,6 +117,11 @@ namespace FluentKnockoutHelpers.Core
             return @this;
         }
 
+        public static DataBindBuilder<TModel> Click<TModel>(this DataBindBuilder<TModel> @this, Expression<Func<TModel, bool>> bindingProperty)
+        {
+            return @this.AddBinding("click", bindingProperty);
+        }
+
         public static DataBindBuilder<TModel> Click<TModel>(this DataBindBuilder<TModel> @this, string bindingProperty)
         {
             return @this.AddBinding("click", bindingProperty);
