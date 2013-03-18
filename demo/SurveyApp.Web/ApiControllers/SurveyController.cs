@@ -21,7 +21,7 @@ namespace SurveyApp.Web.ApiControllers
         public IEnumerable<SurveySummary> GetAll()
         {
             //TODO make queryable
-            return _unitOfWork.Surveys.ToSurveySummaries(_unitOfWork.ZipCodeLocations);
+            return _unitOfWork.Surveys.ToSurveySummaries();
         }
 
         // GET api/survey/5

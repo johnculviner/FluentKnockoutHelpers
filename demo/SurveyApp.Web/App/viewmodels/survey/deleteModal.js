@@ -1,6 +1,6 @@
 ﻿define(['api/surveyApi'], function (surveyApi) {
     
-    var DeleteModal = function(survey) {
+    return function(survey) {
         var self = this;
 
         self.survey = ko.observable(survey);
@@ -14,6 +14,4 @@
             this.modal.close(null);
         };
     };
-
-    return DeleteModal;
 });

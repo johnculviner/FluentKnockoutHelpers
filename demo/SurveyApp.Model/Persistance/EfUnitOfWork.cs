@@ -17,7 +17,6 @@ namespace SurveyApp.Model.Persistance
             FoodGroups = _ctx.FoodGroups;
             Relations = _ctx.Relations;
             TechProducts = _ctx.TechProducts;
-            ZipCodeLocations = _ctx.ZipCodeLocations;
         }
 
         public DbSet<Survey> Surveys { get; private set; }
@@ -25,7 +24,6 @@ namespace SurveyApp.Model.Persistance
         public DbSet<FoodGroup> FoodGroups { get; private set; }
         public DbSet<Relation> Relations { get; private set; }
         public DbSet<TechProduct> TechProducts { get; private set; }
-        public DbSet<ZipCodeLocation> ZipCodeLocations { get; private set; }
 
         public int Commit()
         {

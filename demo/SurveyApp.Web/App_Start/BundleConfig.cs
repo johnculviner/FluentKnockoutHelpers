@@ -19,10 +19,12 @@ namespace SurveyApp.Web
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.IgnoreList.Ignore("_references.js");
-            
-            //Scripts
-            bundles.Add(new ScriptBundle(Scripts.All).Include("~/Scripts/*.js"));
-            
+
+            bundles.Add(new ScriptBundle(Scripts.All)
+                
+                //Vendor Scripts
+                .Include("~/Scripts/*.js"));
+
             //CSS
             bundles.Add(new StyleBundle(Css.All)
                 .Include("~/Content/base/*.css")

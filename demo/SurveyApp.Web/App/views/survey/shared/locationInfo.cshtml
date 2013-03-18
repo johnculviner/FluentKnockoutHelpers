@@ -1,1 +1,19 @@
-﻿
+﻿@using SurveyApp.Web.ApiControllers
+@{
+    var location = this.KnockoutHelperForType<SurveyApp.Model.Models.Location>();
+}
+
+<div class="control-group">
+    @location.LabelFor(x => x.FormattedLocation).Class("control-label")
+    <div @location.DataBind(db => db.Text(x => x.FormattedLocation)).Class("uneditable controls")></div>
+</div>
+<div class="control-group">
+    @location.LabelFor(x => x.Latitude).Class("control-label")
+    <div @location.DataBind(db => db.Text(x => x.Latitude)).Class("uneditable controls")></div>
+</div>
+<div class="control-group">
+    @location.LabelFor(x => x.Longitude).Class("control-label")
+    <div @location.DataBind(db => db.Text(x => x.Longitude)).Class("uneditable controls")></div>
+</div>
+
+ <div data-bind="googleMap: { latitude: Latitude, longitude: Longitude }" style="height: 200px; width: 100%;"></div>

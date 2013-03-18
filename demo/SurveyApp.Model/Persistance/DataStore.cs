@@ -32,7 +32,6 @@ namespace SurveyApp.Model.Persistance
         public DbSet<FoodGroup> FoodGroups { get; set; }
         public DbSet<Relation> Relations { get; set; }
         public DbSet<TechProduct> TechProducts { get; set; }
-        public DbSet<ZipCodeLocation> ZipCodeLocations { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -47,11 +46,6 @@ namespace SurveyApp.Model.Persistance
             modelBuilder.Entity<Survey>()
             .HasMany(s => s.TechProducts)
             .WithMany();
-
-            modelBuilder.Entity<ZipCodeLocation>()
-                .HasKey(t => t.ZipCode)
-                .Property(t => t.ZipCode)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
         }
     }
 }

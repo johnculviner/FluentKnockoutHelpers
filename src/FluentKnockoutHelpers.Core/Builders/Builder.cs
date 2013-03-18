@@ -85,20 +85,19 @@ namespace FluentKnockoutHelpers.Core.Builders
         #region Direct Evaluation & Assignment
         public virtual IHtmlString AssignObservableFor<TProp>(Expression<Func<TModel, TProp>> propExpr, string arg)
         {
-            return new HtmlString(string.Format("{0}({1})", EmitPropTextFor(propExpr), arg));
+            return new HtmlString(string.Format("{0}({1})", PropStringFor(propExpr), arg));
         }
 
         public virtual IHtmlString EvalObservableFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
         {
-            return new HtmlString(string.Format("{0}()", EmitPropTextFor(propExpr)));
+            return new HtmlString(string.Format("{0}()", PropStringFor(propExpr)));
         }
 
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public virtual IHtmlString EmitPropTextFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
+        public virtual string PropStringFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
         {
             return string.IsNullOrWhiteSpace(ViewModelPropertyName) ?
-                new HtmlString(ExpressionParser.GetExpressionText(propExpr)) :
-                new HtmlString(string.Format("{0}.{1}", ViewModelPropertyName, ExpressionHelper.GetExpressionText(propExpr)));
+                ExpressionParser.GetExpressionText(propExpr) :
+                string.Format("{0}.{1}", ViewModelPropertyName, ExpressionParser.GetExpressionText(propExpr));
         }
 
         public virtual IHtmlString GetExpressionTextFor<TProp>(Expression<Func<TModel, TProp>> propExpr)

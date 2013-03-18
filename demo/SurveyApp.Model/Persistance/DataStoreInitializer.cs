@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using SurveyApp.Model.Helpers;
 using SurveyApp.Model.Models;
-using ErikEJ.SqlCe;
 
 namespace SurveyApp.Model.Persistance
 {
@@ -17,44 +16,11 @@ namespace SurveyApp.Model.Persistance
     {
         protected override void Seed(DataStore context)
         {
-            LoadZipCodeLocations(context);
             LoadFoodGroupsAndFoods(context);
             LoadTechProducts(context);
             LoadSurveys(context);
 
             base.Seed(context);
-        }
-
-
-        /// <summary>
-        /// load application supported zipcodes into SQL from the included csv file
-        /// </summary>
-        /// <param name="context"></param>
-        private static void LoadZipCodeLocations(DbContext context)
-        {
-            var zipCodeCsvPath = Path.Combine(AppDomain.CurrentDomain.RelativeSearchPath, "ZipCodes.csv");
-
-            using (var sr = new StreamReader(zipCodeCsvPath))
-            {
-                var zipCodeLocations = sr.ReadToEnd()
-                    .Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries)
-                    .Select(line =>
-                    {
-                        var split = line.Split(',');
-                        return new ZipCodeLocation
-                        {
-                            ZipCode = Int32.Parse(split[0]),
-                            City = split[1],
-                            State = split[2]
-                        };
-                    }).ToList();
-
-                using (var bulkInsert = new SqlCeBulkCopy(context.Database.Connection.ConnectionString))
-                {
-                    bulkInsert.DestinationTableName = "ZipCodeLocation";
-                    bulkInsert.WriteToServer(zipCodeLocations.AsDataReader());
-                }
-            }
         }
 
         private static void LoadFoodGroupsAndFoods(DataStore context)
@@ -157,7 +123,12 @@ namespace SurveyApp.Model.Persistance
                         },
                     Gender = Gender.Male,
                     TechProducts = context.TechProducts.Local.ToList(),
-                    ZipCode = 98039,
+                    Location = new Location
+                        {
+                            FormattedLocation = "Medina, WA 98039, USA",
+                            Latitude = 47.6258071,
+                            Longitude = -122.2421963
+                        },
                 });
 
             context.Surveys.Add(new Survey
@@ -180,7 +151,12 @@ namespace SurveyApp.Model.Persistance
                         },
                 Gender = Gender.Male,
                 TechProducts = context.TechProducts.Local.ToList(),
-                ZipCode = 94303,
+                Location = new Location
+                {
+                    FormattedLocation = "Palo Alto, CA 94301, USA",
+                    Latitude = 37.4457966,
+                    Longitude = -122.1575745
+                }
             });
 
             context.Surveys.Add(new Survey
@@ -200,7 +176,12 @@ namespace SurveyApp.Model.Persistance
                         },
                 Gender = Gender.Female,
                 TechProducts = context.TechProducts.Local.ToList(),
-                ZipCode = 94303,
+                Location = new Location
+                {
+                    FormattedLocation = "Palo Alto, CA 94303, USA",
+                    Latitude = 37.4530553,
+                    Longitude = -122.1178261
+                }
             });
 
             context.Surveys.Add(new Survey
@@ -216,7 +197,12 @@ namespace SurveyApp.Model.Persistance
                         },
                 Gender = Gender.Male,
                 TechProducts = context.TechProducts.Local.ToList(),
-                ZipCode = 94303,
+                Location = new Location
+                {
+                    FormattedLocation = "Palo Alto, CA 94301, USA",
+                    Latitude = 37.4457966,
+                    Longitude = -122.1575745
+                }
             });
 
             context.Surveys.Add(new Survey
@@ -245,7 +231,12 @@ namespace SurveyApp.Model.Persistance
                         },
                 Gender = Gender.Female,
                 TechProducts = context.TechProducts.Local.ToList(),
-                ZipCode = 98004,
+                Location = new Location
+                {
+                    FormattedLocation = "Buckingham Palace, London, Greater London SW1A 1AA, UK",
+                    Latitude = 51.501364,
+                    Longitude = -0.14189
+                }
             });
         }
     }

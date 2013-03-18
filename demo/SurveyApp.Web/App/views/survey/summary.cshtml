@@ -43,8 +43,8 @@
     </table>
     
     <div class="spinner" data-bind="visible: loading"></div>
-
     
+
     @*SELECTED SURVEY DETAIL*@
     @{
         var detail = this.KnockoutHelperForApi<SurveyController>().Endpoint(api => api.GetAll().Single(), "selectedSurvey", true);
@@ -52,10 +52,6 @@
     <fieldset style="padding-left: 20px;" data-bind="if: selectedSurvey() != null">
         <legend><span @detail.DataBind(db => db.Text(x => x.LastName))></span>, <span @detail.DataBind(db => db.Text(x => x.FirstName))></span></legend>
         <form class ="form-horizontal">
-            <div class="control-group">
-                @detail.LabelFor(x => x.State).Class("control-label")
-                <div @detail.DataBind(db => db.Text(x => x.State)).Class("uneditable controls")></div>
-            </div>
             <div class="control-group">
                 @detail.LabelFor(x => x.NumberOfTechProducts).Class("control-label")
                 <div @detail.DataBind(db => db.Text(x => x.NumberOfTechProducts)).Class("uneditable controls")></div>
@@ -67,6 +63,8 @@
             <div class="control-group">
                 @detail.LabelFor(x => x.OverallHealthyScore).Class("control-label")
                 <div @detail.DataBind(db => db.Text(x => x.OverallHealthyScore)).Class("uneditable controls")></div>
+            </div>
+            <div class="control-group" data-bind="compose: { model: new locationInfo(selectedSurvey().Location), view: 'views/survey/shared/locationInfo' }">
             </div>
         </form>
     </fieldset>

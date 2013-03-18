@@ -10,13 +10,13 @@
             <button type="button" class="close" data-bind="click: close">&times;</button>
             <h3>
                 <span>
-                    @*This demos "EmitPropTextFor", label could be a ko.computed(..) in real life*@
-                    <!-- ko if: @surveyHelper.EmitPropTextFor(x => x.SurveyId) === null -->
+                    @*This demos "PropStringFor", label could be a ko.computed(..) in real life*@
+                    <!-- ko if: @surveyHelper.PropStringFor(x => x.SurveyId) === null -->
                         Create Survey
                     <!-- /ko -->
                     
-                    @*This demos "EmitPropTextFor", label could be a ko.computed(..) in real life*@
-                    <!-- ko if: @surveyHelper.EmitPropTextFor(x => x.SurveyId) !== null -->
+                    @*This demos "PropStringFor", label could be a ko.computed(..) in real life*@
+                    <!-- ko if: @surveyHelper.PropStringFor(x => x.SurveyId) !== null -->
 
                         Update Survey for
                         @surveyHelper.BoundTextFor(x => x.LastName),
@@ -52,12 +52,6 @@
                     </div>
                 </div>
                 
-                <div class="control-group">
-                    @surveyHelper.LabelFor(x => x.ZipCode).Class("control-label")
-                    <div class="controls">
-                        @surveyHelper.BoundTextBoxFor(x => x.ZipCode)
-                    </div>
-                </div>
 
             </fieldset>
 
@@ -74,11 +68,11 @@
         <div class="modal-footer">
             <button class="btn" data-bind="click: close">Close</button>
             <button class="btn btn-primary" type="submit">
-                @*This demos "EmitPropTextFor", label could be a ko.computed(..) in real life*@
-                <!-- ko if: @surveyHelper.EmitPropTextFor(x => x.SurveyId) === null -->
+                @*This demos "PropStringFor", label could be a ko.computed(..) in real life*@
+                <!-- ko if: @surveyHelper.PropStringFor(x => x.SurveyId) === null -->
                 Create
                 <!-- /ko -->
-                <!-- ko if: @surveyHelper.EmitPropTextFor(x => x.SurveyId) !== null -->
+                <!-- ko if: @surveyHelper.PropStringFor(x => x.SurveyId) !== null -->
                 Update
                 <!-- /ko -->
             </button>

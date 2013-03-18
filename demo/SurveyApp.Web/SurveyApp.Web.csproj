@@ -138,7 +138,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiControllers\ZipCodeLocationController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\NinjectDependencyScope.cs" />
@@ -152,8 +151,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App\api\zipCodeLocationApi.js" />
+    <Content Include="App\api\locationApi.js" />
     <Content Include="App\api\surveyApi.js" />
+    <Content Include="App\requirePlugins\async.js" />
     <Content Include="App\durandal\amd\almond-custom.js" />
     <Content Include="App\durandal\amd\optimizer.exe" />
     <Content Include="App\durandal\amd\r.js" />
@@ -178,10 +178,10 @@
     <Content Include="App\viewmodels\survey\createEditModal.js" />
     <Content Include="App\viewmodels\survey\deleteModal.js" />
     <Content Include="App\viewmodels\shell.js" />
-    <Content Include="App\viewmodels\survey\shared\locationInfo.js" />
     <Content Include="App\viewmodels\survey\summary.js" />
     <Content Include="App\views\survey\deleteModal.cshtml" />
     <Content Include="App\views\survey\createEditModal.cshtml" />
+    <Content Include="App\viewmodels\survey\shared\locationInfo.js" />
     <None Include="App\views\shell.cshtml" />
     <Content Include="App\views\survey\summary.cshtml" />
     <Content Include="Content\app\app.css" />
@@ -223,7 +223,7 @@
     </Content>
     <Content Include="App\views\survey\shared\locationInfo.cshtml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
-    <Content Include="Scripts\app\knockout.extensions.js" />
+    <Content Include="App\knockoutPlugins\bindingHandlers\googleMap.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
@@ -259,6 +259,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\app\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

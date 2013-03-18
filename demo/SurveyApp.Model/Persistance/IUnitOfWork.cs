@@ -16,7 +16,6 @@ namespace SurveyApp.Model.Persistance
         DbSet<FoodGroup> FoodGroups { get; }
         DbSet<Relation> Relations { get; }
         DbSet<TechProduct> TechProducts { get; }
-        DbSet<ZipCodeLocation> ZipCodeLocations { get; }
         
         int Commit();
     }

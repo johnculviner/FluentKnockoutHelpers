@@ -1,6 +1,6 @@
 ﻿define(['api/surveyApi'], function (surveyApi, zipCodeLocationApi) {
 
-    var CreateEditModal = function (surveySummary) {
+    return function (surveySummary) {
 
         var self = this;
 
@@ -26,6 +26,4 @@
             this.modal.close(null);
         };
     };
-
-    return CreateEditModal;
 });

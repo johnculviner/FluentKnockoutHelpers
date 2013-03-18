@@ -44,15 +44,16 @@ namespace FluentKnockoutHelpers.Core.Builders
             if (string.IsNullOrWhiteSpace(foreachDataProp))
                 foreachDataProp = "$root";
 
+            foreachDataProp = "_" + foreachDataProp + "_";
+
             var foreachAs = SanitizeAs(foreachDataProp) + "_Singular";
-            var foreachArgs = string.Format("{{ data: {0}, as: '{1}' }}", foreachDataProp, foreachAs);
-            element.DataBind(db => db.AddBindingNoPrefix("foreach", foreachArgs));
+            element.DataBind(db => db.AddBindingWithJsonValue("foreach", new { _data_ = foreachDataProp, _as_ = foreachAs }));
 
             var builderBase = new BuilderBase<TModel>(WebPage, foreachAs);
             return new ForEachBuilder<TModel>(builderBase, nodeBuilder);
         }
 
-        public static string SanitizeAs(string asCandidate)
+        private static string SanitizeAs(string asCandidate)
         {
             return Regex.Replace(asCandidate, "[^a-zA-Z0-9]", "");
         }

@@ -36,12 +36,12 @@ namespace FluentKnockoutHelpers.Core.Builders
         #endregion
 
 
-        ///// <summary>
-        ///// Emits a string that will be derived from the [Display..] attribute or the property name of the passed 'propExpr'
-        ///// </summary>
-        ///// <typeparam name="TProp"></typeparam>
-        ///// <param name="propExpr"></param>
-        ///// <returns></returns>
+        /// <summary>
+        /// Emits a string that will be derived from the [Display..] attribute or the property name of the passed 'propExpr'
+        /// </summary>
+        /// <typeparam name="TProp"></typeparam>
+        /// <param name="propExpr"></param>
+        /// <returns></returns>
         public virtual IHtmlString DisplayNameFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
         {
             return new HtmlString(ExpressionParser.DisplayNameFor(propExpr));

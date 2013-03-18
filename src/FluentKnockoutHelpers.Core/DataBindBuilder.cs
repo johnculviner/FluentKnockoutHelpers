@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using FluentKnockoutHelpers.Core.Builders;
 using FluentKnockoutHelpers.Core.Utility;
@@ -28,11 +29,49 @@ namespace FluentKnockoutHelpers.Core
             return this;
         }
 
+        /// <summary>
+        /// Create a 'data-bind' binding without prefixing the viewModelPropertyName
+        /// </summary>
+        /// <param name="bindingName"></param>
+        /// <param name="bindingProperty"></param>
+        /// <returns></returns>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public DataBindBuilder<TModel> AddBindingNoPrefix(string bindingName, string bindingProperty)
         {
             Builder.Attr("data-bind", bindingName, bindingProperty);
             return this;
+        }
+
+        /// <summary>
+        /// Create a data-bind binding with an anonymous type that will be converted to JSON
+        /// </summary>
+        /// <param name="bindingName">"data-bind" binding name</param>
+        /// <param name="anonymousType">Object that will be converted to JSON</param>
+        /// <returns></returns>
+        /// <example>
+        /// AddBindingWithJsonValue("foo", new { bar : "baz" })   ==   data-bind="foo: {'bar' : 'baz'}
+        /// OR
+        /// AddBindingWithJsonValue("foo", new { bar : 42 })   ==   data-bind="foo: {'bar' : 42}
+        /// OR
+        /// AddBindingWithJsonValue("foo", new { _bar_ : "baz" })   ==   data-bind="foo: { bar : 'baz'}
+        /// </example>
+        public DataBindBuilder<TModel> AddBindingWithJsonValue(string bindingName, object anonymousType)
+        {
+            AddBindingNoPrefix(bindingName, ParseBindingJson(anonymousType));
+            return this;
+        }
+
+        private static string ParseBindingJson(object anonymousType)
+        {
+            var result = GlobalSettings.JsonSerializer.ToJsonString(anonymousType);
+
+            //parse out "_foo_" to be foo
+            result = result.Replace("\"_", "").Replace("_\"", "");
+
+            //parse out " to be ' because we are working inside an attribute where " will escape
+            result = result.Replace("\"", "'");
+
+            return result;
         }
 
         private string GetDataBindPropertyName(string propName)

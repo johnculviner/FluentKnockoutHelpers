@@ -19,11 +19,9 @@ namespace SurveyApp.Web.ApiModels.Survey
         [Display(Name = "Date of Birth")]
         public string DateOfBirth { get; set; }
 
-        [Display(Name = "Gender")]
         public string Gender { get; set; }
 
-        [Display(Name = "State")]
-        public string State { get; set; }
+        public Location Location { get; set; }
 
         [Display(Name = "# of Tech Products")]
         public int NumberOfTechProducts { get; set; }
@@ -37,7 +35,7 @@ namespace SurveyApp.Web.ApiModels.Survey
 
     public static class SurveySummaryExtensions
     {
-        public static IEnumerable<SurveySummary> ToSurveySummaries(this IQueryable<Model.Models.Survey> surveys, IQueryable<ZipCodeLocation> zipCodes)
+        public static IEnumerable<SurveySummary> ToSurveySummaries(this IQueryable<Model.Models.Survey> surveys)
         {
             return surveys
                 .Include(x => x.TechProducts)
@@ -51,7 +49,7 @@ namespace SurveyApp.Web.ApiModels.Survey
                     FirstName = s.FirstName,
                     DateOfBirth = s.DateOfBirth.ToShortDateString(),
                     Gender = s.Gender.ToString(),
-                    State = zipCodes.Where(z => z.ZipCode == s.ZipCode).Select(z => z.State).FirstOrDefault() ?? "Unknown",
+                    Location = s.Location,
                     NumberOfTechProducts = s.TechProducts.Count,
                     NumberOfChildren = s.Children.Count,
                     OverallHealthyScore = s.FavoriteFoods.Average(x => x.HealthyScore)

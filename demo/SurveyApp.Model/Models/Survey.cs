@@ -14,8 +14,7 @@ namespace SurveyApp.Model.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        [Display(Name = "Zip Code")]
-        public int ZipCode { get; set; }
+        public Location Location { get; set; }
 
         [Display(Name = "Gender")]
         public Gender Gender { get; set; }
