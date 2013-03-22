@@ -1,10 +1,10 @@
 ﻿@using SurveyApp.Model.Models
 
 @{
-    var surveyHelper = this.KnockoutHelperForType<Survey>("survey", true);
+    var surveyHelper = this.KnockoutHelperForType<Survey>("survey", false);
 }
 
-<div class="messageBox autoclose" style="width: 700px">
+<div class="messageBox autoclose" style="width: 700px;">
     <form class="form-horizontal">
         <div class="modal-header">
             <button type="button" class="close" data-bind="click: close">&times;</button>
@@ -51,7 +51,18 @@
                         @surveyHelper.BoundTextBoxFor(x => x.LastName)
                     </div>
                 </div>
+
+                <div class="control-group">
+                    @surveyHelper.LabelFor(x => x.Location).Class("control-label")
+                    <div class="controls">
+                        <input type="text" data-bind="autocomplete: { source: getMatchingLocations, select: selectLocation }" />
+                    </div>
+                </div>
                 
+                <div class="control-group" data-bind="if: survey.Location !== null">
+                    <!-- ko compose: { model: new locationInfo(@surveyHelper.PropStringFor(x => x.Location)), view: 'views/survey/shared/locationInfo' } -->
+                    <!-- /ko -->
+                </div>
 
             </fieldset>
 

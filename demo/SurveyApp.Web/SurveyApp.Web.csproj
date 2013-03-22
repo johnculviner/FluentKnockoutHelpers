@@ -153,6 +153,7 @@
   <ItemGroup>
     <Content Include="App\api\locationApi.js" />
     <Content Include="App\api\surveyApi.js" />
+    <Content Include="App\knockoutPlugins\bindingHandlers\autoComplete.js" />
     <Content Include="App\requirePlugins\async.js" />
     <Content Include="App\durandal\amd\almond-custom.js" />
     <Content Include="App\durandal\amd\optimizer.exe" />

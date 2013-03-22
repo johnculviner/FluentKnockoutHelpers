@@ -1,5 +1,5 @@
 ﻿define(['async!https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false'],
-function (/* google maps is not an AMD module so it can't go here (we are just loading it)*/) {
+function (/*maps API isn't an AMD*/) {
     
     //a simple binding for an embedded google map on an element bound to an observable
     ko.bindingHandlers.googleMap = new function() {

@@ -17,7 +17,6 @@ namespace SurveyApp.Model.Persistance
         protected override void Seed(DataStore context)
         {
             LoadFoodGroupsAndFoods(context);
-            LoadTechProducts(context);
             LoadSurveys(context);
 
             base.Seed(context);
@@ -91,17 +90,6 @@ namespace SurveyApp.Model.Persistance
             });
         }
 
-        private static void LoadTechProducts(DataStore context)
-        {
-            context.TechProducts.Add(new TechProduct { TechProductName = "Desktop" });
-            context.TechProducts.Add(new TechProduct { TechProductName = "Laptop" });
-            context.TechProducts.Add(new TechProduct { TechProductName = "Console System" });
-            context.TechProducts.Add(new TechProduct { TechProductName = "TV" });
-            context.TechProducts.Add(new TechProduct { TechProductName = "Tablet" });
-            context.TechProducts.Add(new TechProduct { TechProductName = "Smartphone" });
-            context.TechProducts.Add(new TechProduct { TechProductName = "E-Reader" });
-        }
-
         private static void LoadSurveys(DataStore context)
         {
             context.Surveys.Add(new Survey
@@ -122,7 +110,21 @@ namespace SurveyApp.Model.Persistance
                             new Relation{Name = "Phoebe"}
                         },
                     Gender = Gender.Male,
-                    TechProducts = context.TechProducts.Local.ToList(),
+                    TechProducts = new List<TechProduct>
+                        {
+                            new Desktop
+                                {
+                                    Mhz = 4000,
+                                    GigsOfRam = 32,
+                                    HasSsd = true,
+                                    NumberOfMonitors = 3,
+                                },
+                            new PointAndShoot
+                                {
+                                    MegaPixels = 20,
+                                    XZoom = 30
+                                }
+                        },
                     Location = new Location
                         {
                             FormattedLocation = "Medina, WA 98039, USA",
@@ -150,7 +152,21 @@ namespace SurveyApp.Model.Persistance
                             new Relation{Name = "Eve"}
                         },
                 Gender = Gender.Male,
-                TechProducts = context.TechProducts.Local.ToList(),
+                TechProducts = new List<TechProduct>
+                        {
+                            new Laptop
+                                {
+                                    Mhz = 2500,
+                                    GigsOfRam = 16,
+                                    HasSsd = true,
+                                    ScreenSize = 13,
+                                },
+                            new Slr
+                                {
+                                    MegaPixels = 18.2,
+                                    NumberOfLenses = 10
+                                }
+                        },
                 Location = new Location
                 {
                     FormattedLocation = "Palo Alto, CA 94301, USA",
@@ -175,7 +191,21 @@ namespace SurveyApp.Model.Persistance
                             new Relation{Name = "Macallister"},
                         },
                 Gender = Gender.Female,
-                TechProducts = context.TechProducts.Local.ToList(),
+                TechProducts = new List<TechProduct>
+                        {
+                            new Laptop
+                                {
+                                    Mhz = 2600,
+                                    GigsOfRam = 8,
+                                    HasSsd = false,
+                                    ScreenSize = 15,
+                                },
+                            new PointAndShoot
+                                {
+                                    MegaPixels = 18.2,
+                                    XZoom = 22
+                                }
+                        },
                 Location = new Location
                 {
                     FormattedLocation = "Palo Alto, CA 94303, USA",
@@ -196,7 +226,28 @@ namespace SurveyApp.Model.Persistance
                             context.Foods.Local.Single(f => f.Name == "Cheese")
                         },
                 Gender = Gender.Male,
-                TechProducts = context.TechProducts.Local.ToList(),
+                TechProducts = new List<TechProduct>
+                        {
+                            new Laptop
+                                {
+                                    Mhz = 2200,
+                                    GigsOfRam = 8,
+                                    HasSsd = false,
+                                    ScreenSize = 15,
+                                },
+                            new Desktop
+                                {
+                                    Mhz = 3200,
+                                    GigsOfRam = 32,
+                                    HasSsd = true,
+                                    NumberOfMonitors = 3,
+                                },
+                            new PointAndShoot
+                                {
+                                    MegaPixels = 18.2,
+                                    XZoom = 22
+                                }
+                        },
                 Location = new Location
                 {
                     FormattedLocation = "Palo Alto, CA 94301, USA",
@@ -230,7 +281,16 @@ namespace SurveyApp.Model.Persistance
                                 }},
                         },
                 Gender = Gender.Female,
-                TechProducts = context.TechProducts.Local.ToList(),
+                TechProducts = new List<TechProduct>
+                        {
+                            new Desktop()
+                                {
+                                    Mhz = 1800,
+                                    GigsOfRam = 4,
+                                    HasSsd = false,
+                                    NumberOfMonitors = 1,
+                                }
+                        },
                 Location = new Location
                 {
                     FormattedLocation = "Buckingham Palace, London, Greater London SW1A 1AA, UK",

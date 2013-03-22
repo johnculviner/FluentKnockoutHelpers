@@ -1,8 +1,7 @@
 ﻿requirejs.config({
     paths: {
         text: 'durandal/amd/text', //for durandal
-        async: 'requirePlugins/async' //required for JSONP google maps plugin below to work properly
-        //googleMapsApi: 'async!http://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false'
+        async: 'requirePlugins/async' //required for JSONP google maps plugin to work properly
     }
 });
 
