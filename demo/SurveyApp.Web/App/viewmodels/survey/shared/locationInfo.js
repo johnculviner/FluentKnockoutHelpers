@@ -1,4 +1,4 @@
-﻿define(['knockoutPlugins/bindingHandlers/googleMap'],
+﻿define(['knockoutPlugins/bindingHandlers/bingMap'],
 function () {
     
     //have this 'class' simply to allow googleMap binding handler to be loaded

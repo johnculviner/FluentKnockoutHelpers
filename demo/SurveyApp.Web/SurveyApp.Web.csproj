@@ -226,7 +226,7 @@
     </Content>
     <Content Include="App\views\survey\shared\locationInfo.cshtml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
-    <Content Include="App\knockoutPlugins\bindingHandlers\googleMap.js" />
+    <Content Include="App\knockoutPlugins\bindingHandlers\bingMap.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />

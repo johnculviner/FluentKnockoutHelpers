@@ -45,8 +45,8 @@ function (surveyApi, locationInfo) {
         };
 
         //this is more coupled to 'jquery autocomplete' than it should be and could be moved into an elaborate plugin
-        self.selectLocation = function(e, ui) {
-            self.survey.Location(ui.item.value);
+        self.selectLocation = function (e, ui) {
+            ko.mapping.fromJS(ui.item.value, {}, self.survey.Location);
         };
         //#endregion
 

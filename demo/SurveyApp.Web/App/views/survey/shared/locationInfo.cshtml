@@ -15,5 +15,4 @@
     @location.LabelFor(x => x.Longitude).Class("control-label")
     <div @location.DataBind(db => db.Text(x => x.Longitude)).Class("uneditable controls")></div>
 </div>
-
- <div data-bind="googleMap: { latitude: Latitude, longitude: Longitude }" style="height: 200px; width: 100%;"></div>
+ <div data-bind="bingMap: { latitude: Latitude, longitude: Longitude }" style="height: 300px; width: 100%; position: relative;"></div>

@@ -53,9 +53,9 @@
                 </div>
 
                 <div class="control-group">
-                    @surveyHelper.LabelFor(x => x.Location).Class("control-label")
+                    <label for="FindLocation" class="control-label">Find location</label>
                     <div class="controls">
-                        <input type="text" data-bind="autocomplete: { source: getMatchingLocations, select: selectLocation }" />
+                        <input type="text" id="FindLocation" data-bind="autocomplete: { source: getMatchingLocations, select: selectLocation }" />
                     </div>
                 </div>
                 
