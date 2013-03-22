@@ -1,5 +1,5 @@
 /*!
- * Bootstrap v2.3.0
+ * Bootstrap v2.3.1
  *
  * Copyright 2012 Twitter, Inc
  * Licensed under the Apache License v2.0
@@ -1939,11 +1939,12 @@ input.search-query {
 }
 
 legend + .control-group {
+  margin-top: 20px;
   -webkit-margin-top-collapse: separate;
 }
 
 .form-horizontal .control-group {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   *zoom: 1;
 }
 
@@ -1960,7 +1961,7 @@ legend + .control-group {
 
 .form-horizontal .control-label {
   float: left;
-  width: 130px;
+  width: 160px;
   padding-top: 5px;
   text-align: right;
 }
@@ -1968,7 +1969,7 @@ legend + .control-group {
 .form-horizontal .controls {
   *display: inline-block;
   *padding-left: 20px;
-  margin-left: 150px;
+  margin-left: 180px;
   *margin-left: 0;
 }
 

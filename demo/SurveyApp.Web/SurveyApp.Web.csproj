@@ -153,8 +153,6 @@
   <ItemGroup>
     <Content Include="App\api\locationApi.js" />
     <Content Include="App\api\surveyApi.js" />
-    <Content Include="App\knockoutPlugins\bindingHandlers\autoComplete.js" />
-    <Content Include="App\requirePlugins\async.js" />
     <Content Include="App\durandal\amd\almond-custom.js" />
     <Content Include="App\durandal\amd\optimizer.exe" />
     <Content Include="App\durandal\amd\r.js" />
@@ -175,6 +173,8 @@
     <Content Include="App\durandal\viewModel.js" />
     <Content Include="App\durandal\viewModelBinder.js" />
     <Content Include="App\durandal\widget.js" />
+    <Content Include="App\knockoutPlugins\bindingHandlers\autoComplete.js" />
+    <Content Include="App\requirePlugins\async.js" />
     <Content Include="App\main.js" />
     <Content Include="App\viewmodels\survey\createEditModal.js" />
     <Content Include="App\viewmodels\survey\deleteModal.js" />
@@ -186,10 +186,6 @@
     <None Include="App\views\shell.cshtml" />
     <Content Include="App\views\survey\summary.cshtml" />
     <Content Include="Content\app\app.css" />
-    <Content Include="Content\base\bootstrap-responsive.css" />
-    <Content Include="Content\base\bootstrap-responsive.min.css" />
-    <Content Include="Content\base\bootstrap.css" />
-    <Content Include="Content\base\bootstrap.min.css" />
     <Content Include="Content\app\durandal.css" />
     <Content Include="Content\base\font-awesome-ie7.min.css" />
     <Content Include="Content\base\font-awesome.css" />
@@ -213,6 +209,12 @@
     <Content Include="Content\base\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Content\base\jquery-ui-1.10.1.custom.css" />
     <Content Include="Content\base\jquery-ui-1.10.1.custom.min.css" />
+    <Content Include="Content\base\bootstrap-responsive.css" />
+    <Content Include="Content\base\bootstrap-responsive.min.css" />
+    <Content Include="Content\base\bootstrap.css" />
+    <Content Include="Content\base\bootstrap.min.css" />
+    <Content Include="Content\images\glyphicons-halflings-white.png" />
+    <Content Include="Content\images\glyphicons-halflings.png" />
     <Content Include="Global.asax" />
     <Content Include="Content\app\Site.css" />
     <Content Include="Content\base\font\fontawesome-webfont.woff" />

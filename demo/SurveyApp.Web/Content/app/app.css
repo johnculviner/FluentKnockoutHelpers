@@ -90,3 +90,21 @@ div.controls.uneditable {
 .messageBox .form-horizontal {
     margin: 0px;
 }
+
+/*#region TBS Overrides*/
+.form-horizontal .control-label{
+    width: 130px;
+}
+
+.form-horizontal .controls {
+    margin-left: 150px;
+}
+
+.form-horizontal .control-group {
+  margin-bottom: 10px;
+}
+
+legend + .control-group {
+    margin-top: 0px;
+}
+/*#endregion*/
