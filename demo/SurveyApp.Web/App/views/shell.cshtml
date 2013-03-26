@@ -11,21 +11,23 @@
                     </li>
                 </ul>
                 <div class="loader pull-right" data-bind="css: { active: router.isNavigating }">
-                    <i class="icon-spinner icon-2x icon-spin"></i>
+                    <i class="icon-spinner icon-2x icon-spin" ></i>
                 </div>
-                <form class="navbar-search pull-right" data-bind="submit: search">
-                    <input type="text" class="search-query" placeholder="Search">
-                </form>
             </div>
         </div>
     </div>
-    <div class="container page-host">
-        <h3 data-bind="text: router.activeRoute().name"></h3>
-        <!--ko compose: { 
-            model: router.activeItem, //wiring the router
-            afterCompose: router.afterCompose, //wiring the router
-            transition:'entrance', //use the 'entrance' transition when switching views
-            cacheViews:true //telling composition to keep views in the dom, and reuse them (only a good idea with singleton view models)
-            }--><!--/ko-->
+    <div class="container page-host" data-bind="
+        compose: { 
+            model: router.activeItem,           //wiring the router
+            afterCompose: router.afterCompose,  //wiring the router
+            transition: 'entrance',             //use the 'entrance' transition when switching views
+            cacheViews: true                    //telling composition to keep views in the dom, and reuse them (only a good idea with singleton view models)
+        }
+    ">
+        @*
+        The active view according to the router will be 'compsed' here.
+        'Compose' is simply a custom knockout binding baked into durandal that in a nutshell
+        wires together a view and a viewModel and calls ko.applyBindings
+        *@
     </div>
 </div>

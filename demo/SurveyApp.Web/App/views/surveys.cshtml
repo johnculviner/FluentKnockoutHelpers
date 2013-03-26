@@ -6,7 +6,10 @@
     @{
         var summaries = this.KnockoutHelperForApi<SurveyController>().Endpoint(api => api.GetAll(), "surveySummaries", true);
     }
-
+    
+    <h1>
+        Surveys
+    </h1>
     <table class="table table-bordered pull-left" data-bind="css: { 'item-selected': selectedSurvey() != null }">
         <thead>
             <tr>
@@ -28,7 +31,12 @@
                     <td @summary.DataBind(db => db.Text(x => x.DateOfBirth))></td>
                     <td @summary.DataBind(db => db.Text(x => x.Gender))></td>
                     <td class="actions">
-                        <button class="btn btn-info" data-bind="click: $root.editSurvey, clickBubble: false"><i class="icon-edit"></i></button>
+                        @*EDIT*@
+                        <a class="btn btn-info"
+                           data-bind="attr: { href: '#/surveys/' + @summary.EvalObservableFor(x => x.SurveyId)}">
+                            <i class="icon-edit"></i>
+                        </a>
+                        @*DELETE*@
                         <button class="btn btn-danger" data-bind="click: $root.deleteSurvey, clickBubble: false"><i class="icon-remove-sign"></i></button>
                     </td>
                 </tr>
@@ -64,7 +72,9 @@
                 @detail.LabelFor(x => x.OverallHealthyScore).Class("control-label")
                 <div @detail.DataBind(db => db.Text(x => x.OverallHealthyScore)).Class("uneditable controls")></div>
             </div>
-            <div class="control-group" data-bind="compose: { model: new locationInfo(selectedSurvey().Location), view: 'views/survey/shared/locationInfo' }">
+            
+            @*Inject a 'shared view' into the DOM specifiying the model and view to compose together*@
+            <div class="control-group" data-bind="compose: { model: new locationInfo(selectedSurvey().Location), view: 'views/surveys/shared/locationInfo' }">
             </div>
         </form>
     </fieldset>

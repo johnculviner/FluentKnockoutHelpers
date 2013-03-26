@@ -2,6 +2,7 @@
 function (/*maps API isn't an AMD*/) {
     
     //a simple binding for an embedded bing map on an element bound to an observable
+    //implicitly requires jQuery
     ko.bindingHandlers.bingMap = {
 
         init: function (element, valueAccessor) {
@@ -11,10 +12,11 @@ function (/*maps API isn't an AMD*/) {
             // create the map
             var map = new Microsoft.Maps.Map(element,
                 {
-                    credentials: 'Annwexqz0WWEN7ydadyeGs3rVi3RdkiCI_XzR-NuLHLvLe2LHPp55oPBMcNG70Ir',
+                    credentials: 'Annwexqz0WWEN7ydadyeGs3rVi3RdkiCI_XzR-NuLHLvLe2LHPp55oPBMcNG70Ir', //don't steal my creds bro
                     center: location,
                     zoom: 6,
-                    mapTypeId: Microsoft.Maps.MapTypeId.road
+                    mapTypeId: Microsoft.Maps.MapTypeId.road,
+                    showMapTypeSelector: false
                 });
 
             var pushPin = dropPushPin(location, map);
@@ -31,10 +33,12 @@ function (/*maps API isn't an AMD*/) {
             if (mapData && mapData.map) {
                 
                 if (mapData.pushPin)
-                    mapData.map.entities.remove(pushPin);
+                    mapData.map.entities.remove(mapData.pushPin);
                 
-                mapData.map.setCenter(location);
-                dropPushPin(location, mapData.map);
+                mapData.map.setView({center: location});
+                var pushPin = dropPushPin(location, mapData.map);
+                
+                $(element).data('mapData', { map: mapData.map, pushPin: pushPin });
             }
         }
     };
@@ -47,7 +51,7 @@ function (/*maps API isn't an AMD*/) {
 
 
     function getLatLngForObservable(value) {
-        return new Microsoft.Maps.Location(value.latitude(), value.longitude());
+        return new Microsoft.Maps.Location(ko.utils.unwrapObservable(value.latitude), ko.utils.unwrapObservable(value.longitude));
     }
 
 })

@@ -96,6 +96,7 @@ namespace SurveyApp.Model.Persistance
                 {
                     FirstName = "Bill",
                     LastName = "Gates",
+                    IsCool =  false,
                     DateOfBirth = new DateTime(1955, 10, 28),
                     FavoriteColor = KnownColor.Green,
                     FavoriteFoods = new List<Food>
@@ -137,6 +138,7 @@ namespace SurveyApp.Model.Persistance
             {
                 FirstName = "Steve",
                 LastName = "Jobs",
+                IsCool = true,
                 DateOfBirth = new DateTime(1955, 2, 24),
                 FavoriteColor = KnownColor.Silver,
                 FavoriteFoods = new List<Food>
@@ -179,6 +181,7 @@ namespace SurveyApp.Model.Persistance
             {
                 FirstName = "Marissa",
                 LastName = "Mayer",
+                IsCool = false,
                 DateOfBirth = new DateTime(1975, 5, 30),
                 FavoriteColor = KnownColor.Red,
                 FavoriteFoods = new List<Food>
@@ -218,6 +221,7 @@ namespace SurveyApp.Model.Persistance
             {
                 FirstName = "Mark",
                 LastName = "Zuckerberg",
+                IsCool = true,
                 DateOfBirth = new DateTime(1984, 5, 14),
                 FavoriteColor = KnownColor.Blue,
                 FavoriteFoods = new List<Food>
@@ -260,6 +264,7 @@ namespace SurveyApp.Model.Persistance
             {
                 FirstName = "Queen Elizabeth",
                 LastName = "II",
+                IsCool = false,
                 DateOfBirth = new DateTime(1926, 4, 21),
                 FavoriteColor = KnownColor.Gold,
                 FavoriteFoods = new List<Food>

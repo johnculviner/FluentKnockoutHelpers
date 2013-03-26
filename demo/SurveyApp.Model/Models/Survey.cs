@@ -16,6 +16,9 @@ namespace SurveyApp.Model.Models
 
         public Location Location { get; set; }
 
+        [Display(Name = "Is Cool?")]
+        public bool IsCool { get; set; }
+
         [Display(Name = "Gender")]
         public Gender Gender { get; set; }
 

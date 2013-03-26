@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Web;
@@ -83,6 +84,14 @@ namespace FluentKnockoutHelpers.Core.Builders
         }
 
         #region Direct Evaluation & Assignment
+
+        /// <summary>
+        /// Emit text to assign an observable given a property lambda and a value to assign
+        /// </summary>
+        /// <typeparam name="TProp"></typeparam>
+        /// <param name="propExpr"></param>
+        /// <param name="arg"></param>
+        /// <returns></returns>
         public virtual IHtmlString AssignObservableFor<TProp>(Expression<Func<TModel, TProp>> propExpr, string arg)
         {
             return new HtmlString(string.Format("{0}({1})", PropStringFor(propExpr), arg));
@@ -107,7 +116,14 @@ namespace FluentKnockoutHelpers.Core.Builders
         #endregion
 
         /// <summary>
-        /// Begin building a &lt;label for="{{passed 'propExpr'}}"&gt; {{Display attribute or property name of 'propExpr'}} &lt;/label&gt;.
+        /// Start building a label for a particular view model property. The label's text will be derived from any [Display(..)] DataAnnotation
+        /// <para>&#160;</para>
+        /// <para>Usage Example:</para>
+        /// <para> @helper.LabelFor(x => x.FirstName)</para>
+        /// <para>&#160;</para>
+        /// <para>Result:</para>
+        /// <para> &lt;label for="FirstName" &gt;First Name&lt;/label&gt;</para>
+        /// <para>&#160;</para>
         /// </summary>
         /// <typeparam name="TProp"></typeparam>
         /// <param name="propExpr"></param>
@@ -119,9 +135,17 @@ namespace FluentKnockoutHelpers.Core.Builders
 
 
 
-        #region Bound{{...}}For
+        #region Bound ___ For
+        
         /// <summary>
-        /// Begin building a &lt;input type=text .../&gt; bound to the passed 'propExpr' via Knockout
+        /// Start building a text box bound with knockout to a particular view model property.
+        /// <para>&#160;</para>
+        /// <para>Usage Example:</para>
+        /// <para> @helper.BoundTextBoxFor(x => x.FirstName)</para>
+        /// <para>&#160;</para>
+        /// <para>Result:</para>
+        /// <para> &lt;input type="text" id="FirstName" data-bind="value: FirstName" /&gt;</para>
+        /// <para>&#160;</para>
         /// </summary>
         /// <typeparam name="TProp"></typeparam>
         /// <param name="propExpr"></param>
@@ -129,11 +153,18 @@ namespace FluentKnockoutHelpers.Core.Builders
         public virtual StringReturningBuilder<TModel> BoundTextBoxFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
         {
             var exprText = ExpressionParser.GetExpressionText(propExpr); //avoid 2x expr parsing
-            return ElementSelfClosing("input").Attr("type", "text").Id(exprText).DataBind(db => db.Value(exprText).ValueUpdate(ValueUpdate.KeyUp));
+            return ElementSelfClosing("input").Attr("type", "text").Id(exprText).DataBind(db => db.Value(exprText));
         }
 
         /// <summary>
-        /// Emits a ko comment block (no element) with it's text bound to the 'propExpr' via Knockout
+        /// Emits a Knockout Comment block (a 'virtual element') bound to a particular view model property
+        /// <para>&#160;</para>
+        /// <para>Usage Example:</para>
+        /// <para> @helper.BoundTextFor(x => x.FirstName)</para>
+        /// <para>&#160;</para>
+        /// <para>Result:</para>
+        /// <para> &lt;!-- ko text: FirstName --&gt; *VALUE* &lt;!-- /ko --&gt;</para>
+        /// <para>&#160;</para>
         /// </summary>
         /// <typeparam name="TProp"></typeparam>
         /// <param name="propExpr"></param>
@@ -142,6 +173,71 @@ namespace FluentKnockoutHelpers.Core.Builders
         {
             return KoCommentSelfClosing().DataBind(db => db.Text(propExpr));
         }
+
+        /// <summary>
+        /// Start building an checkbox bound with knockout to a particular *BOOLEAN* view model property
+        /// <para>&#160;</para>
+        /// <para>Usage Example:</para>
+        /// <para> @helper.BoundCheckBoxFor(x => x.IsCool)</para>
+        /// <para>&#160;</para>
+        /// <para>Result:</para>
+        /// <para> &lt;input type="checkbox" id="IsCool" data-bind="value: IsCool" /&gt;</para>
+        /// <para>&#160;</para>
+        /// </summary>
+        /// <param name="propExpr"></param>
+        /// <returns></returns>
+        public virtual StringReturningBuilder<TModel> BoundCheckBoxFor(Expression<Func<TModel, bool>> propExpr)
+        {
+            var exprText = ExpressionParser.GetExpressionText(propExpr); //avoid 2x expr parsing
+            return ElementSelfClosing("input").Attr("type", "checkbox").Id(exprText).DataBind(db => db.Checked(propExpr));
+        }
+
+
+        ///// <summary>
+        ///// Bind a checkbox to an *ARRAY* view model property bound to the specified value being in the array
+        ///// <para>&#160;</para>
+        ///// <para>Usage Example:</para>
+        ///// <para> @helper.BoundCheckBoxFor(x => x.States, "MN")</para>
+        ///// <para>&#160;</para>
+        ///// <para>Result:</para>
+        ///// <para> &lt;input type="checkbox" value="MN" data-bind="checked: States"  /&gt;</para>
+        ///// <para>&#160;</para>
+        ///// </summary>
+        ///// <typeparam name="TModel"></typeparam>
+        ///// <param name="propExpr"> </param>
+        ///// <param name="value"> </param>
+        ///// <returns></returns>
+        //public virtual StringReturningBuilder<TModel> BoundCheckBoxFor(Expression<Func<TModel, IEnumerable>> propExpr, object value)
+        //{
+        //    var exprText = ExpressionParser.GetExpressionText(propExpr); //avoid 2x expr parsing
+        //    return ElementSelfClosing("input").Attr("type", "checkbox").Id(exprText).DataBind(db => db.Checked(propExpr, value));
+        //}
+
+        ///// <summary>
+        ///// Bind a radio button to a particular view model property. The radio button name will be the property name unless overridden.
+        ///// <para>&#160;</para>
+        ///// <para>Usage Example:</para>
+        ///// <para> &lt;input type="radio" @helper.DataBind(db => db.Checked(x => x.Gender, Gender.Male)) /&gt;</para>
+        ///// <para>&#160;</para>
+        ///// <para>Result:</para>
+        ///// <para> &lt;input type="radio" value="Male" data-bind="checked: Gender"  /&gt;</para>
+        ///// <para>&#160;</para>
+        ///// </summary>
+        ///// <typeparam name="TModel"></typeparam>
+        ///// <typeparam name="TProp"> </typeparam>
+        ///// <param name="propExpr"> </param>
+        ///// <param name="value"> </param>
+        ///// <param name="name"> </param>
+        ///// <returns></returns>
+        //public virtual StringReturningBuilder<TModel> BoundRadioButtonFor<TModel, TProp>(Expression<Func<TModel, TProp>> propExpr, object value, string name = null)
+        //{
+        //    var exprText = ExpressionParser.GetExpressionText(propExpr); //avoid 2x expr parsing
+        //    return ElementSelfClosing("input")
+        //            .Attr("type", "radio")
+        //            .Id(exprText)
+        //            .Name(name ?? exprText)
+        //            .DataBind(db => db.Checked<TModel, TProp>(propExpr, value));
+        //}
 
         #endregion
 

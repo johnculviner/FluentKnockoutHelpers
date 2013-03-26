@@ -86,11 +86,44 @@ namespace FluentKnockoutHelpers.Core
     public static class DataBindBuilderExtensions
     {
         #region Text
+        //credit: http://knockoutjs.com/documentation/text-binding.html
+        /// <summary>
+        /// Binds the textual contents of an element to the value of the specified view model property
+        /// <para>&#160;</para>
+        /// <para>Usage Example:</para>
+        /// <para> &lt;div @helper.DataBind(db => db.Value(x => x.Name))&gt;&lt;/div&gt;</para>
+        /// <para>&#160;</para>
+        /// <para>Result:</para>
+        /// <para> &lt;div data-bind="value: Name"&gt;{{Name's current value}}&lt;/div&gt;</para>
+        /// <para>&#160;</para>
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="this"></param>
+        /// <param name="bindingProperty"></param>
+        /// <returns></returns>
         public static DataBindBuilder<TModel> Text<TModel, TValue>(this DataBindBuilder<TModel> @this, Expression<Func<TModel, TValue>> bindingProperty)
         {
             return @this.AddBinding("text", bindingProperty);
         }
 
+
+        //credit: http://knockoutjs.com/documentation/text-binding.html
+        /// <summary>
+        /// Binds the textual contents of an element to the value of the specified view model property
+        /// <para>&#160;</para>
+        /// <para>Usage Example:</para>
+        /// <para> &lt;div @helper.DataBind(db => db.Value("Name"))&gt;&lt;/div&gt;</para>
+        /// <para>&#160;</para>
+        /// <para>Result:</para>
+        /// <para> &lt;div data-bind="value: Name"&gt;{{Name's current value}}&lt;/div&gt;</para>
+        /// <para>&#160;</para>
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="this"></param>
+        /// <param name="bindingProperty"></param>
+        /// <returns></returns>
         public static DataBindBuilder<TModel> Text<TModel>(this DataBindBuilder<TModel> @this, string bindingProperty)
         {
             return @this.AddBinding("text", bindingProperty);
@@ -98,11 +131,42 @@ namespace FluentKnockoutHelpers.Core
         #endregion
 
         #region Value
+        //credit: http://knockoutjs.com/documentation/value-binding.html
+        /// <summary>
+        /// The value binding links the associated DOM element’s value with a property on your view model.
+        /// <para>&#160;</para>
+        /// <para>Usage Example:</para>
+        /// <para>&lt;input @helper.DataBind(db => db.Value(x => x.Name)) /&gt;</para>
+        /// <para>&#160;</para>
+        /// <para>Result:</para>
+        /// <para> &lt;input data-bind="value: Name" /&gt;</para>
+        /// <para>&#160;</para>
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="this"></param>
+        /// <param name="bindingProperty">A lamda, property expression referring to the view model property to bind to</param>
+        /// <returns></returns>
         public static DataBindBuilder<TModel> Value<TModel, TValue>(this DataBindBuilder<TModel> @this, Expression<Func<TModel, TValue>> bindingProperty)
         {
             return @this.AddBinding("value", bindingProperty);
         }
 
+        //credit: http://knockoutjs.com/documentation/value-binding.html
+        /// <summary>
+        /// The value binding links the associated DOM element’s value with a property on your view model.
+        /// <para>&#160;</para>
+        /// <para>Usage Example:</para>
+        /// <para>&lt;input @helper.DataBind(db => db.Value("Name")) /&gt;</para>
+        /// <para>&#160;</para>
+        /// <para>Result:</para>
+        /// <para> &lt;input data-bind="value: Name" /&gt;</para>
+        /// <para>&#160;</para>
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="this"></param>
+        /// <param name="bindingProperty">A lamda, property expression referring to the view model property to bind to</param>
+        /// <returns></returns>
         public static DataBindBuilder<TModel> Value<TModel>(this DataBindBuilder<TModel> @this, string bindingProperty)
         {
             return @this.AddBinding("value", bindingProperty);
@@ -134,31 +198,101 @@ namespace FluentKnockoutHelpers.Core
         #endregion
 
         #region Checked
+
+        /// <summary>
+        /// Bind a checkbox to a *boolean* view model property
+        /// <para>&#160;</para>
+        /// <para>Usage Example:</para>
+        /// <para> &lt;input type="checkbox" @helper.DataBind(db => db.Checked(x => x.IsCool)) /&gt;</para>
+        /// <para>&#160;</para>
+        /// <para>Result:</para>
+        /// <para> &lt;input type="checkbox" data-bind="checked: IsCool" /&gt;</para>
+        /// <para>&#160;</para>
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="this"></param>
+        /// <param name="bindingProperty"></param>
+        /// <returns></returns>
         public static DataBindBuilder<TModel> Checked<TModel>(this DataBindBuilder<TModel> @this, Expression<Func<TModel, bool>> bindingProperty)
         {
             return @this.AddBinding("checked", bindingProperty);
         }
 
-        public static DataBindBuilder<TModel> Checked<TModel>(this DataBindBuilder<TModel> @this, Expression<Func<TModel, IEnumerable>> bindingProperty)
-        {
-            return @this.AddBinding("checked", bindingProperty);
-        }
-
+        /// <summary>
+        /// Bind a checkbox to a boolean view model property
+        /// <para>&#160;</para>
+        /// <para>Usage Example:</para>
+        /// <para> &lt;input type="checkbox" @helper.DataBind(db => db.Checked("IsCool")) /&gt;</para>
+        /// <para>&#160;</para>
+        /// <para>Result:</para>
+        /// <para> &lt;input type="checkbox" data-bind="checked: isCool" /&gt;</para>
+        /// <para>&#160;</para>
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="this"></param>
+        /// <param name="bindingProperty"></param>
+        /// <returns></returns>
         public static DataBindBuilder<TModel> Checked<TModel>(this DataBindBuilder<TModel> @this, string bindingProperty)
         {
             return @this.AddBinding("checked", bindingProperty);
         }
+
+        ///// <summary>
+        ///// Bind a checkbox to an *ARRAY* view model property bound to the specified value being in the array
+        ///// <para>&#160;</para>
+        ///// <para>Usage Example:</para>
+        ///// <para> &lt;input type="checkbox" @helper.DataBind(db => db.Checked(x => x.States, "MN")) /&gt;</para>
+        ///// <para>&#160;</para>
+        ///// <para>Result:</para>
+        ///// <para> &lt;input type="checkbox" value="MN" data-bind="checked: States"  /&gt;</para>
+        ///// <para>&#160;</para>
+        ///// </summary>
+        ///// <typeparam name="TModel"></typeparam>
+        ///// <param name="this"></param>
+        ///// <param name="bindingProperty"></param>
+        ///// <param name="value"> </param>
+        ///// <returns></returns>
+        //public static DataBindBuilder<TModel> Checked<TModel>(this DataBindBuilder<TModel> @this, Expression<Func<TModel, IEnumerable>> bindingProperty, object value)
+        //{
+        //    @this.Builder.Attr("value", value.ToString());
+        //    return @this.AddBinding("checked", bindingProperty);
+        //}
+
+        /// <summary>
+        /// Bind a radio button to a particular view model property
+        /// <para>&#160;</para>
+        /// <para>Usage Example:</para>
+        /// <para> &lt;input type="radio" @helper.DataBind(db => db.Checked(x => x.Gender, Gender.Male)) /&gt;</para>
+        /// <para>&#160;</para>
+        /// <para>Result:</para>
+        /// <para> &lt;input type="radio" value="Male" data-bind="checked: Gender"  /&gt;</para>
+        /// <para>&#160;</para>
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <typeparam name="TValue"> </typeparam>
+        /// <param name="this"></param>
+        /// <param name="bindingProperty"></param>
+        /// <param name="value"> </param>
+        /// <returns></returns>
+        public static DataBindBuilder<TModel> Checked<TModel, TValue>(this DataBindBuilder<TModel> @this, Expression<Func<TModel, TValue>> bindingProperty, object value)
+        {
+            @this.Builder.Attr("value", value.ToString());
+            return @this.AddBinding("checked", bindingProperty);
+        }
+
         #endregion
 
+        /// <summary>
+        /// When combined with a "Value" bind, controls when the view model is updated
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="this"></param>
+        /// <param name="valueUpdate"></param>
+        /// <returns></returns>
         public static DataBindBuilder<TModel> ValueUpdate<TModel>(this DataBindBuilder<TModel> @this, ValueUpdate valueUpdate)
         {
             @this.Builder.Attr("data-bind", "valueUpdate", string.Format("'{0}'", valueUpdate.ToString().ToLowerInvariant()));
             return @this;
-        }
-
-        public static DataBindBuilder<TModel> Click<TModel>(this DataBindBuilder<TModel> @this, Expression<Func<TModel, bool>> bindingProperty)
-        {
-            return @this.AddBinding("click", bindingProperty);
         }
 
         public static DataBindBuilder<TModel> Click<TModel>(this DataBindBuilder<TModel> @this, string bindingProperty)
@@ -169,8 +303,22 @@ namespace FluentKnockoutHelpers.Core
 
     public enum ValueUpdate
     {
+        //credit: http://knockoutjs.com/documentation/value-binding.html
+        /// <summary>
+        /// Updates your view model when the user releases a key
+        /// </summary>
         KeyUp,
+
+        //credit: http://knockoutjs.com/documentation/value-binding.html
+        /// <summary>
+        /// Updates your view model when the user has typed a key. Unlike keyup, this updates repeatedly while the user holds a key down
+        /// </summary>
         KeyPress,
+
+        //credit: http://knockoutjs.com/documentation/value-binding.html
+        /// <summary>
+        /// Updates your view model as soon as the user begins typing a character. This works by catching the browser’s keydown event and handling the event asynchronously.
+        /// </summary>
         AfterKeyDown
     }
 }

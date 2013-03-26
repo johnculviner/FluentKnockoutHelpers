@@ -17,6 +17,10 @@
     margin-top: 50px;
 }
 
+.navbar .icon-spinner {
+    color: white;
+}
+
 .page-host {
     position: relative;
     top: 40px;
@@ -101,7 +105,7 @@ div.controls.uneditable {
 }
 
 .form-horizontal .control-group {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 legend + .control-group {

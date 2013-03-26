@@ -1,0 +1,78 @@
+﻿@using SurveyApp.Model.Models
+
+@{
+    var surveyHelper = this.KnockoutHelperForType<Survey>("survey", false);
+}
+<section>
+    <div class="row">
+        <h1 data-bind="text: headerText">
+        </h1>
+    </div>
+    <div class="row">
+        <div class="pull-right">
+            <button class="btn" data-bind="click: cancel">Cancel</button>
+            <button class="btn btn-primary" type="submit" data-bind="text: saveText"></button>
+        </div>
+    </div>
+    <div class="row">
+        <form class="form-horizontal">
+            <fieldset>
+                <legend>Basic Details</legend>
+                
+                @*Full control over element creation if you want with 'strong typing'*@
+                <div class="control-group">
+                    <label for="@surveyHelper.GetExpressionTextFor(x => x.FirstName)" class="control-label">@surveyHelper.DisplayNameFor(x => x.FirstName)</label>
+                    <div class="controls">
+                        <input type="text" @surveyHelper.DataBind(db => db.Value(x => x.FirstName)) id="@surveyHelper.GetExpressionTextFor(x => x.FirstName)">
+                    </div>
+                </div>
+                
+                @* Use some helper wrappers to achieve the exact same result with less typing*@
+                <div class="control-group">
+                    @surveyHelper.LabelFor(x => x.LastName).Class("control-label")
+                    <div class="controls">
+                        @surveyHelper.BoundTextBoxFor(x => x.LastName)
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="FindLocation" class="control-label">Enter new location</label>
+                    <div class="controls">
+                        <input type="text" id="FindLocation" data-bind="autocomplete: { source: getMatchingLocations, select: selectLocation }" />
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="if: survey.Location !== null" style="max-width: 375px;">
+                    @*Inject a 'shared view' into the DOM specifiying the model and view to compose together*@
+
+                    <!-- ko compose: { model: new locationInfo(@surveyHelper.PropStringFor(x => x.Location)), view: 'views/surveys/shared/locationInfo' } -->
+                    <!-- /ko -->
+                </div>
+
+            </fieldset>
+
+            <fieldset>
+                <legend>Demographics</legend>
+                
+                <div class="control-group">
+                    @surveyHelper.LabelFor(x => x.Gender)
+                    <div class="controls">
+                        <label class="radio inline">
+                            @*@surveyHelper.BoundRadioButtonFor(x => x.Gender, Gender.Male)*@
+                            
+                            @*@surveyHelper.DataBind(db => db.Checked(x => x.Gender, Gender.Male))*@
+                        </label>
+                        <label class="radio inline">
+                            
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Favorite Foods</legend>
+
+            </fieldset>
+        </form>
+    </div>
+</section>

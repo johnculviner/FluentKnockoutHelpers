@@ -82,7 +82,7 @@ namespace FluentKnockoutHelpers.Core.AttributeBuilding
                 case "style":
                     InnerKeyValue_MultiInnerKeyNotAllowed(attrKey, innerKey, innerValue, ": ", "; ");
                     break;
-                case "data-bind":
+                default: //"data-bind" and anything else..
                     InnerKeyValue_MultiInnerKeyNotAllowed(attrKey, innerKey, innerValue, ": ", ", ");
                     break;
             }
