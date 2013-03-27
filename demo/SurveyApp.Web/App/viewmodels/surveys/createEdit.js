@@ -64,7 +64,7 @@ function (surveyApi, locationInfo, geocoderApi, router) {
             var lastNameVal = self.survey.LastName();
 
             if (firstNameVal && lastNameVal) {
-                message += " " + lastNameVal + ", " + firstNameVal;
+                message += " for: " + lastNameVal + ", " + firstNameVal;
             }
 
             return message;

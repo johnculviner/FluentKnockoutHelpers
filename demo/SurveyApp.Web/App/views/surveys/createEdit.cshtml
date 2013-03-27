@@ -55,15 +55,15 @@
                 <legend>Demographics</legend>
                 
                 <div class="control-group">
-                    @surveyHelper.LabelFor(x => x.Gender)
+                    @surveyHelper.LabelFor(x => x.Gender).Class("control-label")
                     <div class="controls">
                         <label class="radio inline">
-                            @*@surveyHelper.BoundRadioButtonFor(x => x.Gender, Gender.Male)*@
-                            
-                            @*@surveyHelper.DataBind(db => db.Checked(x => x.Gender, Gender.Male))*@
+                            @surveyHelper.BoundRadioButtonFor(x => x.Gender, (int)Gender.Male)
+                            Male
                         </label>
                         <label class="radio inline">
-                            
+                            @surveyHelper.BoundRadioButtonFor(x => x.Gender, (int)Gender.Female)
+                            Female
                         </label>
                     </div>
                 </div>

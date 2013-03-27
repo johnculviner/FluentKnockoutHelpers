@@ -193,51 +193,50 @@ namespace FluentKnockoutHelpers.Core.Builders
         }
 
 
-        ///// <summary>
-        ///// Bind a checkbox to an *ARRAY* view model property bound to the specified value being in the array
-        ///// <para>&#160;</para>
-        ///// <para>Usage Example:</para>
-        ///// <para> @helper.BoundCheckBoxFor(x => x.States, "MN")</para>
-        ///// <para>&#160;</para>
-        ///// <para>Result:</para>
-        ///// <para> &lt;input type="checkbox" value="MN" data-bind="checked: States"  /&gt;</para>
-        ///// <para>&#160;</para>
-        ///// </summary>
-        ///// <typeparam name="TModel"></typeparam>
-        ///// <param name="propExpr"> </param>
-        ///// <param name="value"> </param>
-        ///// <returns></returns>
-        //public virtual StringReturningBuilder<TModel> BoundCheckBoxFor(Expression<Func<TModel, IEnumerable>> propExpr, object value)
-        //{
-        //    var exprText = ExpressionParser.GetExpressionText(propExpr); //avoid 2x expr parsing
-        //    return ElementSelfClosing("input").Attr("type", "checkbox").Id(exprText).DataBind(db => db.Checked(propExpr, value));
-        //}
+        /// <summary>
+        /// Bind a checkbox to an *ARRAY* view model property bound to the specified value being in the array
+        /// <para>&#160;</para>
+        /// <para>Usage Example:</para>
+        /// <para> @helper.BoundCheckBoxFor(x => x.States, "MN")</para>
+        /// <para>&#160;</para>
+        /// <para>Result:</para>
+        /// <para> &lt;input type="checkbox" value="MN" data-bind="checked: States"  /&gt;</para>
+        /// <para>&#160;</para>
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="propExpr"> </param>
+        /// <param name="value"> </param>
+        /// <returns></returns>
+        public virtual StringReturningBuilder<TModel> BoundCheckBoxFor(Expression<Func<TModel, IEnumerable>> propExpr, object value)
+        {
+            var exprText = ExpressionParser.GetExpressionText(propExpr); //avoid 2x expr parsing
+            return ElementSelfClosing("input").Attr("type", "checkbox").Id(exprText).DataBind(db => db.Checked(propExpr, value));
+        }
 
-        ///// <summary>
-        ///// Bind a radio button to a particular view model property. The radio button name will be the property name unless overridden.
-        ///// <para>&#160;</para>
-        ///// <para>Usage Example:</para>
-        ///// <para> &lt;input type="radio" @helper.DataBind(db => db.Checked(x => x.Gender, Gender.Male)) /&gt;</para>
-        ///// <para>&#160;</para>
-        ///// <para>Result:</para>
-        ///// <para> &lt;input type="radio" value="Male" data-bind="checked: Gender"  /&gt;</para>
-        ///// <para>&#160;</para>
-        ///// </summary>
-        ///// <typeparam name="TModel"></typeparam>
-        ///// <typeparam name="TProp"> </typeparam>
-        ///// <param name="propExpr"> </param>
-        ///// <param name="value"> </param>
-        ///// <param name="name"> </param>
-        ///// <returns></returns>
-        //public virtual StringReturningBuilder<TModel> BoundRadioButtonFor<TModel, TProp>(Expression<Func<TModel, TProp>> propExpr, object value, string name = null)
-        //{
-        //    var exprText = ExpressionParser.GetExpressionText(propExpr); //avoid 2x expr parsing
-        //    return ElementSelfClosing("input")
-        //            .Attr("type", "radio")
-        //            .Id(exprText)
-        //            .Name(name ?? exprText)
-        //            .DataBind(db => db.Checked<TModel, TProp>(propExpr, value));
-        //}
+        /// <summary>
+        /// Bind a radio button to a particular view model property. The radio button name will be the property name unless overridden.
+        /// <para>&#160;</para>
+        /// <para>Usage Example:</para>
+        /// <para> @helper.BoundRadioButtonFor(x => x.Gender, Gender.Male)</para>
+        /// <para>&#160;</para>
+        /// <para>Result:</para>
+        /// <para> &lt;input type="radio" name="Gender" value="Male" data-bind="checked: Gender" /&gt;</para>
+        /// <para>&#160;</para>
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <typeparam name="TProp"> </typeparam>
+        /// <param name="propExpr"> </param>
+        /// <param name="value"> </param>
+        /// <param name="name"> </param>
+        /// <returns></returns>
+        public virtual StringReturningBuilder<TModel> BoundRadioButtonFor<TProp>(Expression<Func<TModel, TProp>> propExpr, object value, string name = null)
+        {
+            var exprText = ExpressionParser.GetExpressionText(propExpr); //avoid 2x expr parsing
+            return ElementSelfClosing("input")
+                    .Attr("type", "radio")
+                    .Name(name ?? exprText)
+                    .DataBind(db => db.Checked(propExpr, value));
+        }
 
         #endregion
 

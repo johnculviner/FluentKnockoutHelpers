@@ -237,26 +237,26 @@ namespace FluentKnockoutHelpers.Core
             return @this.AddBinding("checked", bindingProperty);
         }
 
-        ///// <summary>
-        ///// Bind a checkbox to an *ARRAY* view model property bound to the specified value being in the array
-        ///// <para>&#160;</para>
-        ///// <para>Usage Example:</para>
-        ///// <para> &lt;input type="checkbox" @helper.DataBind(db => db.Checked(x => x.States, "MN")) /&gt;</para>
-        ///// <para>&#160;</para>
-        ///// <para>Result:</para>
-        ///// <para> &lt;input type="checkbox" value="MN" data-bind="checked: States"  /&gt;</para>
-        ///// <para>&#160;</para>
-        ///// </summary>
-        ///// <typeparam name="TModel"></typeparam>
-        ///// <param name="this"></param>
-        ///// <param name="bindingProperty"></param>
-        ///// <param name="value"> </param>
-        ///// <returns></returns>
-        //public static DataBindBuilder<TModel> Checked<TModel>(this DataBindBuilder<TModel> @this, Expression<Func<TModel, IEnumerable>> bindingProperty, object value)
-        //{
-        //    @this.Builder.Attr("value", value.ToString());
-        //    return @this.AddBinding("checked", bindingProperty);
-        //}
+        /// <summary>
+        /// Bind a checkbox to an *ARRAY* view model property bound to the specified value being in the array
+        /// <para>&#160;</para>
+        /// <para>Usage Example:</para>
+        /// <para> &lt;input type="checkbox" @helper.DataBind(db => db.Checked(x => x.States, "MN")) /&gt;</para>
+        /// <para>&#160;</para>
+        /// <para>Result:</para>
+        /// <para> &lt;input type="checkbox" value="MN" data-bind="checked: States"  /&gt;</para>
+        /// <para>&#160;</para>
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="this"></param>
+        /// <param name="bindingProperty"></param>
+        /// <param name="value"> </param>
+        /// <returns></returns>
+        public static DataBindBuilder<TModel> Checked<TModel>(this DataBindBuilder<TModel> @this, Expression<Func<TModel, IEnumerable>> bindingProperty, object value)
+        {
+            @this.Builder.Attr("value", value.ToString());
+            return @this.AddBinding("checked", bindingProperty);
+        }
 
         /// <summary>
         /// Bind a radio button to a particular view model property
