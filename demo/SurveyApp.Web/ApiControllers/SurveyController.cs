@@ -37,18 +37,15 @@ namespace SurveyApp.Web.ApiControllers
         }
 
         // POST api/survey
-        public void Post([FromBody]string value)
+        public void Post(Survey survey)
         {
-        }
 
-        // PUT api/survey/5
-        public void Put(int id, [FromBody]string value)
-        {
         }
 
         // DELETE api/survey/5
         public void Delete(int id)
         {
+
         }
     }
 }

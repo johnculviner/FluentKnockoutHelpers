@@ -54,6 +54,7 @@
             <fieldset>
                 <legend>Demographics</legend>
                 
+                @*Gender*@
                 <div class="control-group">
                     @surveyHelper.LabelFor(x => x.Gender).Class("control-label")
                     <div class="controls">
@@ -67,6 +68,16 @@
                         </label>
                     </div>
                 </div>
+                
+                @*Date of Birth*@
+                <div class="control-group">
+                    @surveyHelper.LabelFor(x => x.DateOfBirth).Class("control-label")
+                    <div class="controls">
+                        <input type="text" data-bind="datepicker: @surveyHelper.PropStringFor(x => x.DateOfBirth)" />
+                    </div>
+                </div>
+                
+
             </fieldset>
 
             <fieldset>

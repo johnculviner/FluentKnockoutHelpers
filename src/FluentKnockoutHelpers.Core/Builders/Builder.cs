@@ -86,22 +86,43 @@ namespace FluentKnockoutHelpers.Core.Builders
         #region Direct Evaluation & Assignment
 
         /// <summary>
-        /// Emit text to assign an observable given a property lambda and a value to assign
+        /// Emit
         /// </summary>
         /// <typeparam name="TProp"></typeparam>
         /// <param name="propExpr"></param>
-        /// <param name="arg"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
-        public virtual IHtmlString AssignObservableFor<TProp>(Expression<Func<TModel, TProp>> propExpr, string arg)
+        public virtual IHtmlString AssignObservableFor<TProp>(Expression<Func<TModel, TProp>> propExpr, string value)
         {
-            return new HtmlString(string.Format("{0}({1})", PropStringFor(propExpr), arg));
+            return new HtmlString(string.Format("{0}({1})", PropStringFor(propExpr), value));
         }
 
+        /// <summary>
+        /// Emit 
+        /// </summary>
+        /// <typeparam name="TProp"></typeparam>
+        /// <param name="propExpr"></param>
+        /// <returns></returns>
         public virtual IHtmlString EvalObservableFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
         {
             return new HtmlString(string.Format("{0}()", PropStringFor(propExpr)));
         }
 
+        /// <summary>
+        /// Emit a string for for a particular view model property. Can be used when a pre-build binding doesn't exist.
+        /// <para>&#160;</para>
+        /// <para>Assuming:</para>
+        /// <para> var surveyHelper = this.KnockoutHelperForType&lt;Survey&gt;("survey", false);</para>
+        /// <para>&#160;</para>
+        /// <para>Usage Example:</para>
+        /// <para> &lt;input type="text" data-bind="datepicker: @surveyHelper.PropStringFor(x =&gt; x.DateOfBirth)" /&gt;</para>
+        /// <para>&#160;</para>
+        /// <para>Result:</para>
+        /// <para> &lt;input type="text" data-bind="datepicker: survey.DateOfBirth" /&gt;</para>
+        /// </summary>
+        /// <typeparam name="TProp"></typeparam>
+        /// <param name="propExpr"></param>
+        /// <returns></returns>
         public virtual string PropStringFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
         {
             return string.IsNullOrWhiteSpace(ViewModelPropertyName) ?
@@ -109,6 +130,18 @@ namespace FluentKnockoutHelpers.Core.Builders
                 string.Format("{0}.{1}", ViewModelPropertyName, ExpressionParser.GetExpressionText(propExpr));
         }
 
+        /// <summary>
+        /// Emit the expression text for a view model property
+        /// <para>&#160;</para>
+        /// <para>Usage Example:</para>
+        /// <para> &lt;label for="@helper.ExpressionTextFor(x => x.FirstName)" &gt;First Name&lt;label&gt;</para>
+        /// <para>&#160;</para>
+        /// <para>Result:</para>
+        /// <para> &lt;label for="FirstName" &gt;First Name&lt;label&gt;</para>
+        /// </summary>
+        /// <typeparam name="TProp"></typeparam>
+        /// <param name="propExpr"></param>
+        /// <returns></returns>
         public virtual IHtmlString GetExpressionTextFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
         {
             return new HtmlString(ExpressionParser.GetExpressionText(propExpr));

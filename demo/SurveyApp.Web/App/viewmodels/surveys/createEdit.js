@@ -1,4 +1,6 @@
-﻿define(['api/surveyApi', './shared/locationInfo', 'api/geocoderApi', 'durandal/plugins/router', 'knockoutPlugins/bindingHandlers/autoComplete'],
+﻿define(['api/surveyApi', './shared/locationInfo', 'api/geocoderApi', 'durandal/plugins/router',
+    //custom bindings    
+    'knockoutPlugins/bindingHandlers/autoComplete', 'knockoutPlugins/bindingHandlers/datepicker'],
 function (surveyApi, locationInfo, geocoderApi, router) {
 
     return function () {
@@ -74,9 +76,16 @@ function (surveyApi, locationInfo, geocoderApi, router) {
             return (self.isNew() ? "Create New" : "Update");
         });
 
+
+        //#region Click Events
+        self.save = function() {
+            //surveyApi.
+        };
+
         self.cancel = function () {
             router.navigateTo('surveys');
         };
+        //#endregion
         
         //for locationInfo compose
         self.locationInfo = locationInfo;

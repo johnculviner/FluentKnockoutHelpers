@@ -174,6 +174,7 @@
     <Content Include="App\durandal\viewModelBinder.js" />
     <Content Include="App\durandal\widget.js" />
     <Content Include="App\knockoutPlugins\bindingHandlers\autoComplete.js" />
+    <Content Include="App\knockoutPlugins\bindingHandlers\datepicker.js" />
     <Content Include="App\main.js" />
     <Content Include="App\requirePlugins\async.js" />
     <Content Include="App\viewmodels\surveys\createEdit.js" />
