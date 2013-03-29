@@ -5,7 +5,6 @@ namespace SurveyApp.Model.Models
     public abstract class TechProduct
     {
         public int TechProductId { get; set; }
-        //public string TechProductName { get; set; }
     }
 
     #region Computer

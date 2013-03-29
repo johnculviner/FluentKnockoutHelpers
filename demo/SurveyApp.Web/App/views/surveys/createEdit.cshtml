@@ -73,19 +73,26 @@
                 <div class="control-group">
                     @surveyHelper.LabelFor(x => x.DateOfBirth).Class("control-label")
                     <div class="controls">
-                        <input type="text" @surveyHelper.DataBind(db => db.Custom("datepicker", x => x.DateOfBirth)) />
+                        
+                        @*wow this seems like alot of typing...*@
+                        <input type="text" class="input-small" @surveyHelper.DataBind(db => db.Custom("datepicker", x => x.DateOfBirth)) />
                     </div>
                 </div>
                 
                  @*Date of Death*@
                 <div class="control-group">
-                    @surveyHelper.LabelFor(x => x.DateOfBirth).Class("control-label")
+                    
+                    @*I'm sick of typing control-label for twitterbootstrap. Extend existing label with 3 lines of code total*@
+                    @surveyHelper.BootstrapLabelFor(x => x.DateOfDeath)
+
                     <div class="controls">
-                        <input type="text" @surveyHelper.DataBind(db => db.Custom("datepicker", x => x.DateOfDeath)) />
+                        
+                        @*Also sick of above code for datepickers. Make a custom helper with 3 lines of code total*@
+                        @surveyHelper.BoundDatePickerFor(x => x.DateOfDeath)
                     </div>
                 </div>
                 
-                @*Likes Music*@
+                @*Likes WubWub*@
                 <div class="control-group">
                     @surveyHelper.LabelFor(x => x.LikesMusic).Class("control-label")
                     <div class="controls">
@@ -97,8 +104,31 @@
             </fieldset>
 
             <fieldset>
-                <legend>Favorite Foods</legend>
-
+                <legend>Tech Products Owned</legend>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Tech Product Type</th>
+                            <th>Basic Specs</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    @*TODO, foreach*@
+                    <tbody data-bind="foreach: survey.TechProducts">
+                        <tr>
+                            <td data-bind="text: productType"></td>
+                            <td data-bind="text: basicSpecs"></td>
+                            <td>
+                                <button class="btn btn-info">
+                                    <i class="icon-edit"></i>
+                                </button>
+                                <button class="btn btn-danger">
+                                    <i class="icon-remove-sign"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </fieldset>
         </form>
     </div>

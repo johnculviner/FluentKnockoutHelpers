@@ -25,7 +25,7 @@ namespace SurveyApp.Model.Models
         [Display(Name = "Date Of Death")]
         public DateTime? DateOfDeath { get; set; }
 
-        [Display(Name = "Likes Music")]
+        [Display(Name = "Likes WubWub")]
         public bool LikesMusic { get; set; }
 
         [Display(Name = "Tech Products")]

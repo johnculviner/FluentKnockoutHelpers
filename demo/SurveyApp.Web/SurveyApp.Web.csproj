@@ -140,6 +140,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\JsonSerializerConfig.cs" />
     <Compile Include="App_Start\NinjectDependencyScope.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -148,6 +149,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="ApiModels\Survey\SurveySummary.cs" />
+    <Compile Include="Helpers\GeneralHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -177,6 +179,9 @@
     <Content Include="App\knockoutPlugins\bindingHandlers\datepicker.js" />
     <Content Include="App\main.js" />
     <Content Include="App\requirePlugins\async.js" />
+    <Content Include="App\utility\typeParser.js" />
+    <Content Include="App\viewmodels\surveys\survey.js" />
+    <Content Include="App\viewmodels\surveys\techProduct.js" />
     <Content Include="App\viewmodels\surveys\createEdit.js" />
     <Content Include="App\viewmodels\surveys\deleteModal.js" />
     <Content Include="App\viewmodels\shell.js" />
@@ -226,6 +231,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App\views\surveys\shared\locationInfo.cshtml" />
+    <Content Include="App\views\surveys\addEditTechProductModal.cshtml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="App\knockoutPlugins\bindingHandlers\bingMap.js" />
     <Content Include="Scripts\bootstrap.js" />

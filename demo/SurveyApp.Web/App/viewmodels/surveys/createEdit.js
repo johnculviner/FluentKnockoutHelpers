@@ -1,7 +1,7 @@
-﻿define(['api/surveyApi', './shared/locationInfo', 'api/geocoderApi', 'durandal/plugins/router',
+﻿define(['api/surveyApi', './shared/locationInfo', 'api/geocoderApi', 'durandal/plugins/router', './survey',
     //custom bindings    
     'knockoutPlugins/bindingHandlers/autoComplete', 'knockoutPlugins/bindingHandlers/datepicker'],
-function (surveyApi, locationInfo, geocoderApi, router) {
+function (surveyApi, locationInfo, geocoderApi, router, survey) {
 
     return function () {
 
@@ -24,10 +24,10 @@ function (surveyApi, locationInfo, geocoderApi, router) {
             }
 
             return surveyApi.get(routeInfo.id)
-                        .then(function (survey) {
+                        .then(function (apiSurvey) {
 
-                            //use ko.mapping library to convert the entire survey to an observable
-                            self.survey = ko.mapping.fromJS(survey);
+                            //do some custom stuff inside survey class in addition to doing a ko.mapping on it
+                            self.survey = new survey(apiSurvey);
                         });
         };
         

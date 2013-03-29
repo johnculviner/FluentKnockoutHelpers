@@ -6,6 +6,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Newtonsoft.Json;
 
 namespace SurveyApp.Web
 {
@@ -22,7 +23,7 @@ namespace SurveyApp.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            JsonSerializerConfig.Configure(GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings);
         }
     }
 }
