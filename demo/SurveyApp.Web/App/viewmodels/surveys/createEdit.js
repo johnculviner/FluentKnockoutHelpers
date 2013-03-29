@@ -52,7 +52,7 @@ function (surveyApi, locationInfo, geocoderApi, router) {
 
         //this is more coupled to 'jquery autocomplete' than it should be and could be moved into an elaborate plugin
         self.selectLocation = function (e, ui) {
-            ko.mapping.fromJS(ui.item.value, {}, self.survey.Location);
+            ko.mapping.fromJS(ui.item.value, {}, self.survey.FavoritePlace);
             e.target.value = "";
             return false;
         };
@@ -79,7 +79,10 @@ function (surveyApi, locationInfo, geocoderApi, router) {
 
         //#region Click Events
         self.save = function() {
-            //surveyApi.
+            surveyApi.post(ko.mapping.toJS(self.survey))
+                .done(function() {
+                    router.navigateTo('surveys');
+                });
         };
 
         self.cancel = function () {

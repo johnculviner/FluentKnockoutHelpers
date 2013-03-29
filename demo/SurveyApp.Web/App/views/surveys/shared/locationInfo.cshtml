@@ -3,7 +3,7 @@
 }
 
 <div class="control-group">
-    @location.LabelFor(x => x.FormattedLocation).Class("control-label")
+    <label class="control-label" for="@location.GetExpressionTextFor(x => x.FormattedLocation)">Favorite Location</label>
     <div @location.DataBind(db => db.Text(x => x.FormattedLocation)).Class("uneditable controls")></div>
 </div>
 <div class="control-group">

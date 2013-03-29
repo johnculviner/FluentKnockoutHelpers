@@ -96,7 +96,7 @@ namespace SurveyApp.Model.Persistance
                 {
                     FirstName = "Bill",
                     LastName = "Gates",
-                    IsCool =  false,
+                    LikesMusic = true,
                     DateOfBirth = new DateTime(1955, 10, 28),
                     FavoriteColor = KnownColor.Green,
                     FavoriteFoods = new List<Food>
@@ -126,11 +126,11 @@ namespace SurveyApp.Model.Persistance
                                     XZoom = 30
                                 }
                         },
-                    Location = new Location
+                    FavoritePlace = new Location
                         {
-                            FormattedLocation = "Medina, WA 98039, USA",
-                            Latitude = 47.6258071,
-                            Longitude = -122.2421963
+                            FormattedLocation = "Hawaii, USA",
+                            Latitude = 19.8967662,
+                            Longitude = -155.58278180
                         },
                 });
 
@@ -138,8 +138,9 @@ namespace SurveyApp.Model.Persistance
             {
                 FirstName = "Steve",
                 LastName = "Jobs",
-                IsCool = true,
+                LikesMusic = true,
                 DateOfBirth = new DateTime(1955, 2, 24),
+                DateOfDeath = new DateTime(2011, 10, 5),
                 FavoriteColor = KnownColor.Silver,
                 FavoriteFoods = new List<Food>
                         {
@@ -169,11 +170,11 @@ namespace SurveyApp.Model.Persistance
                                     NumberOfLenses = 10
                                 }
                         },
-                Location = new Location
+                FavoritePlace = new Location
                 {
-                    FormattedLocation = "Palo Alto, CA 94301, USA",
-                    Latitude = 37.4457966,
-                    Longitude = -122.1575745
+                    FormattedLocation = "San Francisco, CA, USA",
+                    Latitude = 37.7749295,
+                    Longitude = -122.4194155
                 }
             });
 
@@ -181,7 +182,7 @@ namespace SurveyApp.Model.Persistance
             {
                 FirstName = "Marissa",
                 LastName = "Mayer",
-                IsCool = false,
+                LikesMusic = false,
                 DateOfBirth = new DateTime(1975, 5, 30),
                 FavoriteColor = KnownColor.Red,
                 FavoriteFoods = new List<Food>
@@ -209,11 +210,11 @@ namespace SurveyApp.Model.Persistance
                                     XZoom = 22
                                 }
                         },
-                Location = new Location
+                FavoritePlace = new Location
                 {
-                    FormattedLocation = "Palo Alto, CA 94303, USA",
-                    Latitude = 37.4530553,
-                    Longitude = -122.1178261
+                    FormattedLocation = "Sunnyvale, CA 94089, USA",
+                    Latitude = 37.4298335,
+                    Longitude = -122.004179
                 }
             });
 
@@ -221,7 +222,7 @@ namespace SurveyApp.Model.Persistance
             {
                 FirstName = "Mark",
                 LastName = "Zuckerberg",
-                IsCool = true,
+                LikesMusic = true,
                 DateOfBirth = new DateTime(1984, 5, 14),
                 FavoriteColor = KnownColor.Blue,
                 FavoriteFoods = new List<Food>
@@ -252,7 +253,7 @@ namespace SurveyApp.Model.Persistance
                                     XZoom = 22
                                 }
                         },
-                Location = new Location
+                FavoritePlace = new Location
                 {
                     FormattedLocation = "Palo Alto, CA 94301, USA",
                     Latitude = 37.4457966,
@@ -264,7 +265,7 @@ namespace SurveyApp.Model.Persistance
             {
                 FirstName = "Queen Elizabeth",
                 LastName = "II",
-                IsCool = false,
+                LikesMusic = false,
                 DateOfBirth = new DateTime(1926, 4, 21),
                 FavoriteColor = KnownColor.Gold,
                 FavoriteFoods = new List<Food>
@@ -296,7 +297,7 @@ namespace SurveyApp.Model.Persistance
                                     NumberOfMonitors = 1,
                                 }
                         },
-                Location = new Location
+                FavoritePlace = new Location
                 {
                     FormattedLocation = "Buckingham Palace, London, Greater London SW1A 1AA, UK",
                     Latitude = 51.501364,

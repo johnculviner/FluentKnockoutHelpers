@@ -11,7 +11,7 @@
     <div class="row">
         <div class="pull-right">
             <button class="btn" data-bind="click: cancel">Cancel</button>
-            <button class="btn btn-primary" type="submit" data-bind="text: saveText"></button>
+            <button class="btn btn-primary" data-bind="click: save, text: saveText"></button>
         </div>
     </div>
     <div class="row">
@@ -45,14 +45,14 @@
                 <div class="control-group" data-bind="if: survey.Location !== null" style="max-width: 375px;">
                     @*Inject a 'shared view' into the DOM specifiying the model and view to compose together*@
 
-                    <!-- ko compose: { model: new locationInfo(@surveyHelper.PropStringFor(x => x.Location)), view: 'views/surveys/shared/locationInfo' } -->
+                    <!-- ko compose: { model: new locationInfo(@surveyHelper.PropStringFor(x => x.FavoritePlace)), view: 'views/surveys/shared/locationInfo' } -->
                     <!-- /ko -->
                 </div>
 
             </fieldset>
 
             <fieldset>
-                <legend>Demographics</legend>
+                <legend>Demographic Information</legend>
                 
                 @*Gender*@
                 <div class="control-group">
@@ -73,7 +73,23 @@
                 <div class="control-group">
                     @surveyHelper.LabelFor(x => x.DateOfBirth).Class("control-label")
                     <div class="controls">
-                        <input type="text" data-bind="datepicker: @surveyHelper.PropStringFor(x => x.DateOfBirth)" />
+                        <input type="text" @surveyHelper.DataBind(db => db.Custom("datepicker", x => x.DateOfBirth)) />
+                    </div>
+                </div>
+                
+                 @*Date of Death*@
+                <div class="control-group">
+                    @surveyHelper.LabelFor(x => x.DateOfBirth).Class("control-label")
+                    <div class="controls">
+                        <input type="text" @surveyHelper.DataBind(db => db.Custom("datepicker", x => x.DateOfDeath)) />
+                    </div>
+                </div>
+                
+                @*Likes Music*@
+                <div class="control-group">
+                    @surveyHelper.LabelFor(x => x.LikesMusic).Class("control-label")
+                    <div class="controls">
+                        @surveyHelper.BoundCheckBoxFor(x => x.LikesMusic)
                     </div>
                 </div>
                 

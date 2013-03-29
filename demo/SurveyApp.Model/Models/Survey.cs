@@ -14,16 +14,19 @@ namespace SurveyApp.Model.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        public Location Location { get; set; }
-
-        [Display(Name = "Is Cool?")]
-        public bool IsCool { get; set; }
+        public Location FavoritePlace { get; set; }
 
         [Display(Name = "Gender")]
         public Gender Gender { get; set; }
 
         [Display(Name = "Date Of Birth")]
         public DateTime DateOfBirth { get; set; }
+
+        [Display(Name = "Date Of Death")]
+        public DateTime? DateOfDeath { get; set; }
+
+        [Display(Name = "Likes Music")]
+        public bool LikesMusic { get; set; }
 
         [Display(Name = "Tech Products")]
         public List<TechProduct> TechProducts { get; set; }
@@ -34,7 +37,7 @@ namespace SurveyApp.Model.Models
         [Display(Name = "Children")]
         public List<Relation> Children { get; set; }
 
-        [Display(Name = "Children")]
+        [Display(Name = "Favorite Foods")]
         public List<Food> FavoriteFoods { get; set; }
     }
 }

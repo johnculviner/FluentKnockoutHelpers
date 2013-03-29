@@ -16,14 +16,12 @@ namespace FluentKnockoutHelpers.Core
             Builder = builder;
         }
 
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public DataBindBuilder<TModel> AddBinding<TProp>(string bindingName, Expression<Func<TModel, TProp>> text)
+        public DataBindBuilder<TModel> Custom<TProp>(string bindingName, Expression<Func<TModel, TProp>> text)
         {
-            return AddBinding(bindingName, ExpressionParser.GetExpressionText(text));
+            return Custom(bindingName, ExpressionParser.GetExpressionText(text));
         }
 
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public DataBindBuilder<TModel> AddBinding(string bindingName, string bindingProperty)
+        public DataBindBuilder<TModel> Custom(string bindingName, string bindingProperty)
         {
             Builder.Attr("data-bind", bindingName, GetDataBindPropertyName(bindingProperty));
             return this;
@@ -104,7 +102,7 @@ namespace FluentKnockoutHelpers.Core
         /// <returns></returns>
         public static DataBindBuilder<TModel> Text<TModel, TValue>(this DataBindBuilder<TModel> @this, Expression<Func<TModel, TValue>> bindingProperty)
         {
-            return @this.AddBinding("text", bindingProperty);
+            return @this.Custom("text", bindingProperty);
         }
 
 
@@ -126,7 +124,7 @@ namespace FluentKnockoutHelpers.Core
         /// <returns></returns>
         public static DataBindBuilder<TModel> Text<TModel>(this DataBindBuilder<TModel> @this, string bindingProperty)
         {
-            return @this.AddBinding("text", bindingProperty);
+            return @this.Custom("text", bindingProperty);
         }
         #endregion
 
@@ -149,7 +147,7 @@ namespace FluentKnockoutHelpers.Core
         /// <returns></returns>
         public static DataBindBuilder<TModel> Value<TModel, TValue>(this DataBindBuilder<TModel> @this, Expression<Func<TModel, TValue>> bindingProperty)
         {
-            return @this.AddBinding("value", bindingProperty);
+            return @this.Custom("value", bindingProperty);
         }
 
         //credit: http://knockoutjs.com/documentation/value-binding.html
@@ -169,31 +167,31 @@ namespace FluentKnockoutHelpers.Core
         /// <returns></returns>
         public static DataBindBuilder<TModel> Value<TModel>(this DataBindBuilder<TModel> @this, string bindingProperty)
         {
-            return @this.AddBinding("value", bindingProperty);
+            return @this.Custom("value", bindingProperty);
         }
         #endregion
 
         #region If
         public static DataBindBuilder<TModel> If<TModel, TValue>(this DataBindBuilder<TModel> @this, Expression<Func<TModel, TValue>> bindingProperty)
         {
-            return @this.AddBinding("if", bindingProperty);
+            return @this.Custom("if", bindingProperty);
         }
 
         public static DataBindBuilder<TModel> If<TModel>(this DataBindBuilder<TModel> @this, string bindingProperty)
         {
-            return @this.AddBinding("if", bindingProperty);
+            return @this.Custom("if", bindingProperty);
         }
         #endregion
 
         #region Visible
         public static DataBindBuilder<TModel> Visible<TModel>(this DataBindBuilder<TModel> @this, Expression<Func<TModel, bool>> bindingProperty)
         {
-            return @this.AddBinding("visible", bindingProperty);
+            return @this.Custom("visible", bindingProperty);
         }
 
         public static DataBindBuilder<TModel> Visible<TModel>(this DataBindBuilder<TModel> @this, string bindingProperty)
         {
-            return @this.AddBinding("visible", bindingProperty);
+            return @this.Custom("visible", bindingProperty);
         }
         #endregion
 
@@ -215,7 +213,7 @@ namespace FluentKnockoutHelpers.Core
         /// <returns></returns>
         public static DataBindBuilder<TModel> Checked<TModel>(this DataBindBuilder<TModel> @this, Expression<Func<TModel, bool>> bindingProperty)
         {
-            return @this.AddBinding("checked", bindingProperty);
+            return @this.Custom("checked", bindingProperty);
         }
 
         /// <summary>
@@ -234,7 +232,7 @@ namespace FluentKnockoutHelpers.Core
         /// <returns></returns>
         public static DataBindBuilder<TModel> Checked<TModel>(this DataBindBuilder<TModel> @this, string bindingProperty)
         {
-            return @this.AddBinding("checked", bindingProperty);
+            return @this.Custom("checked", bindingProperty);
         }
 
         /// <summary>
@@ -255,7 +253,7 @@ namespace FluentKnockoutHelpers.Core
         public static DataBindBuilder<TModel> Checked<TModel>(this DataBindBuilder<TModel> @this, Expression<Func<TModel, IEnumerable>> bindingProperty, object value)
         {
             @this.Builder.Attr("value", value.ToString());
-            return @this.AddBinding("checked", bindingProperty);
+            return @this.Custom("checked", bindingProperty);
         }
 
         /// <summary>
@@ -277,7 +275,7 @@ namespace FluentKnockoutHelpers.Core
         public static DataBindBuilder<TModel> Checked<TModel, TValue>(this DataBindBuilder<TModel> @this, Expression<Func<TModel, TValue>> bindingProperty, object value)
         {
             @this.Builder.Attr("value", value.ToString());
-            return @this.AddBinding("checked", bindingProperty);
+            return @this.Custom("checked", bindingProperty);
         }
 
         #endregion
@@ -297,7 +295,7 @@ namespace FluentKnockoutHelpers.Core
 
         public static DataBindBuilder<TModel> Click<TModel>(this DataBindBuilder<TModel> @this, string bindingProperty)
         {
-            return @this.AddBinding("click", bindingProperty);
+            return @this.Custom("click", bindingProperty);
         }
     }
 

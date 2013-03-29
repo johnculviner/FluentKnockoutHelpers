@@ -9,7 +9,6 @@ namespace SurveyApp.Model.Models
 {
     public class Location
     {
-        [Display(Name = "Location")]
         public string FormattedLocation { get; set; }
 
         public double Latitude { get; set; }

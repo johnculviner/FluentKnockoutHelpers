@@ -49,7 +49,7 @@ namespace SurveyApp.Web.ApiModels.Survey
                     FirstName = s.FirstName,
                     DateOfBirth = s.DateOfBirth.ToShortDateString(),
                     Gender = s.Gender.ToString(),
-                    Location = s.Location,
+                    Location = s.FavoritePlace,
                     NumberOfTechProducts = s.TechProducts.Count,
                     NumberOfChildren = s.Children.Count,
                     OverallHealthyScore = s.FavoriteFoods.Average(x => x.HealthyScore)
