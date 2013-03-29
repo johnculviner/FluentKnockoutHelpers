@@ -91,29 +91,7 @@ Here is the bread and butter of FluentKnockoutHelpers. Since we have created a s
 </h2>
 ```
 
-###Minimalistic markup generation via FluentKnockoutHelpers (Option A)
-Minimilastic markup for those that like almost vanilla HTML and/or lots of typing
-```html
-<!-- Creation of the strongly-typed helper -->
-@{
-  var person = this.KnockoutHelperForApi<PersonController>().Endpoint(api => api.Get(default(int)), "person", true);
-}
-
-<p>
-	First name:
-	<input type="text" class="fancy" @person.DataBind(db => db.Value(p => p.FirstName)) />
-</p>
-<p>
-	Last name:
-	<input type="text" class="fancy" @person.DataBind(db => db.Value(p => p.LastName))  /></p>
-<h2>
-	Hello,
-	<!-- ko text: @person.EvalObservableFor(x => x.FirstName) --><!-- /ko -->
-	<!-- ko text: @person.EvalObservableFor(x => x.LastName) --><!-- /ko -->
-</h2>
-```
-
-###All out C# via FluentKnockoutHelpers (Option B)
+###All out C# via FluentKnockoutHelpers (Option A)
 We all love MVC (right?) lets pay it some hommage with a fluent twist! Note the DisplayNameFor(..) pulls from the [Display(..)] attribute. Don't worry there is a LabelFor(...) too..
 ```html
 <!-- Creation of the strongly-typed helper -->
@@ -133,6 +111,28 @@ We all love MVC (right?) lets pay it some hommage with a fluent twist! Note the 
 	Hello,
 	@person.BoundTextFor(x => x.FirstName)
 	@person.BoundTextFor(x => x.LastName)
+</h2>
+```
+
+###Minimalistic markup generation via FluentKnockoutHelpers (Option B)
+Minimilastic markup for those that like almost vanilla HTML and/or lots of typing
+```html
+<!-- Creation of the strongly-typed helper -->
+@{
+  var person = this.KnockoutHelperForApi<PersonController>().Endpoint(api => api.Get(default(int)), "person", true);
+}
+
+<p>
+	First name:
+	<input type="text" class="fancy" @person.DataBind(db => db.Value(p => p.FirstName)) />
+</p>
+<p>
+	Last name:
+	<input type="text" class="fancy" @person.DataBind(db => db.Value(p => p.LastName))  /></p>
+<h2>
+	Hello,
+	<!-- ko text: @person.EvalObservableFor(x => x.FirstName) --><!-- /ko -->
+	<!-- ko text: @person.EvalObservableFor(x => x.LastName) --><!-- /ko -->
 </h2>
 ```
 
