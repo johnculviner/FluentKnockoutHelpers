@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Web;
 using System.Web.WebPages;
 using System.Web.WebPages.Html;
 using FluentKnockoutHelpers.Core.Builders;
@@ -77,6 +78,11 @@ namespace FluentKnockoutHelpers.Core
         internal static string ResolveViewModelPropertyName(string viewModelPropertyName, bool viewModelPropertyIsObservable)
         {
             return viewModelPropertyName + (viewModelPropertyIsObservable ? "()" : string.Empty);
+        }
+
+        public static IHtmlString TypeTemplateFor<TType>(this WebPageBase @this, bool includeDerivedTypes = true)
+        {
+            return new TypeTemplateBuilder().And<TType>(includeDerivedTypes);
         }
     }
 

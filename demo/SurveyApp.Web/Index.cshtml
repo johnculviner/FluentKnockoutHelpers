@@ -1,5 +1,7 @@
 ﻿@using System.Web.Optimization
+@using SurveyApp.Model.Models
 @using SurveyApp.Web
+@using FluentKnockoutHelpers.Core
 
 <!DOCTYPE html>
 <html>
@@ -33,7 +35,9 @@
         }
         
         <script>
-            
+            define("typeTemplates", function () {
+                return @(this.TypeTemplateFor<TechProduct>());
+            })
         </script>
     </body>
 </html>

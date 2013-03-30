@@ -80,6 +80,7 @@
     <Compile Include="NodeBuilding\IKoComment.cs" />
     <Compile Include="NodeBuilding\SelfClosingKoComment.cs" />
     <Compile Include="Utility\ExpressionParser.cs" />
+    <Compile Include="TypeTemplateBuilder.cs" />
     <Compile Include="WebPagesHtmlHelpers.cs" />
     <Compile Include="Builders\ForEachBuilder.cs" />
     <Compile Include="Builders\StringReturningBuilder.cs" />
