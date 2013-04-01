@@ -1,17 +1,110 @@
-﻿@{
-    Layout = null;
-}
+﻿@using SurveyApp.Model.Models
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title></title>
-</head>
-<body>
-    <div>
-    
+<div class="messageBox" style="width: 600px">
+    <div class="modal-header">
+        <h3>Tech Product</h3>
     </div>
-</body>
-</html>
+    <div class="modal-body">
+        <form class="form-horizontal">
+            
+            <div class="control-group">
+                <label class="control-label">Product type</label>
+                <div class="controls">
+                    <label class="radio inline">
+                        <input type="radio" name="techProductType" value="@typeof(Laptop).FullName" data-bind="checked: techProduct.productType"/>
+                        Laptop
+                    </label>
+                    <label class="radio inline">
+                        <input type="radio"  name="techProductType" value="@typeof(Desktop).FullName" data-bind="checked: techProduct.productType"/>
+                        Desktop
+                    </label>
+                    <label class="radio inline">
+                        <input type="radio" name="techProductType" value="@typeof(PointAndShoot).FullName" data-bind="checked: techProduct.productType"/>
+                        Point and Shoot
+                    </label>
+                    <label class="radio inline">
+                        <input type="radio" name="techProductType" value="@typeof(Slr).FullName" data-bind="checked: techProduct.productType"/>
+                        SLR
+                    </label>
+                </div>
+            </div>
+              
+            <!-- ko if: techProduct.isComputer -->
+                @{var computer = this.KnockoutHelperForType<Computer>("techProduct", false);}
+                <div class="control-group">
+                    @computer.BootstrapLabelFor(x => x.Mhz)
+                    <div class="controls">
+                        @computer.BoundTextBoxFor(x => x.Mhz)
+                    </div>
+                </div>
+                <div class="control-group">
+                    @computer.BootstrapLabelFor(x => x.GigsOfRam)
+                    <div class="controls">
+                        @computer.BoundTextBoxFor(x => x.GigsOfRam)
+                    </div>
+                </div>
+                <div class="control-group">
+                    @computer.BootstrapLabelFor(x => x.HasSsd)
+                    <div class="controls">
+                        @computer.BoundCheckBoxFor(x => x.HasSsd)
+                    </div>
+                </div>
+            
+                <!-- ko if: techProduct.isLaptop -->
+                @{var laptop = this.KnockoutHelperForType<Laptop>("techProduct", false);}
+                <div class="control-group">
+                    @laptop.BootstrapLabelFor(x => x.ScreenSize)
+                    <div class="controls">
+                        @laptop.BoundTextBoxFor(x => x.ScreenSize)
+                    </div>
+                </div>  
+                <!-- /ko -->
+            
+                <!-- ko if: techProduct.isDesktop -->
+                @{var desktop = this.KnockoutHelperForType<Desktop>("techProduct", false);}
+                <div class="control-group">
+                    @desktop.BootstrapLabelFor(x => x.NumberOfMonitors)
+                    <div class="controls">
+                        @desktop.BoundTextBoxFor(x => x.NumberOfMonitors)
+                    </div>
+                </div>  
+                <!-- /ko -->
+            <!-- /ko -->
+            
+            
+            <!-- ko if: techProduct.isDigitalCamera -->
+                @{var digitalCamera = this.KnockoutHelperForType<DigitalCamera>("techProduct", false);}
+                <div class="control-group">
+                    @digitalCamera.BootstrapLabelFor(x => x.MegaPixels)
+                    <div class="controls">
+                        @digitalCamera.BoundTextBoxFor(x => x.MegaPixels)
+                    </div>
+                </div>
+            
+                <!-- ko if: techProduct.isSlr -->
+                @{var slr = this.KnockoutHelperForType<Slr>("techProduct", false);}
+                <div class="control-group">
+                    @slr.BootstrapLabelFor(x => x.NumberOfLenses)
+                    <div class="controls">
+                        @slr.BoundTextBoxFor(x => x.NumberOfLenses)
+                    </div>
+                </div>
+                <!-- /ko -->
+
+                <!-- ko if: techProduct.isPointAndShoot -->
+                @{var pointAndShoot = this.KnockoutHelperForType<PointAndShoot>("techProduct", false);}
+                <div class="control-group">
+                    @pointAndShoot.BootstrapLabelFor(x => x.XZoom)
+                    <div class="controls">
+                        @pointAndShoot.BoundTextBoxFor(x => x.XZoom)
+                    </div>
+                </div>
+                <!-- /ko -->
+            <!-- /ko -->
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-bind="click: cancel">Cancel</button>
+        <button class="btn btn-primary" >Save</button>
+    </div>
+</div>

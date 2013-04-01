@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using FluentKnockoutHelpers.Core;
 using Newtonsoft.Json;
 
 namespace SurveyApp.Web
@@ -24,6 +27,22 @@ namespace SurveyApp.Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             JsonSerializerConfig.Configure(GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings);
+            FluentKnockoutHelpers.Core.GlobalSettings.JsonSerializer = new JsonDotNetSerializer();
+        }
+    }
+
+    /// <summary>
+    /// Use JSON.NET for serialization for FluentKnockoutHelpers
+    /// </summary>
+    public class JsonDotNetSerializer : IJsonSerializer
+    {
+        public string ToJsonString(object toSerialize)
+        {
+            var serializer = JsonSerializer.Create(GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings);
+
+            var tw = new StringWriter();
+            serializer.Serialize(tw, toSerialize);
+            return tw.ToString();
         }
     }
 }

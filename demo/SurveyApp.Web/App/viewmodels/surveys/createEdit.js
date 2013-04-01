@@ -1,7 +1,7 @@
-﻿define(['api/surveyApi', './shared/locationInfo', 'api/geocoderApi', 'durandal/plugins/router', './survey',
+﻿define(['durandal/app', 'api/surveyApi', './shared/locationInfo', 'api/geocoderApi', 'durandal/plugins/router', './survey', './addEditTechProductModal',
     //custom bindings    
     'knockoutPlugins/bindingHandlers/autoComplete', 'knockoutPlugins/bindingHandlers/datepicker'],
-function (surveyApi, locationInfo, geocoderApi, router, survey) {
+function (app, surveyApi, locationInfo, geocoderApi, router, survey, addEditTechProductModal) {
 
     return function () {
 
@@ -88,6 +88,23 @@ function (surveyApi, locationInfo, geocoderApi, router, survey) {
         self.cancel = function () {
             router.navigateTo('surveys');
         };
+        
+
+        //#region Tech Product
+        self.addTechProduct = function () {
+            app.showModal(new addEditTechProductModal(null));
+        };
+        
+        self.editTechProduct = function(techProduct) {
+            app.showModal(new addEditTechProductModal(techProduct));
+        };
+        
+        self.deleteTechProduct = function (techProduct) {
+
+        };
+        //#endregion
+
+
         //#endregion
         
         //for locationInfo compose

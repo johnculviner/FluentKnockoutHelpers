@@ -1,20 +1,20 @@
-﻿define(['utility/typeParser'],
-function (typeParser) {
+﻿define(['utility/typeHelper'],
+function (typeHelper) {
     return function (apiTechProduct) {
         var self = this;
 
         //here NO custom mappings being performed here but we want a
-        //javascript representation of C# TechProduct to do TypeParsing
+        //javascript representation (on 'this') of the various derivations of a C# TechProduct
         ko.mapping.fromJS(apiTechProduct, {}, self);
 
 
-        //#region Computer parsing
+        //#region Computer
         self.isDesktop = ko.computed(function () {
-            return typeParser.isType(self, 'Desktop');
+            return typeHelper.isType(self, 'Desktop');
         });
         
         self.isLaptop = ko.computed(function () {
-            return typeParser.isType(self, 'Laptop');
+            return typeHelper.isType(self, 'Laptop');
         });
 
         self.isComputer = ko.computed(function() {
@@ -26,14 +26,13 @@ function (typeParser) {
         }, this, { deferEvaluation: true });
         //#endregion
 
-
-        //#region Digital camera parsing
+        //#region Digital camera
         self.isPointAndShoot = ko.computed(function () {
-            return typeParser.isType(self, 'PointAndShoot');
+            return typeHelper.isType(self, 'PointAndShoot');
         });
 
         self.isSlr = ko.computed(function () {
-            return typeParser.isType(self, 'Slr');
+            return typeHelper.isType(self, 'Slr');
         });
 
         self.isDigitalCamera = ko.computed(function () {
@@ -41,17 +40,28 @@ function (typeParser) {
         });
 
         self.digitalCameraBasicSpecs = ko.computed(function() {
-            return self.MegaPixels() + " Megapixels";
+            return self.MegaPixels() + ' Megapixels';
         }, this, { deferEvaluation: true });
         //#endregion
 
-
-        self.productType = ko.computed(function() {
-            return typeParser.typeName(self);
+        //#region Summary Display Information
+        self.productTypeDisplay = ko.computed(function () {
+            if (self.isDesktop())
+                return "Desktop";
+            
+            if (self.isLaptop())
+                return "Laptop";
+            
+            if (self.isSlr())
+                return "SLR";
+            
+            if (self.isPointAndShoot())
+                return "Point & Shoot";
+            
+            throw "unrecognized tech product type";
         });
 
-        self.basicSpecs = ko.computed(function() {
-            
+        self.specSummary = ko.computed(function() {
             if(self.isComputer())
                 return self.computerBasicSpecs();
             
@@ -59,6 +69,17 @@ function (typeParser) {
                 return self.digitalCameraBasicSpecs();
 
             throw "unrecognized tech product type";
+        });
+        //#endregion
+
+
+        self.productType = ko.computed({
+            read: function () {
+                return typeHelper.getTypeName(self);
+            },
+            write: function (typeName) {
+                typeHelper.createAndAssignType(typeName, self);
+            }
         });
     };
 });

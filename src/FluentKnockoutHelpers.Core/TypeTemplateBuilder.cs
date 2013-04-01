@@ -31,7 +31,7 @@ namespace FluentKnockoutHelpers.Core
             //add json for each type determined to be needed. currently there must be a
             //default constructor on the type to do this
             _templateJsonToWrite.AddRange(
-                typesToAdd.Where(type => !type.IsAbstract)
+                typesToAdd
                     .Select(type => TypeTemplateJson.GetOrAdd(type, t =>
                     {
                         var defaultCtor = type.GetConstructor(Type.EmptyTypes);
@@ -42,10 +42,10 @@ namespace FluentKnockoutHelpers.Core
                         return GlobalSettings.JsonSerializer.ToJsonString(new
                             {
                                 TypeName = t.FullName,
-                                Template = defaultCtor.Invoke(null)
+                                TemplateInstance = defaultCtor.Invoke(null)
                             });
                     }))
-                    .Where(json => json != null)
+                    .Where(json => json != null) //no default CTOR, couldn't create
                 );
 
             return this;

@@ -10,9 +10,9 @@ namespace SurveyApp.Model.Models
     #region Computer
     public abstract class Computer : TechProduct
     {
-        public bool HasSsd { get; set; }
-        public int GigsOfRam { get; set; }
         public int Mhz { get; set; }
+        public int GigsOfRam { get; set; }
+        public bool HasSsd { get; set; }
     }
 
     public class Desktop : Computer

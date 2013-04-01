@@ -109,18 +109,18 @@
                     <thead>
                         <tr>
                             <th>Tech Product Type</th>
-                            <th>Basic Specs</th>
+                            <th>Spec summary</th>
                             <th></th>
                         </tr>
                     </thead>
                     @*TODO, foreach*@
                     <tbody data-bind="foreach: survey.TechProducts">
                         <tr>
-                            <td data-bind="text: productType"></td>
-                            <td data-bind="text: basicSpecs"></td>
+                            <td data-bind="text: productTypeDisplay"></td>
+                            <td data-bind="text: specSummary"></td>
                             <td>
                                 <button class="btn btn-info">
-                                    <i class="icon-edit"></i>
+                                    <i class="icon-edit" data-bind="click: function () { $root.editTechProduct($data) }"></i>
                                 </button>
                                 <button class="btn btn-danger">
                                     <i class="icon-remove-sign"></i>

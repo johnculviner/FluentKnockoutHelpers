@@ -179,7 +179,8 @@
     <Content Include="App\knockoutPlugins\bindingHandlers\datepicker.js" />
     <Content Include="App\main.js" />
     <Content Include="App\requirePlugins\async.js" />
-    <Content Include="App\utility\typeParser.js" />
+    <Content Include="App\utility\typeHelper.js" />
+    <Content Include="App\viewmodels\surveys\addEditTechProductModal.js" />
     <Content Include="App\viewmodels\surveys\survey.js" />
     <Content Include="App\viewmodels\surveys\techProduct.js" />
     <Content Include="App\viewmodels\surveys\createEdit.js" />
@@ -250,8 +251,13 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\knockout-2.2.1.debug.js" />
     <Content Include="Scripts\knockout-2.2.1.js" />
+    <Content Include="Scripts\knockout.activity.js" />
+    <Content Include="Scripts\knockout.command.js" />
+    <Content Include="Scripts\knockout.dirtyFlag.js" />
     <Content Include="Scripts\knockout.mapping-latest.debug.js" />
     <Content Include="Scripts\knockout.mapping-latest.js" />
+    <None Include="Scripts\knockout.validation.debug.js.foo" />
+    <None Include="Scripts\knockout.validation.js.foo" />
     <Content Include="Scripts\lodash.js" />
     <Content Include="Scripts\sammy-0.7.4.js" />
     <Content Include="Scripts\sammy-0.7.4.min.js" />
