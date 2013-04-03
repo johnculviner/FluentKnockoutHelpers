@@ -5,7 +5,7 @@
 
         self.techProduct = techProduct;
 
-        self.cancel = function() {
+        self.ok = function() {
             self.modal.close(null);
         };
     };

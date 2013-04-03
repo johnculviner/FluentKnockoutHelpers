@@ -2,9 +2,9 @@
 function (typeHelper) {
     return function (apiTechProduct) {
         var self = this;
-
+        vm = self;
         //here NO custom mappings being performed here but we want a
-        //javascript representation (on 'this') of the various derivations of a C# TechProduct
+        //javascript representation (on 'this') of a C# TechProduct
         ko.mapping.fromJS(apiTechProduct, {}, self);
 
 
@@ -22,8 +22,10 @@ function (typeHelper) {
         });
         
         self.computerBasicSpecs = ko.computed(function () {
-            return self.Mhz() + " Mhz Processor w/ " + self.GigsOfRam() + " GB RAM and " + (self.HasSsd() ? "an SSD" : "no SSD (bummer)");
-        }, this, { deferEvaluation: true });
+            self.$type(); //force knockout to re-evaluate when $type changes
+            if (self.Mhz && self.GigsOfRam && self.HasSsd)
+                return self.Mhz() + " Mhz Processor w/ " + self.GigsOfRam() + " GB RAM and " + (self.HasSsd() ? "an SSD" : "no SSD (bummer)");
+        });
         //#endregion
 
         //#region Digital camera
@@ -39,9 +41,11 @@ function (typeHelper) {
             return self.isPointAndShoot() || self.isSlr();
         });
 
-        self.digitalCameraBasicSpecs = ko.computed(function() {
-            return self.MegaPixels() + ' Megapixels';
-        }, this, { deferEvaluation: true });
+        self.digitalCameraBasicSpecs = ko.computed(function () {
+            self.$type(); //force knockout to re-evaluate when $type changes
+            if (self.MegaPixels)
+                return self.MegaPixels() + ' Megapixels';
+        });
         //#endregion
 
         //#region Summary Display Information
@@ -57,8 +61,6 @@ function (typeHelper) {
             
             if (self.isPointAndShoot())
                 return "Point & Shoot";
-            
-            throw "unrecognized tech product type";
         });
 
         self.specSummary = ko.computed(function() {
@@ -67,8 +69,6 @@ function (typeHelper) {
             
             if (self.isDigitalCamera())
                 return self.digitalCameraBasicSpecs();
-
-            throw "unrecognized tech product type";
         });
         //#endregion
 

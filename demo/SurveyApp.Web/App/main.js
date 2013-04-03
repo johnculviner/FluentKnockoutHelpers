@@ -5,8 +5,8 @@
     }
 });
 
-define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/viewEngine', 'durandal/plugins/router'],
-    function (app, viewLocator, system, viewEngine, router) {
+define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/viewEngine', 'durandal/plugins/router', 'typeTemplates', 'utility/typeHelper'],
+    function (app, viewLocator, system, viewEngine, router, typeTemplates, typeHelper) {
     
     //>>excludeStart("build", true);
     system.debug(true);
@@ -27,6 +27,10 @@ define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/vie
         
         //Show the app by setting the root view model for our application with a transition.
         app.setRoot('viewmodels/shell', 'entrance');
+        
+        //setup FluentKnockoutHelper's typeHelper for handling JavaScript 'instanciation' of class hierarchies
+        //typeTemplates is defined in index.cshtml as a result of this.TypeTemplateFor<TechProduct>()
+        typeHelper.configure(typeTemplates);
     });
         
     function configureRouting() {
@@ -42,6 +46,6 @@ define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/vie
         //':id' extracts the value and it is passed as an argument into the 'activate' function of the viewmodel
         //mapRoute doesn't make the route visible in navigation
         //the viewmodel path doesn't follow the convention so it is explicitly specified
-        router.mapRoute('surveys/:id', 'viewmodels/surveys/createEdit');    
+        router.mapRoute('surveys/:id', 'viewmodels/surveys/addEdit');    
     }
 });

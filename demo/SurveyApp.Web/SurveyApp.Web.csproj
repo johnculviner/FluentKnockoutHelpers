@@ -183,12 +183,12 @@
     <Content Include="App\viewmodels\surveys\addEditTechProductModal.js" />
     <Content Include="App\viewmodels\surveys\survey.js" />
     <Content Include="App\viewmodels\surveys\techProduct.js" />
-    <Content Include="App\viewmodels\surveys\createEdit.js" />
+    <Content Include="App\viewmodels\surveys\addEdit.js" />
     <Content Include="App\viewmodels\surveys\deleteModal.js" />
     <Content Include="App\viewmodels\shell.js" />
     <Content Include="App\viewmodels\surveys.js" />
     <Content Include="App\views\surveys\deleteModal.cshtml" />
-    <Content Include="App\views\surveys\createEdit.cshtml" />
+    <Content Include="App\views\surveys\addEdit.cshtml" />
     <Content Include="App\viewmodels\surveys\shared\locationInfo.js" />
     <None Include="App\views\shell.cshtml" />
     <Content Include="App\views\surveys.cshtml" />

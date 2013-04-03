@@ -30,11 +30,6 @@
                 return true;
             };
 
-            //TODO: navigate to a page to edit the survey
-            self.editSurvey = function (surveySummary) {
-                app.showModal(new createEditModal(surveySummary));
-            };
-
             //open a modal requesting confirmation to delete the indicated modal
             self.deleteSurvey = function (surveySummary) {
                 app.showModal(new deleteModal(surveySummary))

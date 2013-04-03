@@ -56,7 +56,7 @@ namespace FluentKnockoutHelpers.Core
             var sb = new StringBuilder();
 
             sb.AppendLine("{");
-            sb.AppendLine("types: [");
+            sb.AppendLine("Templates: [");
             for (int i = 0; i < _templateJsonToWrite.Count; i++)
             {
                 sb.Append(_templateJsonToWrite[i]);

@@ -110,7 +110,7 @@
                         <tr>
                             <th>Tech Product Type</th>
                             <th>Spec summary</th>
-                            <th></th>
+                            <th class="actions"></th>
                         </tr>
                     </thead>
                     @*TODO, foreach*@
@@ -118,7 +118,7 @@
                         <tr>
                             <td data-bind="text: productTypeDisplay"></td>
                             <td data-bind="text: specSummary"></td>
-                            <td>
+                            <td class="actions">
                                 <button class="btn btn-info">
                                     <i class="icon-edit" data-bind="click: function () { $root.editTechProduct($data) }"></i>
                                 </button>
@@ -129,6 +129,10 @@
                         </tr>
                     </tbody>
                 </table>
+                <button class="btn btn-success">
+                    <i class="icon-plus" data-bind="click: function () { $root.addTechProduct() }"></i>
+                    Add
+                </button>
             </fieldset>
         </form>
     </div>
