@@ -2,7 +2,7 @@
 function (typeHelper) {
     return function (apiTechProduct) {
         var self = this;
-        vm = self;
+
         //here NO custom mappings being performed here but we want a
         //javascript representation (on 'this') of a C# TechProduct
         ko.mapping.fromJS(apiTechProduct, {}, self);

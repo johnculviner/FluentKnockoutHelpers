@@ -79,22 +79,22 @@
             var instance = newTypeTemplate.TemplateInstance;
             
             //first, use ko.mapping to create/update observables fields on the reference in place
+            //don't do the type until we are all done since many observables may be dependent on type
             var settings = {
                 ignore: [self.typeFieldName]
             };
-
             ko.mapping.fromJS(instance, settings, referenceToAssign);
-            referenceToAssign[self.typeFieldName](instance[self.typeFieldName]);
             
-            ////second, delete any fields on 'referenceToAssign' that are in the old template but not in the new
-            ////not strictly necessary but reduces over the wire garbage that would be thrown out by JSON deserializer anyways..
+            //second, delete any fields on 'referenceToAssign' that are in the old template but not in the new
+            //not strictly necessary but reduces over the wire garbage that would be thrown out by JSON deserializer anyways..
             for (var field in oldTypeTemplate.TemplateInstance) {
                 if (newTypeTemplate.TemplateInstance[field] === undefined)
                     delete referenceToAssign[field];
             }
-
-            //finally, notify that the type is changed
-            //referenceToAssign[this.typeFieldName].valueHasMutated();
+            
+            //finally change the type on the object to the new type and fix mapping to recognize it on ko.mapping.toJSON
+            referenceToAssign[self.typeFieldName](instance[self.typeFieldName]);
+            referenceToAssign.__ko_mapping__.ignore.splice(self.typeFieldName);
         }
     };
     
