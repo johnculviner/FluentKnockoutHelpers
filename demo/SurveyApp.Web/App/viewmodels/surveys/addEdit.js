@@ -92,7 +92,11 @@ function (app, surveyApi, locationInfo, geocoderApi, router, survey, addEditTech
 
         //#region Tech Product
         self.addTechProduct = function () {
-            app.showModal(new addEditTechProductModal(null));
+            app.showModal(new addEditTechProductModal())
+                .then(function (newTechProduct) {
+                    //this promise resolves when the modal is closed
+                    self.survey.TechProducts.push(newTechProduct);
+                });
         };
         
         self.editTechProduct = function(techProduct) {
@@ -100,7 +104,13 @@ function (app, surveyApi, locationInfo, geocoderApi, router, survey, addEditTech
         };
         
         self.deleteTechProduct = function (techProduct) {
-
+            app.showMessage("Are you sure you want to delete this " + techProduct.productTypeDisplay() + "?",
+                "Delete tech product?", ['Delete', 'Cancel'])
+                .then(function(result) {
+                    //this promise resolves with the above selection when the modal is closed
+                    if(result === 'Delete')
+                        self.survey.TechProducts.remove(techProduct);
+                });
         };
         //#endregion
 

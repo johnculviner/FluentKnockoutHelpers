@@ -45,10 +45,11 @@
         },
         
         getTemplate: function (typeName) {
-            //validateConfiguration(this);
+            var self = this;
+            validateConfiguration(this);
             
             var typeTemplate = ko.utils.arrayFirst(this.typeTemplates.Templates, function (template) {
-                return template.TypeName === typeName;
+                return self.isType(template.TemplateInstance, typeName);
             });
             
             if (!typeTemplate)

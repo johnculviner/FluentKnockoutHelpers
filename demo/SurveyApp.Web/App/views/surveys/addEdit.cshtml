@@ -119,18 +119,18 @@
                             <td data-bind="text: productTypeDisplay"></td>
                             <td data-bind="text: specSummary"></td>
                             <td class="actions">
-                                <button class="btn btn-info">
-                                    <i class="icon-edit" data-bind="click: function () { $root.editTechProduct($data) }"></i>
+                                <button class="btn btn-info" data-bind="click: function () { $root.editTechProduct($data) }">
+                                    <i class="icon-edit"></i>
                                 </button>
-                                <button class="btn btn-danger">
+                                <button class="btn btn-danger" data-bind="click: function () { $root.deleteTechProduct($data) }">
                                     <i class="icon-remove-sign"></i>
                                 </button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <button class="btn btn-success">
-                    <i class="icon-plus" data-bind="click: function () { $root.addTechProduct() }"></i>
+                <button class="btn btn-success" data-bind="click: addTechProduct">
+                    <i class="icon-plus"></i>
                     Add
                 </button>
             </fieldset>

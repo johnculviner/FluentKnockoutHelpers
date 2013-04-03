@@ -1,7 +1,10 @@
 ﻿define(['utility/typeHelper'],
 function (typeHelper) {
-    return function (apiTechProduct) {
+    return function (apiTechProduct /*undefined on add*/) {
         var self = this;
+
+        //if not specifed we are doing an add, default to 'laptop'
+        apiTechProduct = apiTechProduct || typeHelper.getTemplateInstance('laptop');
 
         //here NO custom mappings being performed here but we want a
         //javascript representation (on 'this') of a C# TechProduct

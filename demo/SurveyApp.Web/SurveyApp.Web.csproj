@@ -164,7 +164,7 @@
     <Content Include="App\durandal\composition.js" />
     <Content Include="App\durandal\events.js" />
     <Content Include="App\durandal\http.js" />
-    <Content Include="App\durandal\messageBox.html" />
+    <None Include="App\durandal\messageBox.cshtml" />
     <Content Include="App\durandal\messageBox.js" />
     <Content Include="App\durandal\modalDialog.js" />
     <Content Include="App\durandal\plugins\router.js" />
@@ -256,8 +256,8 @@
     <Content Include="Scripts\knockout.dirtyFlag.js" />
     <Content Include="Scripts\knockout.mapping-latest.debug.js" />
     <Content Include="Scripts\knockout.mapping-latest.js" />
-    <None Include="Scripts\knockout.validation.debug.js.foo" />
-    <None Include="Scripts\knockout.validation.js.foo" />
+    <Content Include="Scripts\knockout.validation.debug.js" />
+    <Content Include="Scripts\knockout.validation.js" />
     <Content Include="Scripts\lodash.js" />
     <Content Include="Scripts\sammy-0.7.4.js" />
     <Content Include="Scripts\sammy-0.7.4.min.js" />
