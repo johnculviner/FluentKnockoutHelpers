@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SurveyApp.Model.Models
 {
@@ -10,6 +11,7 @@ namespace SurveyApp.Model.Models
     #region Computer
     public abstract class Computer : TechProduct
     {
+        [Range(1,8000, ErrorMessage = ">8000?! This message will need to change in the future maybe...")]
         public int Mhz { get; set; }
         public int GigsOfRam { get; set; }
         public bool HasSsd { get; set; }
