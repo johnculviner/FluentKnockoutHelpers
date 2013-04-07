@@ -10,7 +10,7 @@ namespace SurveyApp.Web
         public static void Configure()
         {
             GlobalSettings.JsonSerializer = new JsonDotNetSerializer();
-            TypeMetadataHelper.BuildFor<ApiController>();
+            TypeMetadataHelper.BuildForAllEndpointSubclassesOf<ApiController>();
         }
     }
 

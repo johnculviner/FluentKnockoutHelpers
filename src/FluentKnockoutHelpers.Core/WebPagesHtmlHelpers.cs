@@ -79,11 +79,6 @@ namespace FluentKnockoutHelpers.Core
         {
             return viewModelPropertyName + (viewModelPropertyIsObservable ? "()" : string.Empty);
         }
-
-        public static IHtmlString TypeTemplateFor<TType>(this WebPageBase @this, bool includeDerivedTypes = true)
-        {
-            return new TypeTemplateBuilder().And<TType>(includeDerivedTypes);
-        }
     }
 
     public class KnockoutHelperForApi<TApi>

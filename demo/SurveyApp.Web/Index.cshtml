@@ -36,11 +36,9 @@
         }
         
         <script>
-            define("typeTemplates", function() {
-                return { }; @*@(this.TypeTemplateFor<TechProduct>());*@
+            define("typeMetadata", function() {
+                return @(TypeMetadataHelper.EmitTypeMetadataArray());
             });
-            
-            var x = @TypeMetadataHelper.EmitTypeMetadataModule()
         </script>
     </body>
 </html>

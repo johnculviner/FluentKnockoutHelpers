@@ -4,9 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Web;
-using System.Web.Mvc;
 
 namespace FluentKnockoutHelpers.Core.TypeMetadata
 {
@@ -20,27 +18,27 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
         /// </summary>
         /// <typeparam name="TControllerBaseType">The base type of controllers to scan</typeparam>
         /// <returns>A builder to add or remove additional types</returns>
-        public static void BuildFor<TControllerBaseType>()
+        public static void BuildForAllEndpointSubclassesOf<TControllerBaseType>()
         {
-            BuildFor<TControllerBaseType>(null, Assembly.GetCallingAssembly());
+            BuildForAllEndpointSubclassesOf<TControllerBaseType>(null, Assembly.GetCallingAssembly());
         }
 
-        public static void BuildFor<TControllerBaseType>(Action<TypeMetadataBuilder> additionalConfiguration)
+        public static void BuildForAllEndpointSubclassesOf<TControllerBaseType>(Action<TypeMetadataBuilder> additionalConfiguration)
         {
-            BuildFor<TControllerBaseType>(additionalConfiguration, Assembly.GetCallingAssembly());
+            BuildForAllEndpointSubclassesOf<TControllerBaseType>(additionalConfiguration, Assembly.GetCallingAssembly());
         }
 
-        private static void BuildFor<TControllerBaseType>(Action<TypeMetadataBuilder> additionalConfiguration, Assembly endpointContainingAssembly)
+        private static void BuildForAllEndpointSubclassesOf<TControllerBaseType>(Action<TypeMetadataBuilder> additionalConfiguration, Assembly endpointContainingAssembly)
         {
             ValidateSetup();
             var metadataModule = new TypeMetadataBuilder(typeof(TControllerBaseType), endpointContainingAssembly);
 
             if(additionalConfiguration != null)
                 additionalConfiguration(metadataModule);
-            BuildMetadataModule(metadataModule);
+            BuildMetadata(metadataModule);
         }
 
-        public static void BuildFor(Action<TypeMetadataBuilder> configuration)
+        public static void BuildForConfiguration(Action<TypeMetadataBuilder> configuration)
         {
             if(configuration == null)
                 throw new ArgumentNullException("configuration", "You must specify a configuration or use a different overload");
@@ -48,7 +46,7 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
             ValidateSetup();
             var metadataModule = new TypeMetadataBuilder();
             configuration(metadataModule);
-            BuildMetadataModule(metadataModule);
+            BuildMetadata(metadataModule);
         }
 
         private static void ValidateSetup()
@@ -57,16 +55,14 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
                 throw new InvalidOperationException("TypeMetadata.Build must only be called once per AppDomain in Application_Start");
         }
 
-        private static void BuildMetadataModule(TypeMetadataBuilder builder)
+        private static void BuildMetadata(TypeMetadataBuilder builder)
         {
-            var sb = new StringBuilder();
-            sb.AppendLine(GlobalSettings.JsonSerializer.ToJsonString(builder.Build()));
-            _metadataModule = sb.ToString();
+            _metadataModule = GlobalSettings.JsonSerializer.ToJsonString(builder.Build());
         }
 
-        public static IHtmlString EmitTypeMetadataModule()
+        public static IHtmlString EmitTypeMetadataArray()
         {
-            return new MvcHtmlString(_metadataModule);
+            return new HtmlString(_metadataModule);
         }
     }
 
@@ -89,13 +85,14 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
             var endpointReturnTypes =
                 endpointContainingAssembly
                     .GetTypes()
-                    .Where(t => t.IsSubclassOf(controllerBaseType))
+                    .Where(t => t.IsSubclassOf(controllerBaseType) && !Attribute.IsDefined(t, typeof(ExcludeMetadata)))
                     //these probably are actions...
                     .SelectMany(
                         x => x.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
                                  .Where(m => m.ReturnType != typeof (void) && !m.Name.StartsWith("get_"))
                     )
-                    .Select(x => x.ReturnType)
+                    .Where(method => !Attribute.IsDefined(method, typeof(ExcludeMetadata)))
+                    .Select(method => method.ReturnType)
                     .Where(t => !t.IsPrimitive)
                     .SelectMany(ProcessPossibleGenerics);
 
@@ -121,19 +118,6 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
             _topLevelTypes.Add(typeof(TType));
             return this;
         }
-
-        //private void And(Type type, bool includeSubclasses)
-        //{
-        //    if (includeSubclasses)
-        //    {
-        //        var subClasses = _allAppDomainTypes.Where(t => t.IsSubclassOf(type));
-
-        //        foreach (var subClass in subClasses)
-        //             _topLevelTypes.Add(subClass);
-        //    }
-
-        //    _topLevelTypes.Add(type);
-        //}
 
         public TypeMetadataBuilder Not<TType>()
         {
@@ -165,21 +149,21 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
         private static IEnumerable<FieldValidationRules> GetValidationRules(Type type)
         {
             var typeRules = new List<FieldValidationRules>();
-            var props = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            var props = type.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(p => !Attribute.IsDefined(p, typeof(ExcludeMetadata)));
 
-            foreach (var pi in props.Where(p => p.PropertyType.IsPrimitive))
+            foreach (var pi in props)
             {
                 var fieldRules = new FieldValidationRules();
-                WriteRuleIfHasAttribute<CreditCardAttribute>(pi, fieldRules, attr => new CreditCardValidationRule(attr));
-                WriteRuleIfHasAttribute<EmailAddressAttribute>(pi, fieldRules, attr => new EmailAddressValidationRule(attr));
-                WriteRuleIfHasAttribute<MaxLengthAttribute>(pi, fieldRules, attr => new MaxLengthValidationRule(attr));
-                WriteRuleIfHasAttribute<MinLengthAttribute>(pi, fieldRules, attr => new MinLengthValidationRule(attr));
-                WriteRuleIfHasAttribute<PhoneAttribute>(pi, fieldRules, attr => new PhoneValidationRule(attr));
-                WriteRuleIfHasAttribute<RangeAttribute>(pi, fieldRules, attr => new RangeValidationRule(attr));
-                WriteRuleIfHasAttribute<RegularExpressionAttribute>(pi, fieldRules, attr => new RegexValidationRule(attr));
                 WriteRuleIfHasAttribute<RequiredAttribute>(pi, fieldRules, attr => new RequiredValidationRule(attr));
+                WriteRuleIfHasAttribute<RangeAttribute>(pi, fieldRules, attr => new RangeValidationRule(attr));
+                WriteRuleIfHasAttribute<MinLengthAttribute>(pi, fieldRules, attr => new MinLengthValidationRule(attr));
+                WriteRuleIfHasAttribute<MaxLengthAttribute>(pi, fieldRules, attr => new MaxLengthValidationRule(attr));
+                WriteRuleIfHasAttribute<RegularExpressionAttribute>(pi, fieldRules, attr => new RegexValidationRule(attr));
+                WriteRuleIfHasAttribute<EmailAddressAttribute>(pi, fieldRules, attr => new EmailAddressValidationRule(attr));
+                WriteRuleIfHasAttribute<CompareAttribute>(pi, fieldRules, attr => new CompareValidationRule(attr));
+                WriteRuleIfHasAttribute<CreditCardAttribute>(pi, fieldRules, attr => new CreditCardValidationRule(attr));
+                WriteRuleIfHasAttribute<PhoneAttribute>(pi, fieldRules, attr => new PhoneValidationRule(attr));
                 WriteRuleIfHasAttribute<UrlAttribute>(pi, fieldRules, attr => new UrlValidationRule(attr));
-                WriteRuleIfHasAttribute<System.ComponentModel.DataAnnotations.CompareAttribute>(pi, fieldRules, attr => new CompareValidationRule(attr));
                 WriteRuleIfHasAttribute<StringLengthAttribute>(pi, fieldRules, attr => new MaxLengthValidationRule(attr));
                 WriteRuleIfHasAttribute<StringLengthAttribute>(pi, fieldRules, attr => new MinLengthValidationRule(attr));
 
@@ -206,7 +190,7 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
 
         //write a validation rule for a data annotations attributes if it exists
         private static void WriteRuleIfHasAttribute<TAttribute>(PropertyInfo pi, FieldValidationRules fieldValidationRules, Func<TAttribute, ValidationRule> factory)
-            where TAttribute : Attribute
+            where TAttribute : ValidationAttribute
         {
             var attr = pi.GetCustomAttribute<TAttribute>();
 
@@ -227,7 +211,7 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
             return defaultCtor == null ? null : defaultCtor.Invoke(null);
         }
 
-        private static void AddMemberTypes(Type subject, HashSet<Type> finalTypes)
+        private void AddMemberTypes(Type subject, HashSet<Type> finalTypes)
         {
             finalTypes.Add(subject);
 
@@ -236,8 +220,11 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
             var propsTypesToRecurse = subject.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(p => p.CanRead)
                 .Select(p => p.PropertyType)
-                .Where(t => !t.IsPrimitive)
+                //.Where(t => !t.IsPrimitive)
                 .SelectMany(ProcessPossibleGenerics)
+                //all subclasses of T to account for object hierarchies in the client
+                .SelectMany(t => _allAppDomainTypes.Where(x => x.IsSubclassOf(t)))
+                .Where(t => !Attribute.IsDefined(t, typeof(ExcludeMetadata)))
                 .Where(t => !finalTypes.Contains(t))
                 //really this should being used on user DTO types
                 //cant think of a reason to be sending validation or creating template instances

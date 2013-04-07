@@ -180,8 +180,7 @@
     <Content Include="App\knockoutPlugins\bindingHandlers\datepicker.js" />
     <Content Include="App\main.js" />
     <Content Include="App\requirePlugins\async.js" />
-    <Content Include="App\utility\typeHelper.js" />
-    <Content Include="App\utility\validationHelper.js" />
+    <Content Include="App\utility\typeMetadataHelper.js" />
     <Content Include="App\viewmodels\surveys\addEditTechProductModal.js" />
     <Content Include="App\viewmodels\surveys\survey.js" />
     <Content Include="App\viewmodels\surveys\techProduct.js" />

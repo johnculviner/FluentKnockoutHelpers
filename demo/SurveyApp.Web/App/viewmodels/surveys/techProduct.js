@@ -1,10 +1,10 @@
-﻿define(['utility/typeHelper'],
-function (typeHelper) {
+﻿define(['utility/typeMetadataHelper'],
+function (typeMetadataHelper) {
     return function (apiTechProduct /*undefined on add*/) {
         var self = this;
 
         //if not specifed we are doing an add, default to 'laptop'
-        apiTechProduct = apiTechProduct || typeHelper.getTemplateInstance('laptop');
+        apiTechProduct = apiTechProduct || typeMetadataHelper.getTemplateInstance('laptop');
 
         //here NO custom mappings being performed here but we want a
         //javascript representation (on 'this') of a C# TechProduct
@@ -13,11 +13,11 @@ function (typeHelper) {
 
         //#region Computer
         self.isDesktop = ko.computed(function () {
-            return typeHelper.isType(self, 'Desktop');
+            return typeMetadataHelper.isType(self, 'Desktop');
         });
         
         self.isLaptop = ko.computed(function () {
-            return typeHelper.isType(self, 'Laptop');
+            return typeMetadataHelper.isType(self, 'Laptop');
         });
 
         self.isComputer = ko.computed(function() {
@@ -33,11 +33,11 @@ function (typeHelper) {
 
         //#region Digital camera
         self.isPointAndShoot = ko.computed(function () {
-            return typeHelper.isType(self, 'PointAndShoot');
+            return typeMetadataHelper.isType(self, 'PointAndShoot');
         });
 
         self.isSlr = ko.computed(function () {
-            return typeHelper.isType(self, 'Slr');
+            return typeMetadataHelper.isType(self, 'Slr');
         });
 
         self.isDigitalCamera = ko.computed(function () {
@@ -78,10 +78,10 @@ function (typeHelper) {
 
         self.productType = ko.computed({
             read: function () {
-                return typeHelper.getTypeName(self);
+                return typeMetadataHelper.getTypeName(self);
             },
             write: function (typeName) {
-                typeHelper.createAndAssignType(typeName, self);
+                typeMetadataHelper.createAndAssignType(typeName, self);
             }
         });
     };

@@ -9,9 +9,11 @@ namespace SurveyApp.Model.Models
         public int SurveyId { get; set; }
         
         [Display(Name = "First Name")]
+        [Required]
         public string FirstName { get; set; }
 
         [Display(Name = "Last Name")]
+        [Required]
         public string LastName { get; set; }
 
         public Location FavoritePlace { get; set; }
@@ -20,6 +22,7 @@ namespace SurveyApp.Model.Models
         public Gender Gender { get; set; }
 
         [Display(Name = "Date Of Birth")]
+        [Required]
         public DateTime DateOfBirth { get; set; }
 
         [Display(Name = "Date Of Death")]

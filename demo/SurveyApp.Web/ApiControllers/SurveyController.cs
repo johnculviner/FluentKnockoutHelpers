@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using FluentKnockoutHelpers.Core.TypeMetadata;
 using SurveyApp.Model.Models;
 using SurveyApp.Model.Persistance;
 using System.Data.Entity;
@@ -18,6 +19,7 @@ namespace SurveyApp.Web.ApiControllers
         }
 
         // GET api/survey
+        [ExcludeMetadata]
         public IEnumerable<SurveySummary> GetAll()
         {
             //TODO make queryable

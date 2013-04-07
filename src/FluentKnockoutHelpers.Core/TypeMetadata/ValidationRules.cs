@@ -20,37 +20,25 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
         public string ErrorMessage { get; set; }
     }
 
-    public class CreditCardValidationRule : ValidationRule
+    public class RequiredValidationRule : ValidationRule
     {
-        public CreditCardValidationRule(CreditCardAttribute attribute) :
-            base("CreditCard", attribute)
+        public RequiredValidationRule(RequiredAttribute attribute) :
+            base("Required", attribute)
         {
         }
     }
 
-    public class EmailAddressValidationRule : ValidationRule
+    public class RangeValidationRule : ValidationRule
     {
-        public EmailAddressValidationRule(EmailAddressAttribute attribute) :
-            base("EmailAddress", attribute)
+        public RangeValidationRule(RangeAttribute attribute) :
+            base("Range", attribute)
         {
-        }
-    }
-
-    public class MaxLengthValidationRule : ValidationRule
-    {
-        public MaxLengthValidationRule(MaxLengthAttribute attribute) :
-            base("MaxLength", attribute)
-        {
-            Length = attribute.Length;
+            Maxmium = attribute.Maximum;
+            Minimum = attribute.Minimum;
         }
 
-        public MaxLengthValidationRule(StringLengthAttribute attribute) :
-            base("MaxLength", attribute)
-        {
-            Length = attribute.MaximumLength;
-        }
-
-        public int Length { get; private set; }
+        public object Maxmium { get; private set; }
+        public object Minimum { get; private set; }
     }
 
     public class MinLengthValidationRule : ValidationRule
@@ -70,25 +58,21 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
         public int Length { get; private set; }
     }
 
-    public class PhoneValidationRule : ValidationRule
+    public class MaxLengthValidationRule : ValidationRule
     {
-        public PhoneValidationRule(PhoneAttribute attribute) :
-            base("Phone", attribute)
+        public MaxLengthValidationRule(MaxLengthAttribute attribute) :
+            base("MaxLength", attribute)
         {
-        }
-    }
-
-    public class RangeValidationRule : ValidationRule
-    {
-        public RangeValidationRule(RangeAttribute attribute) :
-            base("Range", attribute)
-        {
-            Maxmium = attribute.Maximum;
-            Minimum = attribute.Minimum;
+            Length = attribute.Length;
         }
 
-        public object Maxmium { get; private set; }
-        public object Minimum { get; private set; }
+        public MaxLengthValidationRule(StringLengthAttribute attribute) :
+            base("MaxLength", attribute)
+        {
+            Length = attribute.MaximumLength;
+        }
+
+        public int Length { get; private set; }
     }
 
     public class RegexValidationRule : ValidationRule
@@ -102,18 +86,10 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
         public string Pattern { get; set; }
     }
 
-    public class RequiredValidationRule : ValidationRule
+    public class EmailAddressValidationRule : ValidationRule
     {
-        public RequiredValidationRule(RequiredAttribute attribute) :
-            base("Required", attribute)
-        {
-        }
-    }
-
-    public class UrlValidationRule : ValidationRule
-    {
-        public UrlValidationRule(UrlAttribute attribute) :
-            base("Url", attribute)
+        public EmailAddressValidationRule(EmailAddressAttribute attribute) :
+            base("EmailAddress", attribute)
         {
         }
     }
@@ -127,6 +103,30 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
         }
 
         public string OtherField { get; private set; }
+    }
+
+    public class CreditCardValidationRule : ValidationRule
+    {
+        public CreditCardValidationRule(CreditCardAttribute attribute) :
+            base("CreditCard", attribute)
+        {
+        }
+    }
+
+    public class PhoneValidationRule : ValidationRule
+    {
+        public PhoneValidationRule(PhoneAttribute attribute) :
+            base("Phone", attribute)
+        {
+        }
+    }
+
+    public class UrlValidationRule : ValidationRule
+    {
+        public UrlValidationRule(UrlAttribute attribute) :
+            base("Url", attribute)
+        {
+        }
     }
 
     public class ShortValidationRule : ValidationRule

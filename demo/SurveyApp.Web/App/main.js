@@ -5,8 +5,8 @@
     }
 });
 
-define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/viewEngine', 'durandal/plugins/router', 'typeTemplates', 'utility/typeHelper'],
-    function (app, viewLocator, system, viewEngine, router, typeTemplates, typeHelper) {
+define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/viewEngine', 'durandal/plugins/router', 'typeMetadata', 'utility/typeMetadataHelper'],
+    function (app, viewLocator, system, viewEngine, router, typeMetadata, typeMetadataHelper) {
     
     //>>excludeStart("build", true);
     system.debug(true);
@@ -28,11 +28,11 @@ define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/vie
         //Show the app by setting the root view model for our application with a transition.
         app.setRoot('viewmodels/shell', 'entrance');
         
-        //setup FluentKnockoutHelper's typeHelper for handling JavaScript 'instanciation' of class hierarchies
-        //typeTemplates is defined in index.cshtml as a result of this.TypeTemplateFor<TechProduct>()
-        typeHelper.configure(typeTemplates);
-        
-        //
+        //setup FluentKnockoutHelper's typeMetadataHelper for:
+        //•auto wireup of knockout.validation validations based on C# types and DataAnnotations
+        //•handling JavaScript 'instanciation' of class hierarchies
+        //typeMetadata is a require module defined in Index.cshtml as a result of a C# TypeMetadataHelper.EmitTypeMetadataArray() call
+        typeMetadataHelper.configure(typeMetadata);
     });
         
     function configureRouting() {
