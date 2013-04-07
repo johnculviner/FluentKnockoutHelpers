@@ -1,4 +1,5 @@
 ﻿@using System.Web.Optimization
+@using FluentKnockoutHelpers.Core.TypeMetadata
 @using SurveyApp.Model.Models
 @using SurveyApp.Web
 @using FluentKnockoutHelpers.Core
@@ -35,9 +36,11 @@
         }
         
         <script>
-            define("typeTemplates", function () {
-                return @(this.TypeTemplateFor<TechProduct>());
-            })
+            define("typeTemplates", function() {
+                return { }; @*@(this.TypeTemplateFor<TechProduct>());*@
+            });
+            
+            var x = @TypeMetadataHelper.EmitTypeMetadataModule()
         </script>
     </body>
 </html>

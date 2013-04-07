@@ -1,4 +1,5 @@
 ﻿using System.Web.Script.Serialization;
+using FluentKnockoutHelpers.Core.TypeMetadata;
 
 namespace FluentKnockoutHelpers.Core
 {

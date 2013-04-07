@@ -1,4 +1,4 @@
-﻿namespace FluentKnockoutHelpers.Core
+﻿namespace FluentKnockoutHelpers.Core.TypeMetadata
 {
     /// <summary>
     /// interface to json string serializer

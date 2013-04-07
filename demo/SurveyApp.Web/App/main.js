@@ -31,6 +31,8 @@ define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/vie
         //setup FluentKnockoutHelper's typeHelper for handling JavaScript 'instanciation' of class hierarchies
         //typeTemplates is defined in index.cshtml as a result of this.TypeTemplateFor<TechProduct>()
         typeHelper.configure(typeTemplates);
+        
+        //
     });
         
     function configureRouting() {

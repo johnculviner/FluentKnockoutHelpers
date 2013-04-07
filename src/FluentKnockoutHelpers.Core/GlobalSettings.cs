@@ -1,4 +1,6 @@
-﻿namespace FluentKnockoutHelpers.Core
+﻿using FluentKnockoutHelpers.Core.TypeMetadata;
+
+namespace FluentKnockoutHelpers.Core
 {
     /// <summary>
     /// The global settings of fluent knockout helpers
@@ -8,7 +10,7 @@
         private static IJsonSerializer _jsonSerializer = new DefaultJsonSerializer();
 
         /// <summary>
-        /// Supply a custom IJsonSerializer to use something other than the built-in MS default. Ex: Json.NET or ServiceStack
+        /// Supply a custom IJsonSerializer to use something other than the default JSON.NET. Ex: ServiceStack
         /// </summary>
         public static IJsonSerializer JsonSerializer
         {
