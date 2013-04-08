@@ -21,7 +21,17 @@ namespace SurveyApp.Web
     {
         public string ToJsonString(object toSerialize)
         {
-            return JsonConvert.SerializeObject(toSerialize);
+            var settings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+
+            return JsonConvert.SerializeObject(toSerialize, settings);
+        }
+
+        public bool SerializerRequiresAssembly
+        {
+            get { return true; }
         }
     }
 }

@@ -22,14 +22,18 @@ namespace SurveyApp.Model.Models
         public Gender Gender { get; set; }
 
         [Display(Name = "Date Of Birth")]
-        [Required]
         public DateTime DateOfBirth { get; set; }
 
         [Display(Name = "Date Of Death")]
         public DateTime? DateOfDeath { get; set; }
 
-        [Display(Name = "Likes WubWub")]
-        public bool LikesMusic { get; set; }
+        [Display(Name = "Likes Booleans")]
+        public bool LikesBooleans { get; set; }
+
+        [Display(Name = "Favorite Website")]
+        [Url]
+        [Required]
+        public string FavoriteWebsite { get; set; }
 
         [Display(Name = "Tech Products")]
         public List<TechProduct> TechProducts { get; set; }

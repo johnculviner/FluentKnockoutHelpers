@@ -16,6 +16,11 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
             ErrorMessage = errorMessage;
         }
 
+        protected ValidationRule(string name)
+        {
+            Name = name;
+        }
+
         public string Name { get; private set; }
         public string ErrorMessage { get; set; }
     }
@@ -105,14 +110,6 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
         public string OtherField { get; private set; }
     }
 
-    public class CreditCardValidationRule : ValidationRule
-    {
-        public CreditCardValidationRule(CreditCardAttribute attribute) :
-            base("CreditCard", attribute)
-        {
-        }
-    }
-
     public class PhoneValidationRule : ValidationRule
     {
         public PhoneValidationRule(PhoneAttribute attribute) :
@@ -132,7 +129,7 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
     public class ShortValidationRule : ValidationRule
     {
         public ShortValidationRule(bool nullable) :
-            base("ShortRule", "The specified value must be an integer between +/- 32,767")
+            base((nullable ? "Nullable" : "") + "Short")
         {
         }
     }
@@ -140,7 +137,7 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
     public class IntValidationRule : ValidationRule
     {
         public IntValidationRule(bool nullable) :
-            base("IntRule" + (nullable ? "?" : ""), "The specified value must be an integer between +/- 2,147,483,648")
+            base((nullable ? "Nullable" : "") + "Int")
         {
         }
     }
@@ -148,15 +145,15 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
     public class LongValidationRule : ValidationRule
     {
         public LongValidationRule(bool nullable) :
-            base("IntRule" + (nullable ? "?" : ""), "The specified value must be an integer between +/- 9,223,372,036,854,775,808")
+            base((nullable ? "Nullable" : "") + "Long", "The specified value must be an whole number between +/- 9,223,372,036,854,775,808")
         {
         }
     }
 
-    public class DecimalValidationRule : ValidationRule
+    public class FloatingPointValidationRule : ValidationRule
     {
-        public DecimalValidationRule(bool nullable) :
-            base("DecimalRule" + (nullable ? "?" : ""), "The specified value must be numeric")
+        public FloatingPointValidationRule(bool nullable) :
+            base((nullable ? "Nullable" : "") + "FloatingPoint", "The specified value must be numeric")
         {
         }
     }
@@ -164,7 +161,7 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
     public class DateTimeValidationRule : ValidationRule
     {
         public DateTimeValidationRule(bool nullable) :
-            base("DateTime" + (nullable ? "?" : ""), "The specified value must be a date")
+            base((nullable ? "Nullable" : "") + "DateTime", "The specified value must be a date")
         {
         }
     }

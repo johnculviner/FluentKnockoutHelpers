@@ -22,7 +22,6 @@ namespace SurveyApp.Web.ApiControllers
         [ExcludeMetadata]
         public IEnumerable<SurveySummary> GetAll()
         {
-            //TODO make queryable
             return _unitOfWork.Surveys.ToSurveySummaries();
         }
 

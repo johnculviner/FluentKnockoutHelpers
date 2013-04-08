@@ -5,11 +5,11 @@
 // • knockout.validation plugin (for applyValidation only)
 define(function () {
     return {
-        configure: function (typeMetadataource, typeFieldName /*if not using JSON.NET*/) {
+        configure: function (typeMetadatasource, typeFieldName /*if not using JSON.NET*/) {
             /// <summary>must be defined at JavaScript app start as the result of a C# TypeMetadataHelper.EmitTypeMetadataArray() call</summary>
             /// <param name="typeMetadataource" type="Object"></param>
 
-            this.typeMetadata = typeMetadataource;
+            this.allTypeMetadata = typeMetadatasource;
             
             if(typeFieldName)
                 this.typeFieldName = typeFieldName;
@@ -20,9 +20,9 @@ define(function () {
                 wireUpAdditionalValidationRules();
         },
         
-        typeMetadata: null, //must be defined, should be a type resulting from a a C# TypeMetadataHelper.EmitTypeMetadataArray() call
+        allTypeMetadata: null, //must be defined, should be a type resulting from a a C# TypeMetadataHelper.EmitTypeMetadataArray() call
         
-        typeFieldName: "$type", //JSON.NET default
+        typeFieldName: "$type", //JSON.NET default, servicestack is __type
         
         getTypeName: function (object) {
             /// <summary>determine the type name given an object. EX: $type='Foo.Bar.Baz, Foo'   will be   'Foo.Bar.Baz'</summary>
@@ -34,44 +34,46 @@ define(function () {
             if (!object[this.typeFieldName])
                 throw "type not specified in object!";
 
-            var result = /^[^,]*/.exec(ko.utils.unwrapObservable(object[this.typeFieldName]));
+            var result = ko.utils.unwrapObservable(object[this.typeFieldName]);
 
             if (!result)
                 throw "error parsing type information";
 
-            return result[0];
+            return result;
         },
 
-        isType: function (object, typeName) {
+        isType: function (object, typeNameContains) {
             /// <summary>is the passed object's type the passed typeName?</summary>
             /// <param name="object" type="Object"></param>
-            /// <param name="typeName" type="Object"></param>
+            /// <param name="typeNameContains" type="Object"></param>
 
-            return this.getTypeName(object).toLowerCase().indexOf(typeName.toLowerCase()) !== -1;
+            return this.getTypeName(object).toLowerCase().indexOf(typeNameContains.toLowerCase()) !== -1;
         },
         
-        getMetadata: function (typeName) {
+        getMetadata: function (typeNameContains) {
             /// <summary>get metatadata for a passed object typeName</summary>
             /// <param name="typeName" type="Object"></param>
 
             var self = this;
-            validateConfiguration(this);
+            validateConfiguration(self);
             
-            var typeMetadata = ko.utils.arrayFirst(this.typeMetadata, function (metadata) {
-                return self.isType(metadata.Instance, typeName);
+            var typeMetadata = ko.utils.arrayFirst(self.allTypeMetadata, function (metadata) {
+                return metadata.TypeName.toLowerCase().indexOf(typeNameContains.toLowerCase()) !== -1;
             });
             
             if (!typeMetadata)
-                throw "Type " + typeName + "could not be found in typeMetadata. Is it not defined?";
+                throw "Type " + typeName + " could not be found in typeMetadata. Is it not defined?";
 
             return typeMetadata;
         },
 
-        getInstance: function (typeName) {
-            return this.getMetadata(typeName).Instance;
+        getInstance: function (typeNameContains) {
+            var metaData = this.getMetadata(typeNameContains);
+            metaData.Instance[this.typeFieldName] = metaData.TypeName;
+            return metaData.Instance;
         },
         
-        createAndAssignType: function (typeName, referenceToAssign) {
+        createAndAssignType: function (typeNameContains, referenceToAssign) {
             /// <summary>lookup the passed typeName in the configured typeMetadata source and assign it with ko.mapping to the reference</summary>
             /// <param name="typeName" type="Object"></param>
             /// <param name="referenceToAssign" type="Object"></param>
@@ -80,13 +82,12 @@ define(function () {
 
             var self = this;
 
-            var oldtypeMetadata = ko.utils.arrayFirst(self.typeMetadata, function (metadata) {
+            var oldtypeMetadata = ko.utils.arrayFirst(self.allTypeMetadata, function (metadata) {
                 return self.isType(referenceToAssign, metadata.TypeName);
             });
 
-            var newtypeMetadata = self.getMetadata(typeName);
-
-            var instance = newtypeMetadata.Instance;
+            var metadata = self.getMetadata(typeNameContains);
+            var instance = metadata.Instance;
             
             //first, use ko.mapping to create/update observables fields on the reference in place
             //don't do the type until we are all done since many observables may be dependent on type
@@ -98,12 +99,12 @@ define(function () {
             //second, delete any fields on 'referenceToAssign' that are in the old template but not in the new
             //not strictly necessary but reduces over the wire garbage that would be thrown out by JSON deserializer anyways..
             for (var field in oldtypeMetadata.Instance) {
-                if (newtypeMetadata.Instance[field] === undefined)
+                if (instance[field] === undefined)
                     delete referenceToAssign[field];
             }
             
             //finally change the type on the object to the new type and fix mapping to recognize it on ko.mapping.toJSON
-            referenceToAssign[self.typeFieldName](instance[self.typeFieldName]);
+            referenceToAssign[self.typeFieldName](metadata.TypeName);
             referenceToAssign.__ko_mapping__.ignore.splice(self.typeFieldName);
         },
         
@@ -111,6 +112,8 @@ define(function () {
         applyValidation: function(object) {
             /// <summary>recursively apply validation defined in typeMetadata to an entire object graph</summary>
             /// <param name="objectGraph" type="Object">an object graph to apply validation to</param>
+
+            var self = this;
 
             if (!object || !object[this.typeFieldName])
                 return; //no type info here...
@@ -121,7 +124,23 @@ define(function () {
                 return;
 
             for (var fieldName in object) {
-                parseAndApplyValidations(fieldName, object[fieldName], typeMetadata);
+                var fieldObservable = object[fieldName];
+                parseAndApplyValidations(fieldName, fieldObservable, typeMetadata);
+
+                var fieldValue = ko.utils.unwrapObservable(fieldObservable);
+                
+                if (!fieldValue)
+                    continue;
+                
+                if (typeof fieldValue == "object")
+                    self.applyValidation(fieldValue); //continue to recurse down...
+                
+                if ($.isArray(fieldValue))
+                    //loop across array adding validation for each item
+                    $.each(fieldValue, function(idx, val) {
+                        var obj = ko.utils.unwrapObservable(val);
+                        self.applyValidation(obj);
+                    });
             }
         }
     };
@@ -131,13 +150,13 @@ define(function () {
         if (!jQuery || !ko || !ko.mapping)
             throw "typeMetadataHelper doesn't have its required dependencies of jQuery, Knockout.js and knockout.mapping";
 
-        if (!typeMetadataHelper.typeMetadata || !jQuery.isArray(typeMetadataHelper.typeMetadata))
+        if (!typeMetadataHelper.allTypeMetadata || !jQuery.isArray(typeMetadataHelper.allTypeMetadata))
             throw "typeMetadataHelper must be configured with the source of typeMetadata at Javascript App start. This is usually the result of a C# TypeMetadataHelper.EmitTypeMetadataArray() call";
     }
     
-    function parseAndApplyValidations(fieldName, fieldValue, typeMetadata, object) {
+    function parseAndApplyValidations(fieldName, fieldObservable, typeMetadata, object) {
         
-        if (!ko.isObservable(fieldValue))
+        if (!ko.isObservable(fieldObservable))
             return; //can't apply knockout.validation to a non observable field
 
         var fieldValidationRule = ko.utils.arrayFirst(typeMetadata.FieldValidationRules, function (field) {
@@ -148,31 +167,82 @@ define(function () {
             return;
 
 
+        //data annotations
         applyIfHasRule("Required", function (rule) {
-            wireUpRule(rule, 'required', true);
+            wireUpRuleWithPossibleMessageOverride(rule, 'required', true);
         });
         applyIfHasRule("Range", function (rule) {
-            wireUpRule(rule, 'min', rule.Minimum);
-            wireUpRule(rule, 'max', rule.Maxmium);
+            wireUpRuleWithPossibleMessageOverride(rule, 'min', rule.Minimum);
+            wireUpRuleWithPossibleMessageOverride(rule, 'max', rule.Maxmium);
         });
         applyIfHasRule("MinLength", function (rule) {
-            wireUpRule(rule, 'minLength', rule.Length);
+            wireUpRuleWithPossibleMessageOverride(rule, 'minLength', rule.Length);
         });
         applyIfHasRule("MaxLength", function (rule) {
-            wireUpRule(rule, 'maxLength', rule.Length);
+            wireUpRuleWithPossibleMessageOverride(rule, 'maxLength', rule.Length);
         });
         applyIfHasRule("Regex", function (rule) {
-            wireUpRule(rule, 'pattern', rule.Pattern);
+            wireUpRuleWithPossibleMessageOverride(rule, 'pattern', rule.Pattern);
         });
         applyIfHasRule("EmailAddress", function (rule) {
-            wireUpRule(rule, 'email', true);
+            wireUpRuleWithPossibleMessageOverride(rule, 'email', true);
         });
         applyIfHasRule("Compare", function (rule) {
-            wireUpRule(rule, 'equal', object[rule.OtherField]);
+            wireUpRuleWithPossibleMessageOverride(rule, 'equal', object[rule.OtherField]);
+        });
+        applyIfHasRule("Phone", function () {
+            fieldObservable.extend({ phoneUS: true });
+        });
+        applyIfHasRule("Url", function () {
+            fieldObservable.extend({ url: true });
+        });
+        
+
+        //ints
+        applyIfHasRule("Short", function () {
+            fieldObservable.extend({ required: true });
+            fieldObservable.extend({ 'short': true });
+        });
+        applyIfHasRule("NullableShort", function () {
+            fieldObservable.extend({ 'short': true });
+        });
+        
+        applyIfHasRule("Int", function () {
+            fieldObservable.extend({ required: true });
+            fieldObservable.extend({ 'int': true });
+        });
+        applyIfHasRule("NullableInt", function () {
+            fieldObservable.extend({ 'int': true });
+        });
+        
+        applyIfHasRule("Long", function () {
+            fieldObservable.extend({ required: true });
+            fieldObservable.extend({ 'long': true });
+        });
+        applyIfHasRule("NullableLong", function () {
+            fieldObservable.extend({ 'long': true });
         });
 
-        //TODO datatype rules
 
+        //floats
+        applyIfHasRule("FloatingPoint", function () {
+            fieldObservable.extend({ required: true });
+            fieldObservable.extend({ number: true });
+        });
+        applyIfHasRule("NullableFloatingPoint", function () {
+            fieldObservable.extend({ number: true });
+        });
+        
+
+        //other
+        applyIfHasRule("DateTime", function () {
+            fieldObservable.extend({ required: true });
+            fieldObservable.extend({ date: true });
+        });
+        applyIfHasRule("NullableDateTime", function () {
+            fieldObservable.extend({ date: true });
+        });
+        
         function applyIfHasRule(ruleName, applyRuleFunc) {
             var theRule = ko.utils.arrayFirst(fieldValidationRule.Rules, function (rule) {
                 return rule.Name === ruleName;
@@ -184,13 +254,15 @@ define(function () {
             applyRuleFunc(theRule);
         }
         
-        function wireUpRule(rule, koValidationRuleName, ruleValue) {
-            if (!rule.ErrorMessage)
-                fieldValue.extend({ koValidationRuleName: ruleValue }); //use built in validation & message
-            else
+        function wireUpRuleWithPossibleMessageOverride(rule, koValidationRuleName, ruleValue) {
+            if (!rule.ErrorMessage) {
+                var ruleObj = {};
+                ruleObj[koValidationRuleName] = ruleValue;
+                fieldObservable.extend(ruleObj); //use built in validation & message
+            } else
                 //use built in logic but override with custom server specified message
                 //by specifiying a "Single-Use Custom Rule" https://github.com/ericmbarnard/Knockout-Validation/wiki/Custom-Validation-Rules
-                fieldValue.extend({
+                fieldObservable.extend({
                     validation: {
                         validator: function (value) {
                             return ko.validation.rules[koValidationRuleName].validator(value, ruleValue);
@@ -201,105 +273,57 @@ define(function () {
         }
     }
     
-    //many from here: https://github.com/ericmbarnard/Knockout-Validation/wiki/User-Contributed-Rules
     function wireUpAdditionalValidationRules(){
 
-        ko.validation.rules['creditCard'] = {
-            //This rules checks the credit card details 
-            //The card number (inferred) as well as the card type (via the card type field) are required 
-            //This checks the length and starting digits of the card per the type
-            //It also checks the checksum (see http://en.wikipedia.org/wiki/Luhn_algorithm)
-            //The card type field must return 'vc' for visa, 'mc' for mastercard, 'ae' for amex
-            //This is based on code from here: http://www.rahulsingla.com/blog/2011/08/javascript-implementing-mod-10-validation-(luhn-formula)-for-credit-card-numbers
-            //Example:
-            //
-            //self.cardNumber.extend({ creditCard: self.cardType });
-            getValue: function (o) {
-                return (typeof o === 'function' ? o() : o);
+        ko.validation.rules['short'] = {
+            validator: function (value, validate) {
+                return !value || (validate && validateInt(value, 32767));
             },
-            validator: function (val, cardTypeField) {
-                var self = this;
-
-                var cctype = self.getValue(cardTypeField);
-                if (!cctype) return false;
-                cctype = cctype.toLowerCase();
-
-                if (val.length < 15) {
-                    return (false);
-                }
-                var match = cctype.match(/[a-zA-Z]{2}/);
-                if (!match) {
-                    return (false);
-                }
-
-                var number = val;
-                match = number.match(/[^0-9]/);
-                if (match) {
-                    return (false);
-                }
-
-                var fnMod10 = function (number) {
-                    var doubled = [];
-                    for (var i = number.length - 2; i >= 0; i = i - 2) {
-                        doubled.push(2 * number[i]);
-                    }
-                    var total = 0;
-                    for (var i = ((number.length % 2) == 0 ? 1 : 0) ; i < number.length; i = i + 2) {
-                        total += parseInt(number[i]);
-                    }
-                    for (var i = 0; i < doubled.length; i++) {
-                        var num = doubled[i];
-                        var digit;
-                        while (num != 0) {
-                            digit = num % 10;
-                            num = parseInt(num / 10);
-                            total += digit;
-                        }
-                    }
-
-                    if (total % 10 == 0) {
-                        return (true);
-                    } else {
-                        return (false);
-                    }
-                }
-
-                switch (cctype) {
-                    case 'vc':
-                    case 'mc':
-                    case 'ae':
-                        //Mod 10 check
-                        if (!fnMod10(number)) {
-                            return false;
-                        }
-                        break;
-                }
-                switch (cctype) {
-                    case 'vc':
-                        if (number[0] != '4' || (number.length != 13 && number.length != 16)) {
-                            return false;
-                        }
-                        break;
-                    case 'mc':
-                        if (number[0] != '5' || (number.length != 16)) {
-                            return false;
-                        }
-                        break;
-
-                    case 'ae':
-                        if (number[0] != '3' || (number.length != 15)) {
-                            return false;
-                        }
-                        break;
-
-                    default:
-                        return false;
-                }
-
-                return (true);
-            },
-            message: 'Card number not valid.'
+            message: "The specified value must be an whole number between +/- 32,767"
         };
+        
+        ko.validation.rules['int'] = {
+            validator: function (value, validate) {
+                return !value || (validate && validateInt(value, 2147483648));
+            },
+            message: "The specified value must be an whole number between +/- 2,147,483,648"
+        };
+        
+        ko.validation.rules['long'] = {
+            validator: function (value, validate) {
+                return !value || (validate && validateInt(value, 9223372036854775808));
+            },
+            message: "The specified value must be an whole number between +/- 9,223,372,036,854,775,808"
+        };
+        
+        ko.validation.rules['url'] = {
+            validator: function (value, validate) {
+                //the built in MS one is probably copywritten or something...
+                var expr = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+                var regex = new RegExp(expr);
+                return !value || (validate && regex.test(value));
+            },
+            message: "The specified value must be a URL"
+        };
+        
+        //allows for wierd non-int junk like commas but not .'s
+        function validateInt(value, range) {
+            if (!/^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/.test(value))
+                return false;
+            
+            if(typeof value == "string") {
+                value = value.replace(/[^0-9.]/g, "");
+                value = parseFloat(value);
+            }
+            
+            if (typeof value !== "number")
+                return false;
 
+            return value >= (-1 * range) &&
+                    value <= range &&
+                    value % 1 === 0;
+        }
+
+        ko.validation.registerExtenders();
     }
 });

@@ -11,5 +11,10 @@
         /// <param name="toSerialize">the object to serialize</param>
         /// <returns></returns>
         string ToJsonString(object toSerialize);
+
+        /// <summary>
+        /// does the serializer require the assembly for type information? EX: json.net = true, servicestack = false
+        /// </summary>
+        bool SerializerRequiresAssembly { get; }
     }
 }

@@ -1,6 +1,6 @@
-﻿define(function () {
-    //based on Ryan Niemeyer's (saves the day again as usual)
-    //http://stackoverflow.com/a/6613255/455556
+﻿//based on Ryan Niemeyer's (saves the day again as usual)
+//http://stackoverflow.com/a/6613255/455556
+define(function () {
     ko.bindingHandlers.datepicker = {
         init: function (element, valueAccessor, allBindingsAccessor) {
             //initialize datepicker with some optional options
@@ -18,6 +18,8 @@
                 $(element).datepicker("destroy");
             });
 
+            //essential for validation to work!
+            ko.bindingHandlers.validationCore.init(element, valueAccessor, allBindingsAccessor);
         },
         update: function (element, valueAccessor) {
             var value = ko.utils.unwrapObservable(valueAccessor()),

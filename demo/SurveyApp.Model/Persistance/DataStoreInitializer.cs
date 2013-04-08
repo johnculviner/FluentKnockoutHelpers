@@ -96,8 +96,9 @@ namespace SurveyApp.Model.Persistance
                 {
                     FirstName = "Bill",
                     LastName = "Gates",
-                    LikesMusic = true,
+                    LikesBooleans = true,
                     DateOfBirth = new DateTime(1955, 10, 28),
+                    FavoriteWebsite = "http://www.apple.com",
                     FavoriteColor = KnownColor.Green,
                     FavoriteFoods = new List<Food>
                         {
@@ -138,9 +139,10 @@ namespace SurveyApp.Model.Persistance
             {
                 FirstName = "Steve",
                 LastName = "Jobs",
-                LikesMusic = true,
+                LikesBooleans = true,
                 DateOfBirth = new DateTime(1955, 2, 24),
                 DateOfDeath = new DateTime(2011, 10, 5),
+                FavoriteWebsite = "http://www.google.com",
                 FavoriteColor = KnownColor.Silver,
                 FavoriteFoods = new List<Food>
                         {
@@ -182,7 +184,8 @@ namespace SurveyApp.Model.Persistance
             {
                 FirstName = "Marissa",
                 LastName = "Mayer",
-                LikesMusic = false,
+                LikesBooleans = false,
+                FavoriteWebsite = "http://www.yahoo.com",
                 DateOfBirth = new DateTime(1975, 5, 30),
                 FavoriteColor = KnownColor.Red,
                 FavoriteFoods = new List<Food>
@@ -222,8 +225,9 @@ namespace SurveyApp.Model.Persistance
             {
                 FirstName = "Mark",
                 LastName = "Zuckerberg",
-                LikesMusic = true,
+                LikesBooleans = true,
                 DateOfBirth = new DateTime(1984, 5, 14),
+                FavoriteWebsite = "http://www.linkedin.com",
                 FavoriteColor = KnownColor.Blue,
                 FavoriteFoods = new List<Food>
                         {
@@ -265,7 +269,8 @@ namespace SurveyApp.Model.Persistance
             {
                 FirstName = "Queen Elizabeth",
                 LastName = "II",
-                LikesMusic = false,
+                LikesBooleans = false,
+                FavoriteWebsite = "http://www.bbc.co.uk/",
                 DateOfBirth = new DateTime(1926, 4, 21),
                 FavoriteColor = KnownColor.Gold,
                 FavoriteFoods = new List<Food>

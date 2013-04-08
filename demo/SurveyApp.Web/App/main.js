@@ -33,6 +33,9 @@ define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/vie
         //•handling JavaScript 'instanciation' of class hierarchies
         //typeMetadata is a require module defined in Index.cshtml as a result of a C# TypeMetadataHelper.EmitTypeMetadataArray() call
         typeMetadataHelper.configure(typeMetadata);
+        
+        //configure knockout validations to have allow for nice errored field formatting
+        ko.validation.init({ decorateElement: true });
     });
         
     function configureRouting() {

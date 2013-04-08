@@ -12,9 +12,9 @@ namespace SurveyApp.Web
         {
             settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 
-            //instruct JSON.NET to serialize type information
-            //when needed for de-serialization. ex: abstract classes
-            settings.TypeNameHandling = TypeNameHandling.Auto;
+            //instruct JSON.NET to serialize type information for all objects
+            //allows for client validation and type hierarchies to work
+            settings.TypeNameHandling = TypeNameHandling.Objects;
         }
     }
 }

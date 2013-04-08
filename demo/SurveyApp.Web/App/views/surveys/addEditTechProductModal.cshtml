@@ -11,24 +11,24 @@
                 <label class="control-label">Product type</label>
                 <div class="controls">
                     <label class="radio inline">
-                        <input type="radio" name="techProductType" value="@typeof(Laptop).FullName" data-bind="checked: techProduct.productType"/>
+                        <input type="radio" name="techProductType" value="@(this.TypeNameFor<Laptop>())" data-bind="checked: techProduct.productType"/>
                         Laptop
                     </label>
                     <label class="radio inline">
-                        <input type="radio"  name="techProductType" value="@typeof(Desktop).FullName" data-bind="checked: techProduct.productType"/>
+                        <input type="radio"  name="techProductType" value="@(this.TypeNameFor<Desktop>())" data-bind="checked: techProduct.productType"/>
                         Desktop
                     </label>
                     <label class="radio inline">
-                        <input type="radio" name="techProductType" value="@typeof(PointAndShoot).FullName" data-bind="checked: techProduct.productType"/>
+                        <input type="radio" name="techProductType" value="@(this.TypeNameFor<PointAndShoot>())" data-bind="checked: techProduct.productType"/>
                         Point and Shoot
                     </label>
                     <label class="radio inline">
-                        <input type="radio" name="techProductType" value="@typeof(Slr).FullName" data-bind="checked: techProduct.productType"/>
+                        <input type="radio" name="techProductType" value="@(this.TypeNameFor<Slr>())" data-bind="checked: techProduct.productType"/>
                         SLR
                     </label>
                 </div>
             </div>
-              
+            
             <!-- ko if: techProduct.isComputer -->
                 @{var computer = this.KnockoutHelperForType<Computer>("techProduct", false);}
                 <div class="control-group">

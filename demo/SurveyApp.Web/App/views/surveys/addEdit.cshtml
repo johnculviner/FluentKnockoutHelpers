@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="control-group">
-                    <label for="FindLocation" class="control-label">Enter new location</label>
+                    <label for="FindLocation" class="control-label">Enter favorite location</label>
                     <div class="controls">
                         <input type="text" id="FindLocation" data-bind="autocomplete: { source: getMatchingLocations, select: selectLocation }" />
                     </div>
@@ -52,7 +52,7 @@
             </fieldset>
 
             <fieldset>
-                <legend>Demographic Information</legend>
+                <legend>Other Information</legend>
                 
                 @*Gender*@
                 <div class="control-group">
@@ -92,11 +92,19 @@
                     </div>
                 </div>
                 
-                @*Likes WubWub*@
+                @*Likes Booleans*@
                 <div class="control-group">
-                    @surveyHelper.LabelFor(x => x.LikesMusic).Class("control-label")
+                    @surveyHelper.LabelFor(x => x.LikesBooleans).Class("control-label")
                     <div class="controls">
-                        @surveyHelper.BoundCheckBoxFor(x => x.LikesMusic)
+                        @surveyHelper.BoundCheckBoxFor(x => x.LikesBooleans)
+                    </div>
+                </div>
+                
+                @*Favorite Website*@
+                <div class="control-group">
+                    @surveyHelper.LabelFor(x => x.FavoriteWebsite).Class("control-label")
+                    <div class="controls">
+                        @surveyHelper.BoundTextBoxFor(x => x.FavoriteWebsite)
                     </div>
                 </div>
                 

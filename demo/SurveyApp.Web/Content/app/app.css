@@ -112,3 +112,16 @@ legend + .control-group {
     margin-top: 0px;
 }
 /*#endregion*/
+
+/* validation errors */
+.validationMessage {
+    font-weight: bold;
+    color: #f00;
+    float: left;
+    clear: left;
+}
+
+.validationElement {
+    border: 1px solid #f00 !important;
+    background-color: #fee !important;
+}

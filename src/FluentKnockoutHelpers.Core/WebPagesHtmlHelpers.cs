@@ -79,6 +79,13 @@ namespace FluentKnockoutHelpers.Core
         {
             return viewModelPropertyName + (viewModelPropertyIsObservable ? "()" : string.Empty);
         }
+
+        public static IHtmlString TypeNameFor<TType>(this WebPageBase @this)
+        {
+            var type = typeof(TType);
+            return new HtmlString(GlobalSettings.JsonSerializer.SerializerRequiresAssembly
+                                ? string.Format("{0}, {1}", type.FullName, type.Assembly.GetName().Name) : type.FullName);
+        }
     }
 
     public class KnockoutHelperForApi<TApi>

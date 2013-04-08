@@ -140,7 +140,9 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
             return 
                 finalTypes.Select(finalType => new TypeMetadata
                 {
-                    TypeName = finalType.FullName,
+                    //provides compatiblity with both JSON.net and ServiceStack serializers on the method in which they serialize type information..
+                    TypeName = GlobalSettings.JsonSerializer.SerializerRequiresAssembly
+                                ? string.Format("{0}, {1}", finalType.FullName, finalType.Assembly.GetName().Name) : finalType.FullName,
                     Instance = GetInstanceFromDefaultCtor(finalType),
                     FieldValidationRules = GetValidationRules(finalType)
                 });
@@ -154,6 +156,8 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
             foreach (var pi in props)
             {
                 var fieldRules = new FieldValidationRules();
+
+                //data annotation attributes
                 WriteRuleIfHasAttribute<RequiredAttribute>(pi, fieldRules, attr => new RequiredValidationRule(attr));
                 WriteRuleIfHasAttribute<RangeAttribute>(pi, fieldRules, attr => new RangeValidationRule(attr));
                 WriteRuleIfHasAttribute<MinLengthAttribute>(pi, fieldRules, attr => new MinLengthValidationRule(attr));
@@ -161,20 +165,28 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
                 WriteRuleIfHasAttribute<RegularExpressionAttribute>(pi, fieldRules, attr => new RegexValidationRule(attr));
                 WriteRuleIfHasAttribute<EmailAddressAttribute>(pi, fieldRules, attr => new EmailAddressValidationRule(attr));
                 WriteRuleIfHasAttribute<CompareAttribute>(pi, fieldRules, attr => new CompareValidationRule(attr));
-                WriteRuleIfHasAttribute<CreditCardAttribute>(pi, fieldRules, attr => new CreditCardValidationRule(attr));
                 WriteRuleIfHasAttribute<PhoneAttribute>(pi, fieldRules, attr => new PhoneValidationRule(attr));
                 WriteRuleIfHasAttribute<UrlAttribute>(pi, fieldRules, attr => new UrlValidationRule(attr));
                 WriteRuleIfHasAttribute<StringLengthAttribute>(pi, fieldRules, attr => new MaxLengthValidationRule(attr));
                 WriteRuleIfHasAttribute<StringLengthAttribute>(pi, fieldRules, attr => new MinLengthValidationRule(attr));
 
+                //ints
                 WriteRuleIfIsType<short>(pi, fieldRules, () => new ShortValidationRule(false));
                 WriteRuleIfIsType<short?>(pi, fieldRules, () => new ShortValidationRule(true));
                 WriteRuleIfIsType<int>(pi, fieldRules, () => new IntValidationRule(false));
                 WriteRuleIfIsType<int?>(pi, fieldRules, () => new IntValidationRule(true));
                 WriteRuleIfIsType<long>(pi, fieldRules, () => new LongValidationRule(false));
                 WriteRuleIfIsType<long?>(pi, fieldRules, () => new LongValidationRule(true));
-                WriteRuleIfIsType<decimal>(pi, fieldRules, () => new DecimalValidationRule(false));
-                WriteRuleIfIsType<decimal?>(pi, fieldRules, () => new DecimalValidationRule(true));
+                
+                //floats
+                WriteRuleIfIsType<float>(pi, fieldRules, () => new FloatingPointValidationRule(false));
+                WriteRuleIfIsType<float?>(pi, fieldRules, () => new FloatingPointValidationRule(true));
+                WriteRuleIfIsType<double>(pi, fieldRules, () => new FloatingPointValidationRule(false));
+                WriteRuleIfIsType<double?>(pi, fieldRules, () => new FloatingPointValidationRule(true));
+                WriteRuleIfIsType<decimal>(pi, fieldRules, () => new FloatingPointValidationRule(false));
+                WriteRuleIfIsType<decimal?>(pi, fieldRules, () => new FloatingPointValidationRule(true));
+
+                //date
                 WriteRuleIfIsType<DateTime>(pi, fieldRules, () => new DateTimeValidationRule(false));
                 WriteRuleIfIsType<DateTime?>(pi, fieldRules, () => new DateTimeValidationRule(true));
 
@@ -220,11 +232,10 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
             var propsTypesToRecurse = subject.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(p => p.CanRead)
                 .Select(p => p.PropertyType)
-                //.Where(t => !t.IsPrimitive)
                 .SelectMany(ProcessPossibleGenerics)
                 //all subclasses of T to account for object hierarchies in the client
-                .SelectMany(t => _allAppDomainTypes.Where(x => x.IsSubclassOf(t)))
-                .Where(t => !Attribute.IsDefined(t, typeof(ExcludeMetadata)))
+                .SelectMany(t => _allAppDomainTypes.Where(x => x.IsSubclassOf(t)).Union(new []{ t }))
+                .Where(t => !Attribute.IsDefined(t, typeof (ExcludeMetadata)))
                 .Where(t => !finalTypes.Contains(t))
                 //really this should being used on user DTO types
                 //cant think of a reason to be sending validation or creating template instances

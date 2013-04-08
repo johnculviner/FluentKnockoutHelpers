@@ -224,7 +224,6 @@
     <Content Include="Content\images\glyphicons-halflings-white.png" />
     <Content Include="Content\images\glyphicons-halflings.png" />
     <Content Include="Global.asax" />
-    <Content Include="Content\app\Site.css" />
     <Content Include="Content\base\font\fontawesome-webfont.woff" />
     <Content Include="Content\base\font\fontawesome-webfont.ttf" />
     <Content Include="Content\base\font\fontawesome-webfont.eot" />
