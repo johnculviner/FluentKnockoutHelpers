@@ -1,10 +1,12 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Web;
+using Microsoft.CSharp;
 
 namespace FluentKnockoutHelpers.Core.TypeMetadata
 {
@@ -93,8 +95,8 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
                     )
                     .Where(method => !Attribute.IsDefined(method, typeof(ExcludeMetadata)))
                     .Select(method => method.ReturnType)
-                    .Where(t => !t.IsPrimitive)
-                    .SelectMany(ProcessPossibleGenerics);
+                    .SelectMany(ProcessPossibleGenerics)
+                    .Where(t => !t.IsPrimitive && !t.IsAbstract);
 
             foreach (var unprocessedType in endpointReturnTypes)
                 _topLevelTypes.Add(unprocessedType);
@@ -107,7 +109,7 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
 
             //List<T>, IEnumerable<T>, IQueryable<T> etc...
             if(typeof(IEnumerable).IsAssignableFrom(type))
-                return type.GetGenericArguments();
+                return type.GenericTypeArguments;
 
             //probably some user-created generic type (but may need to change!)
             return new[] {type}.Union(type.GetGenericArguments());
@@ -141,79 +143,136 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
                 finalTypes.Select(finalType => new TypeMetadata
                 {
                     //provides compatiblity with both JSON.net and ServiceStack serializers on the method in which they serialize type information..
-                    TypeName = GlobalSettings.JsonSerializer.SerializerRequiresAssembly
-                                ? string.Format("{0}, {1}", finalType.FullName, finalType.Assembly.GetName().Name) : finalType.FullName,
+                    Type = GetTypeName(finalType),
                     Instance = GetInstanceFromDefaultCtor(finalType),
-                    FieldValidationRules = GetValidationRules(finalType)
+                    FieldMetadata = GetFieldMetadata(finalType)
                 });
         }
 
-        private static IEnumerable<FieldValidationRules> GetValidationRules(Type type)
+        private static string GetTypeName(Type type)
         {
-            var typeRules = new List<FieldValidationRules>();
+            return GlobalSettings.JsonSerializer.SerializerRequiresAssembly
+                       ? string.Format("{0}, {1}", type.FullName, type.Assembly.GetName().Name)
+                       : type.FullName;
+        }
+
+        private static IEnumerable<FieldMetadata> GetFieldMetadata(Type type)
+        {
+            var typeRules = new List<FieldMetadata>();
             var props = type.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(p => !Attribute.IsDefined(p, typeof(ExcludeMetadata)));
 
             foreach (var pi in props)
             {
-                var fieldRules = new FieldValidationRules();
+                var metadata = new FieldMetadata();
 
                 //data annotation attributes
-                WriteRuleIfHasAttribute<RequiredAttribute>(pi, fieldRules, attr => new RequiredValidationRule(attr));
-                WriteRuleIfHasAttribute<RangeAttribute>(pi, fieldRules, attr => new RangeValidationRule(attr));
-                WriteRuleIfHasAttribute<MinLengthAttribute>(pi, fieldRules, attr => new MinLengthValidationRule(attr));
-                WriteRuleIfHasAttribute<MaxLengthAttribute>(pi, fieldRules, attr => new MaxLengthValidationRule(attr));
-                WriteRuleIfHasAttribute<RegularExpressionAttribute>(pi, fieldRules, attr => new RegexValidationRule(attr));
-                WriteRuleIfHasAttribute<EmailAddressAttribute>(pi, fieldRules, attr => new EmailAddressValidationRule(attr));
-                WriteRuleIfHasAttribute<CompareAttribute>(pi, fieldRules, attr => new CompareValidationRule(attr));
-                WriteRuleIfHasAttribute<PhoneAttribute>(pi, fieldRules, attr => new PhoneValidationRule(attr));
-                WriteRuleIfHasAttribute<UrlAttribute>(pi, fieldRules, attr => new UrlValidationRule(attr));
-                WriteRuleIfHasAttribute<StringLengthAttribute>(pi, fieldRules, attr => new MaxLengthValidationRule(attr));
-                WriteRuleIfHasAttribute<StringLengthAttribute>(pi, fieldRules, attr => new MinLengthValidationRule(attr));
+                WriteRuleIfHasAttribute<RequiredAttribute>(pi, metadata, attr => new RequiredValidationRule(attr));
+                WriteRuleIfHasAttribute<RangeAttribute>(pi, metadata, attr => new RangeValidationRule(attr));
+                WriteRuleIfHasAttribute<MinLengthAttribute>(pi, metadata, attr => new MinLengthValidationRule(attr));
+                WriteRuleIfHasAttribute<MaxLengthAttribute>(pi, metadata, attr => new MaxLengthValidationRule(attr));
+                WriteRuleIfHasAttribute<RegularExpressionAttribute>(pi, metadata, attr => new RegexValidationRule(attr));
+                WriteRuleIfHasAttribute<EmailAddressAttribute>(pi, metadata, attr => new EmailAddressValidationRule(attr));
+                WriteRuleIfHasAttribute<CompareAttribute>(pi, metadata, attr => new CompareValidationRule(attr));
+                WriteRuleIfHasAttribute<PhoneAttribute>(pi, metadata, attr => new PhoneValidationRule(attr));
+                WriteRuleIfHasAttribute<UrlAttribute>(pi, metadata, attr => new UrlValidationRule(attr));
+                WriteRuleIfHasAttribute<StringLengthAttribute>(pi, metadata, attr => new MaxLengthValidationRule(attr));
+                WriteRuleIfHasAttribute<StringLengthAttribute>(pi, metadata, attr => new MinLengthValidationRule(attr));
 
-                //ints
-                WriteRuleIfIsType<short>(pi, fieldRules, () => new ShortValidationRule(false));
-                WriteRuleIfIsType<short?>(pi, fieldRules, () => new ShortValidationRule(true));
-                WriteRuleIfIsType<int>(pi, fieldRules, () => new IntValidationRule(false));
-                WriteRuleIfIsType<int?>(pi, fieldRules, () => new IntValidationRule(true));
-                WriteRuleIfIsType<long>(pi, fieldRules, () => new LongValidationRule(false));
-                WriteRuleIfIsType<long?>(pi, fieldRules, () => new LongValidationRule(true));
-                
-                //floats
-                WriteRuleIfIsType<float>(pi, fieldRules, () => new FloatingPointValidationRule(false));
-                WriteRuleIfIsType<float?>(pi, fieldRules, () => new FloatingPointValidationRule(true));
-                WriteRuleIfIsType<double>(pi, fieldRules, () => new FloatingPointValidationRule(false));
-                WriteRuleIfIsType<double?>(pi, fieldRules, () => new FloatingPointValidationRule(true));
-                WriteRuleIfIsType<decimal>(pi, fieldRules, () => new FloatingPointValidationRule(false));
-                WriteRuleIfIsType<decimal?>(pi, fieldRules, () => new FloatingPointValidationRule(true));
+                metadata.Name = pi.Name;
+                metadata.Type = GetSimpleTypeName(pi.PropertyType);
 
-                //date
-                WriteRuleIfIsType<DateTime>(pi, fieldRules, () => new DateTimeValidationRule(false));
-                WriteRuleIfIsType<DateTime?>(pi, fieldRules, () => new DateTimeValidationRule(true));
-
-                if (fieldRules.Rules.Count == 0) 
-                    continue;
-                
-                fieldRules.FieldName = pi.Name;
-                typeRules.Add(fieldRules);
+                typeRules.Add(metadata);
             }
 
             return typeRules;
         }
 
+
+        public static string GetSimpleTypeName(Type type)
+        {
+            //ints
+            if (type == typeof(short))
+                return "short";
+            if (type == typeof(short?))
+                return "short?";
+            if (type == typeof(int))
+                return "int";
+            if (type == typeof(int?))
+                return "int?";
+            if (type == typeof(long))
+                return "long";
+            if (type == typeof(long?))
+                return "long?";
+
+
+            //floats
+            if (type == typeof(float))
+                return "float";
+            if (type == typeof(float?))
+                return "float?";
+            if (type == typeof(double))
+                return "double";
+            if (type == typeof(double?))
+                return "double?";
+            if (type == typeof(decimal))
+                return "decimal";
+            if (type == typeof(decimal?))
+                return "decimal?";
+
+
+            //dates
+            if (type == typeof(DateTime))
+                return "DateTime";
+            if (type == typeof(DateTime?))
+                return "DateTime?";
+
+
+            //string
+            if (type == typeof(string))
+                return "string";
+
+
+            //bools
+            if (type == typeof(bool))
+                return "bool";
+            if (type == typeof(bool?))
+                return "bool?";
+
+
+            //arrays
+            if (typeof(IEnumerable).IsAssignableFrom(type))
+                return GetSimpleIEnumerableTypeName(type);
+
+            
+            //other
+            return GetTypeName(type);
+        }
+
+        private static string GetSimpleIEnumerableTypeName(Type type)
+        {
+            if (type.IsArray && type.HasElementType)
+                return GetSimpleTypeName(type.GetElementType()) + "[]";
+
+            if (type.GenericTypeArguments.Length == 1)
+                return GetTypeName(type.GenericTypeArguments[0]) + "[]";
+
+            return GetTypeName(type);
+        }
+
         //write a validation rule for a data annotations attributes if it exists
-        private static void WriteRuleIfHasAttribute<TAttribute>(PropertyInfo pi, FieldValidationRules fieldValidationRules, Func<TAttribute, ValidationRule> factory)
+        private static void WriteRuleIfHasAttribute<TAttribute>(PropertyInfo pi, FieldMetadata fieldMetadata, Func<TAttribute, ValidationRule> factory)
             where TAttribute : ValidationAttribute
         {
             var attr = pi.GetCustomAttribute<TAttribute>();
 
             if (attr != null)
-                fieldValidationRules.Rules.Add(factory(attr));
+                fieldMetadata.Rules.Add(factory(attr));
         }
 
-        private static void WriteRuleIfIsType<TType>(PropertyInfo pi, FieldValidationRules fieldValidationRules, Func<ValidationRule> factory)
+        private static void WriteRuleIfIsType<TType>(PropertyInfo pi, FieldMetadata fieldMetadata, Func<ValidationRule> factory)
         {
             if (pi.PropertyType == typeof(TType))
-                fieldValidationRules.Rules.Add(factory());
+                fieldMetadata.Rules.Add(factory());
         }
 
         //get an instance of a type if it has a parameterless constructor
@@ -237,6 +296,7 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
                 .SelectMany(t => _allAppDomainTypes.Where(x => x.IsSubclassOf(t)).Union(new []{ t }))
                 .Where(t => !Attribute.IsDefined(t, typeof (ExcludeMetadata)))
                 .Where(t => !finalTypes.Contains(t))
+                .Where(t => !t.IsPrimitive && !t.IsAbstract)
                 //really this should being used on user DTO types
                 //cant think of a reason to be sending validation or creating template instances
                 //of .NET framework types (other than primitives) on the client.

@@ -6,12 +6,15 @@ namespace SurveyApp.Model.Models
     public abstract class TechProduct
     {
         public int TechProductId { get; set; }
+
+        [Required]
+        public string SerialNumber { get; set; }
     }
 
     #region Computer
     public abstract class Computer : TechProduct
     {
-        [Range(1, 10000, ErrorMessage = ">10000 Mhz?! I doubt it. (Not future proof!)")]
+        [Range(0, 10000, ErrorMessage = "The value must be a number less than 10000 (Not future proof!)")]
         public int Mhz { get; set; }
         public int GigsOfRam { get; set; }
         public bool HasSsd { get; set; }

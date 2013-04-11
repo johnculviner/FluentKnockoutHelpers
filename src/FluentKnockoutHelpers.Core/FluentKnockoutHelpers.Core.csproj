@@ -81,7 +81,7 @@
     <Compile Include="NodeBuilding\IKoComment.cs" />
     <Compile Include="NodeBuilding\SelfClosingKoComment.cs" />
     <Compile Include="TypeMetadata\ExcludeMetadata.cs" />
-    <Compile Include="TypeMetadata\FieldValidationRules.cs" />
+    <Compile Include="TypeMetadata\FieldMetadata.cs" />
     <Compile Include="TypeMetadata\TypeMetadata.cs" />
     <Compile Include="TypeMetadata\TypeMetadataHelper.cs" />
     <Compile Include="Utility\ExpressionParser.cs" />

@@ -1,3 +1,4 @@
+using System.Runtime.Serialization.Formatters;
 using System.Web.Http;
 using FluentKnockoutHelpers.Core;
 using FluentKnockoutHelpers.Core.TypeMetadata;
@@ -21,12 +22,7 @@ namespace SurveyApp.Web
     {
         public string ToJsonString(object toSerialize)
         {
-            var settings = new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            };
-
-            return JsonConvert.SerializeObject(toSerialize, settings);
+            return JsonConvert.SerializeObject(toSerialize);
         }
 
         public bool SerializerRequiresAssembly

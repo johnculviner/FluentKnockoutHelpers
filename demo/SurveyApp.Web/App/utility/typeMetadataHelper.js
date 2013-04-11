@@ -28,16 +28,13 @@ define(function () {
             /// <summary>determine the type name given an object. EX: $type='Foo.Bar.Baz, Foo'   will be   'Foo.Bar.Baz'</summary>
             /// <param name="object" type="Object"></param>
 
-            if (!object)
-                throw "object was null or not specified!";
-
-            if (!object[this.typeFieldName])
-                throw "type not specified in object!";
+            if (!object || !object[this.typeFieldName])
+                return null;
 
             var result = ko.utils.unwrapObservable(object[this.typeFieldName]);
 
             if (!result)
-                throw "error parsing type information";
+                return null;
 
             return result;
         },
@@ -47,7 +44,15 @@ define(function () {
             /// <param name="object" type="Object"></param>
             /// <param name="typeNameContains" type="Object"></param>
 
-            return this.getTypeName(object).toLowerCase().indexOf(typeNameContains.toLowerCase()) !== -1;
+            if (!object || !typeNameContains || !object[this.typeFieldName])
+                return false;
+
+            var typeName = this.getTypeName(object);
+            
+            if(!typeName)
+                return false;
+
+            return typeName.toLowerCase().indexOf(typeNameContains.toLowerCase()) !== -1;
         },
         
         getMetadata: function (typeNameContains) {
@@ -58,7 +63,7 @@ define(function () {
             validateConfiguration(self);
             
             var typeMetadata = ko.utils.arrayFirst(self.allTypeMetadata, function (metadata) {
-                return metadata.TypeName.toLowerCase().indexOf(typeNameContains.toLowerCase()) !== -1;
+                return metadata.Type.toLowerCase().indexOf(typeNameContains.toLowerCase()) !== -1;
             });
             
             if (!typeMetadata)
@@ -67,13 +72,42 @@ define(function () {
             return typeMetadata;
         },
 
-        getInstance: function (typeNameContains) {
-            var metaData = this.getMetadata(typeNameContains);
-            metaData.Instance[this.typeFieldName] = metaData.TypeName;
-            return metaData.Instance;
+        getInstance: function (typeNameContains, settings) {
+
+            settings = $.extend({
+                //defaults
+                
+                //for .NET primitive value types use null instead of the template value
+                //ex a C# int in the template would be '0;. this setting makes it 'null' which is generally
+                //what is desired for user input when starting from a template
+                nullDefaultValues: true,
+
+                //fields to exclude from the above mapping
+                exclude: []
+
+            }, settings);
+
+            var typeMetaData = this.getMetadata(typeNameContains);
+            var instance = jQuery.extend({}, typeMetaData.Instance);
+
+            var toNull = ['short', 'int', 'long', 'float', 'double', 'decimal', 'DateTime'];
+            $.each(settings.exclude, function (i, x) {
+                ko.utils.arrayRemoveItem(toNull, x);
+            });
+            
+            for (var field in instance) {
+                var fieldMetadata = getFieldMetadata(typeMetaData, field);
+
+                var idx = toNull.indexOf(fieldMetadata.Type);
+                if (idx != -1)
+                    instance[field] = null;
+            }
+
+            instance[this.typeFieldName] = typeMetaData.Type;
+            return instance;
         },
         
-        createAndAssignType: function (typeNameContains, referenceToAssign) {
+        getInstanceAndAssign: function (typeNameContains, referenceToAssign, settings) {
             /// <summary>lookup the passed typeName in the configured typeMetadata source and assign it with ko.mapping to the reference</summary>
             /// <param name="typeName" type="Object"></param>
             /// <param name="referenceToAssign" type="Object"></param>
@@ -83,28 +117,29 @@ define(function () {
             var self = this;
 
             var oldtypeMetadata = ko.utils.arrayFirst(self.allTypeMetadata, function (metadata) {
-                return self.isType(referenceToAssign, metadata.TypeName);
+                return self.isType(referenceToAssign, metadata.Type);
             });
 
-            var metadata = self.getMetadata(typeNameContains);
-            var instance = metadata.Instance;
+            var instance = self.getInstance(typeNameContains, settings);
             
             //first, use ko.mapping to create/update observables fields on the reference in place
             //don't do the type until we are all done since many observables may be dependent on type
-            var settings = {
+            var mappingSettings = {
                 ignore: [self.typeFieldName]
             };
-            ko.mapping.fromJS(instance, settings, referenceToAssign);
+            ko.mapping.fromJS(instance, mappingSettings, referenceToAssign);
             
             //second, delete any fields on 'referenceToAssign' that are in the old template but not in the new
             //not strictly necessary but reduces over the wire garbage that would be thrown out by JSON deserializer anyways..
-            for (var field in oldtypeMetadata.Instance) {
-                if (instance[field] === undefined)
-                    delete referenceToAssign[field];
+            if(oldtypeMetadata && oldtypeMetadata.Instance) {
+                for (var field in oldtypeMetadata.Instance) {
+                    if (instance[field] === undefined)
+                        delete referenceToAssign[field];
+                }
             }
             
             //finally change the type on the object to the new type and fix mapping to recognize it on ko.mapping.toJSON
-            referenceToAssign[self.typeFieldName](metadata.TypeName);
+            referenceToAssign[self.typeFieldName](instance[self.typeFieldName]);
             referenceToAssign.__ko_mapping__.ignore.splice(self.typeFieldName);
         },
         
@@ -120,7 +155,7 @@ define(function () {
 
             var typeMetadata = this.getMetadata(this.getTypeName(object));
 
-            if (!typeMetadata || !typeMetadata.FieldValidationRules)
+            if (!typeMetadata || !typeMetadata.FieldMetadata)
                 return;
 
             for (var fieldName in object) {
@@ -154,16 +189,20 @@ define(function () {
             throw "typeMetadataHelper must be configured with the source of typeMetadata at Javascript App start. This is usually the result of a C# TypeMetadataHelper.EmitTypeMetadataArray() call";
     }
     
+    function getFieldMetadata(typeMetadata, fieldName) {
+        return ko.utils.arrayFirst(typeMetadata.FieldMetadata, function (field) {
+            return field.Name === fieldName;
+        });
+    }
+
     function parseAndApplyValidations(fieldName, fieldObservable, typeMetadata, object) {
         
         if (!ko.isObservable(fieldObservable))
             return; //can't apply knockout.validation to a non observable field
 
-        var fieldValidationRule = ko.utils.arrayFirst(typeMetadata.FieldValidationRules, function (field) {
-            return field.FieldName === fieldName;
-        });
-        
-        if (!fieldValidationRule)
+        var fieldMetadata = getFieldMetadata(typeMetadata, fieldName);
+
+        if (!fieldMetadata)
             return;
 
 
@@ -197,54 +236,68 @@ define(function () {
             fieldObservable.extend({ url: true });
         });
         
+        //validations per data type
+        switch (fieldMetadata.Type) {
+            //ints
+            case "short":
+                fieldObservable.extend({ required: true });
+                fieldObservable.extend({ 'short': true });
+                break;
+            case "short?":
+                fieldObservable.extend({ 'short': true });
+                break;
+            case "int":
+                fieldObservable.extend({ required: true });
+                fieldObservable.extend({ 'int': true });
+                break;
+            case "int?":
+                fieldObservable.extend({ 'int': true });
+                break;
+            case "long":
+                fieldObservable.extend({ required: true });
+                fieldObservable.extend({ 'long': true });
+                break;
+            case "long?":
+                fieldObservable.extend({ 'long': true });
+                break;
 
-        //ints
-        applyIfHasRule("Short", function () {
-            fieldObservable.extend({ required: true });
-            fieldObservable.extend({ 'short': true });
-        });
-        applyIfHasRule("NullableShort", function () {
-            fieldObservable.extend({ 'short': true });
-        });
-        
-        applyIfHasRule("Int", function () {
-            fieldObservable.extend({ required: true });
-            fieldObservable.extend({ 'int': true });
-        });
-        applyIfHasRule("NullableInt", function () {
-            fieldObservable.extend({ 'int': true });
-        });
-        
-        applyIfHasRule("Long", function () {
-            fieldObservable.extend({ required: true });
-            fieldObservable.extend({ 'long': true });
-        });
-        applyIfHasRule("NullableLong", function () {
-            fieldObservable.extend({ 'long': true });
-        });
+
+                //floats
+            case "float":
+                fieldObservable.extend({ required: true });
+                fieldObservable.extend({ number: true });
+                break;
+            case "float?":
+                fieldObservable.extend({ number: true });
+                break;
+            case "double":
+                fieldObservable.extend({ required: true });
+                fieldObservable.extend({ number: true });
+                break;
+            case "double?":
+                fieldObservable.extend({ number: true });
+                break;
+            case "decimal":
+                fieldObservable.extend({ required: true });
+                fieldObservable.extend({ number: true });
+                break;
+            case "decimal?":
+                fieldObservable.extend({ number: true });
+                break;
 
 
-        //floats
-        applyIfHasRule("FloatingPoint", function () {
-            fieldObservable.extend({ required: true });
-            fieldObservable.extend({ number: true });
-        });
-        applyIfHasRule("NullableFloatingPoint", function () {
-            fieldObservable.extend({ number: true });
-        });
-        
-
-        //other
-        applyIfHasRule("DateTime", function () {
-            fieldObservable.extend({ required: true });
-            fieldObservable.extend({ date: true });
-        });
-        applyIfHasRule("NullableDateTime", function () {
-            fieldObservable.extend({ date: true });
-        });
+                //dates
+            case "DateTime":
+                fieldObservable.extend({ required: true });
+                fieldObservable.extend({ date: true });
+                break;
+            case "DateTime?":
+                fieldObservable.extend({ date: true });
+                break;
+        }
         
         function applyIfHasRule(ruleName, applyRuleFunc) {
-            var theRule = ko.utils.arrayFirst(fieldValidationRule.Rules, function (rule) {
+            var theRule = ko.utils.arrayFirst(fieldMetadata.Rules, function (rule) {
                 return rule.Name === ruleName;
             });
 

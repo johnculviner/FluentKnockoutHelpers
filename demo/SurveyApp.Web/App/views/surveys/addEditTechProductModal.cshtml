@@ -11,19 +11,19 @@
                 <label class="control-label">Product type</label>
                 <div class="controls">
                     <label class="radio inline">
-                        <input type="radio" name="techProductType" value="@(this.TypeNameFor<Laptop>())" data-bind="checked: techProduct.productType"/>
+                        <input type="radio" name="techProductType" value="@(this.TypeNameFor<Laptop>())" data-bind="checked: techProduct.productType, disable: techProduct.isProductTypeSet"/>
                         Laptop
                     </label>
                     <label class="radio inline">
-                        <input type="radio"  name="techProductType" value="@(this.TypeNameFor<Desktop>())" data-bind="checked: techProduct.productType"/>
+                        <input type="radio"  name="techProductType" value="@(this.TypeNameFor<Desktop>())" data-bind="checked: techProduct.productType, disable: techProduct.isProductTypeSet"/>
                         Desktop
                     </label>
                     <label class="radio inline">
-                        <input type="radio" name="techProductType" value="@(this.TypeNameFor<PointAndShoot>())" data-bind="checked: techProduct.productType"/>
+                        <input type="radio" name="techProductType" value="@(this.TypeNameFor<PointAndShoot>())" data-bind="checked: techProduct.productType, disable: techProduct.isProductTypeSet"/>
                         Point and Shoot
                     </label>
                     <label class="radio inline">
-                        <input type="radio" name="techProductType" value="@(this.TypeNameFor<Slr>())" data-bind="checked: techProduct.productType"/>
+                        <input type="radio" name="techProductType" value="@(this.TypeNameFor<Slr>())" data-bind="checked: techProduct.productType, disable: techProduct.isProductTypeSet"/>
                         SLR
                     </label>
                 </div>

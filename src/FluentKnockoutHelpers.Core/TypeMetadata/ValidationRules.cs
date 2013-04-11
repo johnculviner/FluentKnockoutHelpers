@@ -125,44 +125,4 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
         {
         }
     }
-
-    public class ShortValidationRule : ValidationRule
-    {
-        public ShortValidationRule(bool nullable) :
-            base((nullable ? "Nullable" : "") + "Short")
-        {
-        }
-    }
-
-    public class IntValidationRule : ValidationRule
-    {
-        public IntValidationRule(bool nullable) :
-            base((nullable ? "Nullable" : "") + "Int")
-        {
-        }
-    }
-
-    public class LongValidationRule : ValidationRule
-    {
-        public LongValidationRule(bool nullable) :
-            base((nullable ? "Nullable" : "") + "Long", "The specified value must be an whole number between +/- 9,223,372,036,854,775,808")
-        {
-        }
-    }
-
-    public class FloatingPointValidationRule : ValidationRule
-    {
-        public FloatingPointValidationRule(bool nullable) :
-            base((nullable ? "Nullable" : "") + "FloatingPoint", "The specified value must be numeric")
-        {
-        }
-    }
-
-    public class DateTimeValidationRule : ValidationRule
-    {
-        public DateTimeValidationRule(bool nullable) :
-            base((nullable ? "Nullable" : "") + "DateTime", "The specified value must be a date")
-        {
-        }
-    }
 }

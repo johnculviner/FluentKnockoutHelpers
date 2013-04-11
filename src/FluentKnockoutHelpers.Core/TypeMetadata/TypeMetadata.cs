@@ -8,8 +8,8 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
 {
     internal class TypeMetadata
     {
-        public string TypeName { get; set; }
+        public string Type { get; set; }
         public object Instance { get; set; }
-        public IEnumerable<FieldValidationRules> FieldValidationRules { get; set; }
+        public IEnumerable<FieldMetadata> FieldMetadata { get; set; }
     }
 }

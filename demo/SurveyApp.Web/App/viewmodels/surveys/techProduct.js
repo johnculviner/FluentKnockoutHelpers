@@ -3,12 +3,12 @@ function (typeMetadataHelper) {
     return function (apiTechProduct /*undefined on add*/) {
         var self = this;
 
-        //if not specifed we are doing an add, default to 'laptop'
-        apiTechProduct = apiTechProduct || typeMetadataHelper.getInstance('laptop');
-
-        //here NO custom mappings being performed here but we want a
-        //javascript representation (on 'this') of a C# TechProduct
-        ko.mapping.fromJS(apiTechProduct, {}, self);
+        if (!apiTechProduct)
+            self.$type = ko.observable();
+        else
+            //here NO custom mappings being performed here but we want a
+            //javascript representation (on 'this') of a C# TechProduct
+            ko.mapping.fromJS(apiTechProduct, {}, self);
 
 
         //#region Computer
@@ -75,17 +75,20 @@ function (typeMetadataHelper) {
         });
         //#endregion
 
-
         self.productType = ko.computed({
             read: function () {
                 //what type of product is this?
                 return typeMetadataHelper.getTypeName(self);
             },
             write: function (typeName) {
-                //UI requesting to change the type. find the type in typeMetadata, assign it to "this" and re-wire up validation
-                typeMetadataHelper.createAndAssignType(typeName, self);
+                //UI requesting to change the type. find the type in typeMetadata, assign it to "this" and wire up validation
+                typeMetadataHelper.getInstanceAndAssign(typeName, self);
                 typeMetadataHelper.applyValidation(self);
             }
+        });
+
+        self.isProductTypeSet = ko.computed(function () {
+            return self.productType() !== null;
         });
     };
 });

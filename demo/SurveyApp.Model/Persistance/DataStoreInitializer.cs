@@ -116,6 +116,7 @@ namespace SurveyApp.Model.Persistance
                         {
                             new Desktop
                                 {
+                                    SerialNumber = "A",
                                     Mhz = 4000,
                                     GigsOfRam = 32,
                                     HasSsd = true,
@@ -123,6 +124,7 @@ namespace SurveyApp.Model.Persistance
                                 },
                             new PointAndShoot
                                 {
+                                    SerialNumber = "B",
                                     MegaPixels = 20,
                                     XZoom = 30
                                 }
@@ -161,6 +163,7 @@ namespace SurveyApp.Model.Persistance
                         {
                             new Laptop
                                 {
+                                    SerialNumber = "C",
                                     Mhz = 2500,
                                     GigsOfRam = 16,
                                     HasSsd = true,
@@ -168,6 +171,7 @@ namespace SurveyApp.Model.Persistance
                                 },
                             new Slr
                                 {
+                                    SerialNumber = "D",
                                     MegaPixels = 18.2,
                                     NumberOfLenses = 10
                                 }
@@ -202,6 +206,7 @@ namespace SurveyApp.Model.Persistance
                         {
                             new Laptop
                                 {
+                                    SerialNumber = "E",
                                     Mhz = 2600,
                                     GigsOfRam = 8,
                                     HasSsd = false,
@@ -209,6 +214,7 @@ namespace SurveyApp.Model.Persistance
                                 },
                             new PointAndShoot
                                 {
+                                    SerialNumber = "F",
                                     MegaPixels = 18.2,
                                     XZoom = 22
                                 }
@@ -239,6 +245,7 @@ namespace SurveyApp.Model.Persistance
                         {
                             new Laptop
                                 {
+                                    SerialNumber = "G",
                                     Mhz = 2200,
                                     GigsOfRam = 8,
                                     HasSsd = false,
@@ -246,6 +253,7 @@ namespace SurveyApp.Model.Persistance
                                 },
                             new Desktop
                                 {
+                                    SerialNumber = "H",
                                     Mhz = 3200,
                                     GigsOfRam = 32,
                                     HasSsd = true,
@@ -253,6 +261,7 @@ namespace SurveyApp.Model.Persistance
                                 },
                             new PointAndShoot
                                 {
+                                    SerialNumber = "I",
                                     MegaPixels = 18.2,
                                     XZoom = 22
                                 }
@@ -296,6 +305,7 @@ namespace SurveyApp.Model.Persistance
                         {
                             new Desktop()
                                 {
+                                    SerialNumber = "J",
                                     Mhz = 1800,
                                     GigsOfRam = 4,
                                     HasSsd = false,

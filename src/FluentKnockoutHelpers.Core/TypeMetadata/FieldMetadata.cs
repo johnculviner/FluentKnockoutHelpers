@@ -2,13 +2,14 @@ using System.Collections.Generic;
 
 namespace FluentKnockoutHelpers.Core.TypeMetadata
 {
-    public class FieldValidationRules
+    public class FieldMetadata
     {
-        public FieldValidationRules()
+        public FieldMetadata()
         {
             Rules = new List<ValidationRule>();
         }
+        public string Name { get; set; }
+        public string Type { get; set; }
         public List<ValidationRule> Rules { get; set; }
-        public string FieldName { get; set; }
     }
 }
