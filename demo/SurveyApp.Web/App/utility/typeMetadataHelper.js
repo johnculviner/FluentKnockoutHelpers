@@ -39,6 +39,10 @@ define(function () {
             return result;
         },
 
+        hasType: function (object) {
+            return object && object[this.typeFieldName];
+        },
+
         isType: function (object, typeNameContains) {
             /// <summary>is the passed object's type the passed typeName?</summary>
             /// <param name="object" type="Object"></param>
@@ -77,8 +81,8 @@ define(function () {
             settings = $.extend({
                 //defaults
                 
-                //for .NET primitive value types use null instead of the template value
-                //ex a C# int in the template would be '0;. this setting makes it 'null' which is generally
+                //for .NET primitive value types use null instead of the template value if it is default(TValueType)
+                //ex a C# int in the template would be '0'. this setting makes it 'null' which is generally
                 //what is desired for user input when starting from a template
                 nullDefaultValues: true,
 
@@ -90,17 +94,18 @@ define(function () {
             var typeMetaData = this.getMetadata(typeNameContains);
             var instance = jQuery.extend({}, typeMetaData.Instance);
 
-            var toNull = ['short', 'int', 'long', 'float', 'double', 'decimal', 'DateTime'];
-            $.each(settings.exclude, function (i, x) {
-                ko.utils.arrayRemoveItem(toNull, x);
-            });
+            var toNullTypes = ['short', 'int', 'long', 'float', 'double', 'decimal']; //and DateTime
             
             for (var field in instance) {
                 var fieldMetadata = getFieldMetadata(typeMetaData, field);
 
-                var idx = toNull.indexOf(fieldMetadata.Type);
-                if (idx != -1)
+                if (!fieldMetadata)
+                    continue;
+
+                if((instance[field] === 0 && toNullTypes.indexOf(fieldMetadata.Type) !== -1) || //numeric
+                    instance[field] === "0001-01-01T00:00:00") //datetime
                     instance[field] = null;
+                
             }
 
             instance[this.typeFieldName] = typeMetaData.Type;
