@@ -83,12 +83,7 @@ function (typeMetadataHelper) {
             write: function (typeName) {
                 //UI requesting to change the type. find the type in typeMetadata, assign it to "this" and wire up validation
                 typeMetadataHelper.getInstanceAndAssign(typeName, self);
-                typeMetadataHelper.applyValidation(self);
             }
-        });
-
-        self.isProductTypeSet = ko.computed(function () {
-            return self.productType() !== null;
         });
     };
 });

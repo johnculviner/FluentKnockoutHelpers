@@ -7,23 +7,31 @@
     <div class="modal-body">
         <form class="form-horizontal">
             
+            @{var techProduct = this.KnockoutHelperForType<TechProduct>("techProduct", false);}
+            <div class="control-group">
+                @techProduct.BootstrapLabelFor(x => x.SerialNumber)
+                <div class="controls">
+                    @techProduct.BoundTextBoxFor(x => x.SerialNumber)
+                </div>
+            </div>
+
             <div class="control-group">
                 <label class="control-label">Product type</label>
                 <div class="controls">
                     <label class="radio inline">
-                        <input type="radio" name="techProductType" value="@(this.TypeNameFor<Laptop>())" data-bind="checked: techProduct.productType, disable: techProduct.isProductTypeSet"/>
+                        <input type="radio" name="techProductType" value="@(this.TypeNameFor<Laptop>())" data-bind="checked: techProduct.productType"/>
                         Laptop
                     </label>
                     <label class="radio inline">
-                        <input type="radio"  name="techProductType" value="@(this.TypeNameFor<Desktop>())" data-bind="checked: techProduct.productType, disable: techProduct.isProductTypeSet"/>
+                        <input type="radio"  name="techProductType" value="@(this.TypeNameFor<Desktop>())" data-bind="checked: techProduct.productType"/>
                         Desktop
                     </label>
                     <label class="radio inline">
-                        <input type="radio" name="techProductType" value="@(this.TypeNameFor<PointAndShoot>())" data-bind="checked: techProduct.productType, disable: techProduct.isProductTypeSet"/>
+                        <input type="radio" name="techProductType" value="@(this.TypeNameFor<PointAndShoot>())" data-bind="checked: techProduct.productType"/>
                         Point and Shoot
                     </label>
                     <label class="radio inline">
-                        <input type="radio" name="techProductType" value="@(this.TypeNameFor<Slr>())" data-bind="checked: techProduct.productType, disable: techProduct.isProductTypeSet"/>
+                        <input type="radio" name="techProductType" value="@(this.TypeNameFor<Slr>())" data-bind="checked: techProduct.productType"/>
                         SLR
                     </label>
                 </div>

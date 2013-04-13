@@ -94,7 +94,7 @@ define(function () {
             var typeMetaData = this.getMetadata(typeNameContains);
             var instance = jQuery.extend({}, typeMetaData.Instance);
 
-            var toNullTypes = ['short', 'int', 'long', 'float', 'double', 'decimal']; //and DateTime
+            var numericToNull = ['short', 'int', 'long', 'float', 'double', 'decimal']; //and DateTime
             
             for (var field in instance) {
                 var fieldMetadata = getFieldMetadata(typeMetaData, field);
@@ -102,8 +102,9 @@ define(function () {
                 if (!fieldMetadata)
                     continue;
 
-                if((instance[field] === 0 && toNullTypes.indexOf(fieldMetadata.Type) !== -1) || //numeric
-                    instance[field] === "0001-01-01T00:00:00") //datetime
+                if((instance[field] === 0 && numericToNull.indexOf(fieldMetadata.Type) !== -1) || //numeric
+                    instance[field] === "0001-01-01T00:00:00" && //datetime
+                    settings.exclude.indexOf(field) == -1)
                     instance[field] = null;
                 
             }
@@ -143,22 +144,26 @@ define(function () {
                 }
             }
             
+            if (ko.validation)
+                self.applyValidation(referenceToAssign, instance[self.typeFieldName]);
+
             //finally change the type on the object to the new type and fix mapping to recognize it on ko.mapping.toJSON
             referenceToAssign[self.typeFieldName](instance[self.typeFieldName]);
             referenceToAssign.__ko_mapping__.ignore.splice(self.typeFieldName);
         },
         
         //REQUIRES knockout.validation plugin in global namespace
-        applyValidation: function(object) {
+        applyValidation: function(object, /*optional*/typeName) {
             /// <summary>recursively apply validation defined in typeMetadata to an entire object graph</summary>
             /// <param name="objectGraph" type="Object">an object graph to apply validation to</param>
+            /// <param name="typeName" type="String">treat object as type, don't look for it</param>
 
             var self = this;
 
             if (!object || !object[this.typeFieldName])
                 return; //no type info here...
 
-            var typeMetadata = this.getMetadata(this.getTypeName(object));
+            var typeMetadata = this.getMetadata(typeName ? typeName : this.getTypeName(object));
 
             if (!typeMetadata || !typeMetadata.FieldMetadata)
                 return;
