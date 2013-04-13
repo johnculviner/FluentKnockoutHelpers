@@ -256,7 +256,6 @@
     <Content Include="Scripts\knockout.dirtyFlag.js" />
     <Content Include="Scripts\knockout.mapping-latest.debug.js" />
     <Content Include="Scripts\knockout.mapping-latest.js" />
-    <Content Include="Scripts\knockout.validation.debug.js" />
     <Content Include="Scripts\knockout.validation.js" />
     <Content Include="Scripts\lodash.js" />
     <Content Include="Scripts\sammy-0.7.4.js" />

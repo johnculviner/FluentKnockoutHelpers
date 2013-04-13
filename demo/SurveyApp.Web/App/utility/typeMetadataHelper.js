@@ -170,12 +170,19 @@ define(function () {
 
             for (var fieldName in object) {
                 var fieldObservable = object[fieldName];
+                
+                if (!ko.isObservable(fieldObservable))
+                    continue; //can't apply knockout.validation to a non observable field
+
                 parseAndApplyValidations(fieldName, fieldObservable, typeMetadata);
 
+                if(fieldObservable.__valid__) //has ko validation on it
+                    fieldObservable.isModified(false); //un-mark fields as being modified if they are since we are now applying validation
+
                 var fieldValue = ko.utils.unwrapObservable(fieldObservable);
-                
+
                 if (!fieldValue)
-                    continue;
+                    continue; //no more recursion possible
                 
                 if (typeof fieldValue == "object")
                     self.applyValidation(fieldValue); //continue to recurse down...
@@ -207,14 +214,10 @@ define(function () {
 
     function parseAndApplyValidations(fieldName, fieldObservable, typeMetadata, object) {
         
-        if (!ko.isObservable(fieldObservable))
-            return; //can't apply knockout.validation to a non observable field
-
         var fieldMetadata = getFieldMetadata(typeMetadata, fieldName);
 
         if (!fieldMetadata)
             return;
-
 
         //data annotations
         applyIfHasRule("Required", function (rule) {
@@ -250,22 +253,19 @@ define(function () {
         switch (fieldMetadata.Type) {
             //ints
             case "short":
-                fieldObservable.extend({ required: true });
-                fieldObservable.extend({ 'short': true });
+                fieldObservable.extend({ required: true, 'short': true });
                 break;
             case "short?":
                 fieldObservable.extend({ 'short': true });
                 break;
             case "int":
-                fieldObservable.extend({ required: true });
-                fieldObservable.extend({ 'int': true });
+                fieldObservable.extend({ required: true, 'int': true });
                 break;
             case "int?":
                 fieldObservable.extend({ 'int': true });
                 break;
             case "long":
-                fieldObservable.extend({ required: true });
-                fieldObservable.extend({ 'long': true });
+                fieldObservable.extend({ required: true, 'long': true });
                 break;
             case "long?":
                 fieldObservable.extend({ 'long': true });
@@ -274,22 +274,19 @@ define(function () {
 
                 //floats
             case "float":
-                fieldObservable.extend({ required: true });
-                fieldObservable.extend({ number: true });
+                fieldObservable.extend({ required: true, number: true });
                 break;
             case "float?":
                 fieldObservable.extend({ number: true });
                 break;
             case "double":
-                fieldObservable.extend({ required: true });
-                fieldObservable.extend({ number: true });
+                fieldObservable.extend({ required: true, number: true });
                 break;
             case "double?":
                 fieldObservable.extend({ number: true });
                 break;
             case "decimal":
-                fieldObservable.extend({ required: true });
-                fieldObservable.extend({ number: true });
+                fieldObservable.extend({ required: true, number: true });
                 break;
             case "decimal?":
                 fieldObservable.extend({ number: true });
@@ -298,8 +295,7 @@ define(function () {
 
                 //dates
             case "DateTime":
-                fieldObservable.extend({ required: true });
-                fieldObservable.extend({ date: true });
+                fieldObservable.extend({ required: true, date: true });
                 break;
             case "DateTime?":
                 fieldObservable.extend({ date: true });

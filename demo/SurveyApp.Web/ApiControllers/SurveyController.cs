@@ -11,7 +11,7 @@ namespace SurveyApp.Web.ApiControllers
 {
     public class SurveyController : ApiController
     {
-        private IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         public SurveyController(IUnitOfWork unitOfWork)
         {
