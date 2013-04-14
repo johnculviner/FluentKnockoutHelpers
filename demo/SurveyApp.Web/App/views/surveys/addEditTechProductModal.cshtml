@@ -29,13 +29,15 @@
                 </div>
             </div>
             
-            @{var techProduct = this.KnockoutHelperForType<TechProduct>("techProduct", false);}
-            <div class="control-group">
-                @techProduct.BootstrapLabelFor(x => x.SerialNumber)
-                <div class="controls">
-                    @techProduct.BoundTextBoxFor(x => x.SerialNumber)
+            <!-- ko if: techProduct.isProductTypeSet -->
+                @{var techProduct = this.KnockoutHelperForType<TechProduct>("techProduct", false);}
+                <div class="control-group">
+                    @techProduct.BootstrapLabelFor(x => x.SerialNumber)
+                    <div class="controls">
+                        @techProduct.BoundTextBoxFor(x => x.SerialNumber)
+                    </div>
                 </div>
-            </div>
+            <!-- /ko -->
 
             <!-- ko if: techProduct.isComputer -->
                 @{var computer = this.KnockoutHelperForType<Computer>("techProduct", false);}

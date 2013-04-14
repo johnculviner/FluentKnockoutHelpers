@@ -106,5 +106,9 @@ function (typeMetadataHelper, api) {
             }
         });
         //#endregion
+        
+        self.isProductTypeSet = ko.computed(function () {
+            return self.productType() !== null;
+        });
     };
 });
