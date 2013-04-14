@@ -4,7 +4,7 @@
 <section>
     @*SURVEYS LIST*@
     @{
-        var summaries = this.KnockoutHelperForApi<SurveyController>().Endpoint(api => api.GetAll(), "surveySummaries", true);
+        var summaries = this.KnockoutHelperForApi<SurveyController>().Endpoint(api => api.Get(), "surveySummaries", true);
     }
 
     <h1>
@@ -55,7 +55,7 @@
 
     @*SELECTED SURVEY DETAIL*@
     @{
-        var detail = this.KnockoutHelperForApi<SurveyController>().Endpoint(api => api.GetAll().Single(), "selectedSurvey", true);
+        var detail = this.KnockoutHelperForApi<SurveyController>().Endpoint(api => api.Get().Single(), "selectedSurvey", true);
     }
     <fieldset style="padding-left: 20px;" data-bind="if: selectedSurvey() != null">
         <legend><span @detail.DataBind(db => db.Text(x => x.LastName))></span>, <span @detail.DataBind(db => db.Text(x => x.FirstName))></span></legend>

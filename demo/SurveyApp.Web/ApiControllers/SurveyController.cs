@@ -20,7 +20,7 @@ namespace SurveyApp.Web.ApiControllers
 
         // GET api/survey
         [ExcludeMetadata]
-        public IEnumerable<SurveySummary> GetAll()
+        public IEnumerable<SurveySummary> Get()
         {
             return _unitOfWork.Surveys.ToSurveySummaries();
         }

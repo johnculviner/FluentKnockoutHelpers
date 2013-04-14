@@ -76,7 +76,7 @@ define(function () {
             return typeMetadata;
         },
 
-        getInstance: function (typeNameContains, settings) {
+        getInstance: function (typeNameContains, settings /*optional*/) {
 
             settings = $.extend({
                 //defaults
@@ -113,14 +113,18 @@ define(function () {
             return instance;
         },
         
-        getInstanceAndAssign: function (typeNameContains, referenceToAssign, settings) {
+        getInstanceAndAssign: function (typeNameContains, referenceToAssign, settings /*optional*/) {
             /// <summary>lookup the passed typeName in the configured typeMetadata source and assign it with ko.mapping to the reference</summary>
-            /// <param name="typeName" type="Object"></param>
-            /// <param name="referenceToAssign" type="Object"></param>
-
-            validateConfiguration(this);
-
             var self = this;
+
+            settings = $.extend({
+                //pass the settings on "getInstance" above and/or the below
+                
+                validation: function() { } //additional validation to run right before the type is written as changed
+            }, settings);
+
+            validateConfiguration(self);
+
 
             var oldtypeMetadata = ko.utils.arrayFirst(self.allTypeMetadata, function (metadata) {
                 return self.isType(referenceToAssign, metadata.Type);
@@ -144,8 +148,10 @@ define(function () {
                 }
             }
             
-            if (ko.validation)
+            if (ko.validation) { //apply validation right before changing the type
                 self.applyValidation(referenceToAssign, instance[self.typeFieldName]);
+                settings.validation();
+            }
 
             //finally change the type on the object to the new type and fix mapping to recognize it on ko.mapping.toJSON
             referenceToAssign[self.typeFieldName](instance[self.typeFieldName]);
@@ -365,6 +371,25 @@ define(function () {
             message: "The specified value must be a URL"
         };
         
+        //TODO: this isn't really typeMetadata related and could go somewhere else...
+        ko.validation.rules['asyncValidation'] = {
+            async: true,
+            validator: function (
+                val,                //the value of the obserable the extender is applied to, ignored*/
+                validationFunc,     //contains a promise returning 'validationFunc' to determine if something is valid or not
+                callback            //the func returns obj like: { isValid: false, message: "Invalid!!" } or true/false
+            ) {
+                validationFunc()
+                    .then(function(resp) {
+                        callback(resp);
+                    })
+                    .fail(function() {
+                        callback(false);
+                    });
+            },
+            message: 'There is a problem with this field' //default message, shouldn't get used
+        };
+
         //allows for wierd non-int junk like commas but not .'s
         function validateInt(value, range) {
             if (!/^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/.test(value))

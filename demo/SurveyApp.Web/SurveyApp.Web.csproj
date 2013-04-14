@@ -138,6 +138,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiControllers\TechProductController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\JsonSerializerConfig.cs" />
@@ -151,9 +152,11 @@
     </Compile>
     <Compile Include="ApiModels\Survey\SurveySummary.cs" />
     <Compile Include="Helpers\GeneralHelpers.cs" />
+    <Compile Include="Models\KnockoutValidationResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\api\techProductApi.js" />
     <Content Include="App\api\geocoderApi.js" />
     <Content Include="App\api\surveyApi.js" />
     <Content Include="App\durandal\amd\almond-custom.js" />
