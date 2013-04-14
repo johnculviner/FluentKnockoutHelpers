@@ -1,15 +1,35 @@
 ﻿define(['./techProduct'],
-function (techProductDefinition) {
+function (techProductViewModel) {
 
     return function(techProduct) {
         var self = this;
 
-        self.techProduct = techProduct || new techProductDefinition();
+        self.techProduct = techProduct || new techProductViewModel();
 
-        self.ok = function () {
-            //close resolves a promise to whoever opened the modal, if they are listening
-            //in the case of add someone is listening
-            self.modal.close(self.techProduct);
+        //activate 
+        self.validator = ko.validatedObservable(techProduct);
+        
+        self.dirtyFlag = new ko.DirtyFlag(self.techProduct, false, ko.mapping.toJSON);  //kolite plugin
+
+        
+        self.apply = ko.command({ //kolite plugin
+            //function to execute if Apply button is clicked
+            execute: function () {
+                //close resolves a promise to whomever opened the modal
+                //here we pass back the modified tech product
+                this.modal.close(self.techProduct);
+            },
+            //button Apply button is disabled if canExecute is false
+            canExecute: function (isExecuting) {
+                //only allow apply to be active if the user has made changes and the form is valid
+                return !isExecuting && self.dirtyFlag().isDirty() && self.validator().isValid();
+            }
+        });
+
+        self.cancel = function () {
+            //close resolves a promise to whomever opened the modal
+            //here 'null' indicates no changes were made
+            self.modal.close(null);
         };
     };
 });

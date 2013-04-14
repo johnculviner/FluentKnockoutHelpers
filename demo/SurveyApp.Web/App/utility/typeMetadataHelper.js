@@ -200,6 +200,29 @@ define(function () {
                         self.applyValidation(obj);
                     });
             }
+        },
+        
+        copy: function (obj, mappingOptions) {
+            /// <summary>
+            /// Create a copy of an object for 'detaching' from underlying VM in dialogs etc.
+            /// call merge() on the result to merge changes back into the original reference
+            /// </summary>
+            /// <param name="obj" type="Object">the object to copy</param>
+            /// <param name="mappingOptions" type="Object">OPTIONAL: ko.mapping settings</param>
+
+            var ctor = obj.constructor;
+            var copy = new ctor(ko.mapping.toJS(obj, mappingOptions));
+            
+            if (ko.validation)
+                this.applyValidation(copy);
+
+            
+            copy.merge = function (mappingOptions) {
+                //call myObj.merge(mappingOptions) at any time to merge changes back into original reference
+                ko.mapping.fromJS(copy, mappingOptions, obj);
+            };
+
+            return copy;
         }
     };
     

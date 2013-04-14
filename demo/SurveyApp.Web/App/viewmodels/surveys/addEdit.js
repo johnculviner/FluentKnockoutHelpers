@@ -1,7 +1,7 @@
-﻿define(['durandal/app', 'api/surveyApi', './shared/locationInfo', 'api/geocoderApi', 'durandal/plugins/router', './survey', './addEditTechProductModal',
+﻿define(['durandal/app', 'api/surveyApi', './shared/locationInfo', 'api/geocoderApi', 'durandal/plugins/router', './survey', './addEditTechProductModal', 'utility/typeMetadataHelper',
     //custom bindings    
     'knockoutPlugins/bindingHandlers/autoComplete', 'knockoutPlugins/bindingHandlers/datepicker'],
-function (app, surveyApi, locationInfo, geocoderApi, router, survey, addEditTechProductModal) {
+function (app, surveyApi, locationInfo, geocoderApi, router, survey, addEditTechProductModal, typeMetadataHelper) {
 
     return function () {
 
@@ -28,6 +28,8 @@ function (app, surveyApi, locationInfo, geocoderApi, router, survey, addEditTech
 
                             //do some custom stuff inside survey class in addition to doing a ko.mapping on it
                             self.survey = new survey(apiSurvey);
+                            //apply validation to the entire model and object graph using metadata from C# TypeMetadataHelper.EmitTypeMetadataArray()
+                            typeMetadataHelper.applyValidation(self.survey);
                         });
         };
         
@@ -70,7 +72,9 @@ function (app, surveyApi, locationInfo, geocoderApi, router, survey, addEditTech
             }
 
             return message;
-        }, this, { deferEvaluation: true }); //wait until first access of computed for eval. otherwise eval would occur *immediately* on object creation
+            //wait until first access of computed for eval. otherwise eval would occur *immediately* on object creation
+            //which is before the data is loaded from ajax
+        }, this, { deferEvaluation: true }); 
 
         self.saveText = ko.computed(function() {
             return (self.isNew() ? "Create New" : "Update");
@@ -88,6 +92,7 @@ function (app, surveyApi, locationInfo, geocoderApi, router, survey, addEditTech
         self.cancel = function () {
             router.navigateTo('surveys');
         };
+        //#endregion
         
 
         //#region Tech Product
@@ -95,12 +100,24 @@ function (app, surveyApi, locationInfo, geocoderApi, router, survey, addEditTech
             app.showModal(new addEditTechProductModal())
                 .then(function (newTechProduct) {
                     //this promise resolves when the modal is closed
-                    self.survey.TechProducts.push(newTechProduct);
+                    
+                    if(newTechProduct) //didn't click 'cancel'
+                        self.survey.TechProducts.push(newTechProduct);
                 });
         };
         
-        self.editTechProduct = function(techProduct) {
-            app.showModal(new addEditTechProductModal(techProduct));
+        self.editTechProduct = function (techProduct) {
+            
+            //create a copy of the current tech product to enable cancelling
+            //if a copy wasn't made then the observables in the tech product list
+            //would reflect instantly as a user made changes in the modal. might freak them out...
+            var copy = typeMetadataHelper.copy(techProduct);
+
+            app.showModal(new addEditTechProductModal(copy))
+                .then(function(modifiedTechProduct) {
+                    if (modifiedTechProduct)
+                        modifiedTechProduct.merge();
+                });
         };
         
         self.deleteTechProduct = function (techProduct) {
@@ -114,8 +131,6 @@ function (app, surveyApi, locationInfo, geocoderApi, router, survey, addEditTech
         };
         //#endregion
 
-
-        //#endregion
         
         //for locationInfo compose
         self.locationInfo = locationInfo;

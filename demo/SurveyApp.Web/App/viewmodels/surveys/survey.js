@@ -1,5 +1,5 @@
-﻿define(['./techProduct', 'utility/typeMetadataHelper'],
-function (techProduct, typeMetadataHelper) {
+﻿define(['./techProduct'],
+function (techProduct) {
     return function (apiSurvey) {
         var self = this;
 
@@ -13,10 +13,5 @@ function (techProduct, typeMetadataHelper) {
                 }
             }
         }, self);
-
-        //apply validation to the entire model and object graph using metadata from C# TypeMetadataHelper.EmitTypeMetadataArray()
-        typeMetadataHelper.applyValidation(self);
-        
-        self.validator = ko.validatedObservable(self);
     };
 });
