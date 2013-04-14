@@ -5,7 +5,7 @@ namespace SurveyApp.Model.Models
 {
     public abstract class TechProduct
     {
-        public int TechProductId { get; set; }
+        public int? TechProductId { get; set; }
 
         [Required]
         [Display(Name = "Serial Number")]

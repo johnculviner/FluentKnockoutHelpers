@@ -13,6 +13,20 @@ function (typeMetadataHelper, api) {
             wireAddlValidationRules();
         }
 
+        self.productType = ko.computed({
+            read: function () {
+                //what type of product is this?
+                return typeMetadataHelper.getTypeName(self);
+            },
+            write: function (typeName) {
+                //UI requesting to change the type. find the type in typeMetadata, assign it to "this" and wire up validation internally
+                typeMetadataHelper.getInstanceAndAssign(typeName, self, { validation: wireAddlValidationRules });
+            }
+        });
+
+        self.isProductTypeSet = ko.computed(function () {
+            return self.productType() !== null;
+        });
 
         //#region Computer
         self.isDesktop = ko.computed(function () {
@@ -28,8 +42,7 @@ function (typeMetadataHelper, api) {
         });
         
         var computerBasicSpecs = ko.computed(function () {
-            self.$type(); //tell knockout to re-evaluate when $type changes
-            if (self.Mhz && self.GigsOfRam && self.HasSsd)
+            if (self.isProductTypeSet() && self.isComputer())
                 return self.Mhz() + " Mhz Processor w/ " + self.GigsOfRam() + " GB RAM and " + (self.HasSsd() ? "an SSD" : "no SSD (bummer)");
         });
         //#endregion
@@ -49,8 +62,7 @@ function (typeMetadataHelper, api) {
         });
 
         var digitalCameraBasicSpecs = ko.computed(function () {
-            self.$type(); //tell knockout to re-evaluate when $type changes
-            if (self.MegaPixels)
+            if (self.isProductTypeSet() && self.isDigitalCamera())
                 return self.MegaPixels() + ' Megapixels';
         });
         //#endregion
@@ -93,22 +105,5 @@ function (typeMetadataHelper, api) {
                         }
                 });
         }
-
-        //#region Events
-        self.productType = ko.computed({
-            read: function () {
-                //what type of product is this?
-                return typeMetadataHelper.getTypeName(self);
-            },
-            write: function (typeName) {
-                //UI requesting to change the type. find the type in typeMetadata, assign it to "this" and wire up validation internally
-                typeMetadataHelper.getInstanceAndAssign(typeName, self, { validation: wireAddlValidationRules });
-            }
-        });
-        //#endregion
-        
-        self.isProductTypeSet = ko.computed(function () {
-            return self.productType() !== null;
-        });
     };
 });

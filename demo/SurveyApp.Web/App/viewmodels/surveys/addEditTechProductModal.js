@@ -5,11 +5,16 @@ function (techProductViewModel) {
         var self = this;
 
         self.techProduct = techProduct || new techProductViewModel();
-
-        //activate 
-        self.validator = ko.validatedObservable(techProduct);
         
         self.dirtyFlag = new ko.DirtyFlag(self.techProduct, false, ko.mapping.toJSON);  //kolite plugin
+
+        self.validator = ko.computed(function () {
+            if (self.techProduct.isProductTypeSet())
+                return ko.validatedObservable(self.techProduct);
+            else 
+                return ko.validatedObservable();
+             
+        });
 
         
         self.apply = ko.command({ //kolite plugin

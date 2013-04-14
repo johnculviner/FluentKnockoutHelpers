@@ -219,7 +219,7 @@ define(function () {
             
             copy.merge = function (mappingOptions) {
                 //call myObj.merge(mappingOptions) at any time to merge changes back into original reference
-                ko.mapping.fromJS(copy, mappingOptions, obj);
+                ko.mapping.fromJS(ko.mapping.toJS(copy, mappingOptions), mappingOptions, obj);
             };
 
             return copy;
