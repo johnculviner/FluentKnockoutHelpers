@@ -99,7 +99,7 @@ namespace SurveyApp.Model.Persistance
                     LikesBooleans = true,
                     DateOfBirth = new DateTime(1955, 10, 28),
                     FavoriteWebsite = "http://www.apple.com",
-                    FavoriteColor = KnownColor.Green,
+                    FavoriteColorId = KnownColor.Green,
                     FavoriteFoods = new List<Food>
                         {
                             context.Foods.Local.Single(f => f.Name == "Broccoli"), 
@@ -129,11 +129,11 @@ namespace SurveyApp.Model.Persistance
                                     XZoom = 30
                                 }
                         },
-                    FavoritePlace = new Location
+                    HomeLocation = new Location
                         {
-                            FormattedLocation = "Hawaii, USA",
-                            Latitude = 19.8967662,
-                            Longitude = -155.58278180
+                            FormattedLocation = "Medina, WA 98039, USA",
+                            Latitude = 47.6258071,
+                            Longitude = -122.2421963
                         },
                 });
 
@@ -145,7 +145,7 @@ namespace SurveyApp.Model.Persistance
                 DateOfBirth = new DateTime(1955, 2, 24),
                 DateOfDeath = new DateTime(2011, 10, 5),
                 FavoriteWebsite = "http://www.google.com",
-                FavoriteColor = KnownColor.Silver,
+                FavoriteColorId = KnownColor.Silver,
                 FavoriteFoods = new List<Food>
                         {
                             context.Foods.Local.Single(f => f.Name == "Rice"), 
@@ -176,7 +176,7 @@ namespace SurveyApp.Model.Persistance
                                     NumberOfLenses = 10
                                 }
                         },
-                FavoritePlace = new Location
+                HomeLocation = new Location
                 {
                     FormattedLocation = "San Francisco, CA, USA",
                     Latitude = 37.7749295,
@@ -191,7 +191,7 @@ namespace SurveyApp.Model.Persistance
                 LikesBooleans = false,
                 FavoriteWebsite = "http://www.yahoo.com",
                 DateOfBirth = new DateTime(1975, 5, 30),
-                FavoriteColor = KnownColor.Red,
+                FavoriteColorId = KnownColor.Red,
                 FavoriteFoods = new List<Food>
                         {
                             context.Foods.Local.Single(f => f.Name == "Yogurt"), 
@@ -219,7 +219,7 @@ namespace SurveyApp.Model.Persistance
                                     XZoom = 22
                                 }
                         },
-                FavoritePlace = new Location
+                HomeLocation = new Location
                 {
                     FormattedLocation = "Sunnyvale, CA 94089, USA",
                     Latitude = 37.4298335,
@@ -234,7 +234,7 @@ namespace SurveyApp.Model.Persistance
                 LikesBooleans = true,
                 DateOfBirth = new DateTime(1984, 5, 14),
                 FavoriteWebsite = "http://www.linkedin.com",
-                FavoriteColor = KnownColor.Blue,
+                FavoriteColorId = KnownColor.Blue,
                 FavoriteFoods = new List<Food>
                         {
                             context.Foods.Local.Single(f => f.Name == "Oatmeal"), 
@@ -266,7 +266,7 @@ namespace SurveyApp.Model.Persistance
                                     XZoom = 22
                                 }
                         },
-                FavoritePlace = new Location
+                HomeLocation = new Location
                 {
                     FormattedLocation = "Palo Alto, CA 94301, USA",
                     Latitude = 37.4457966,
@@ -281,7 +281,7 @@ namespace SurveyApp.Model.Persistance
                 LikesBooleans = false,
                 FavoriteWebsite = "http://www.bbc.co.uk/",
                 DateOfBirth = new DateTime(1926, 4, 21),
-                FavoriteColor = KnownColor.Gold,
+                FavoriteColorId = KnownColor.Gold,
                 FavoriteFoods = new List<Food>
                         {
                             context.Foods.Local.Single(f => f.Name == "Ice Cream"), 
@@ -312,7 +312,7 @@ namespace SurveyApp.Model.Persistance
                                     NumberOfMonitors = 1,
                                 }
                         },
-                FavoritePlace = new Location
+                HomeLocation = new Location
                 {
                     FormattedLocation = "Buckingham Palace, London, Greater London SW1A 1AA, UK",
                     Latitude = 51.501364,

@@ -16,7 +16,7 @@ namespace SurveyApp.Model.Models
         [Required]
         public string LastName { get; set; }
 
-        public Location FavoritePlace { get; set; }
+        public Location HomeLocation { get; set; }
 
         [Display(Name = "Gender")]
         public Gender Gender { get; set; }
@@ -39,7 +39,8 @@ namespace SurveyApp.Model.Models
         public List<TechProduct> TechProducts { get; set; }
 
         [Display(Name = "Favorite Color")]
-        public System.Drawing.KnownColor FavoriteColor { get; set; }
+        [Required]
+        public System.Drawing.KnownColor FavoriteColorId { get; set; }
 
         [Display(Name = "Children")]
         public List<Relation> Children { get; set; }

@@ -1,13 +1,25 @@
-﻿define(['durandal/app', 'api/surveyApi', './shared/locationInfo', 'api/geocoderApi', 'durandal/plugins/router', './survey', './addEditTechProductModal', 'utility/typeMetadataHelper',
+﻿define(['durandal/app',
+        'api/surveyApi',
+        'api/colorApi',
+        './shared/locationInfo',
+        'api/geocoderApi',
+        'durandal/plugins/router',
+        './survey',
+        './addEditTechProductModal',
+        'utility/typeMetadataHelper',
+    
     //custom bindings    
     'knockoutPlugins/bindingHandlers/autoComplete', 'knockoutPlugins/bindingHandlers/datepicker'],
-function (app, surveyApi, locationInfo, geocoderApi, router, survey, addEditTechProductModal, typeMetadataHelper) {
+function (app, surveyApi, colorApi, locationInfo, geocoderApi, router, survey, addEditTechProductModal, typeMetadataHelper) {
 
     return function () {
 
         var self = this;
 
-        self.survey = null; //assigned in activate
+        //assigned in activate
+        self.survey = null;
+        self.colors = [];
+
         self.isNew = ko.observable(false);
 
         //the router's activator calls this function and waits for the .complete jQuery Promise before
@@ -15,22 +27,37 @@ function (app, surveyApi, locationInfo, geocoderApi, router, survey, addEditTech
         //routeInfo contains the passed 'id' as configured in main.js
         self.activate = function (routeInfo) {
             
-            //'#/surveys/new' means new survey. this maps to a '-1' id on the API which knows to return a blank template
-            //for a new API as required to use ko.mapping. Another option would be to include these 'object templates' in
-            //a require module at application start.
-            if(routeInfo.id == 'new') {
-                self.isNew = true;
-                routeInfo.id = -1;
+            //'#/surveys/new' means new survey. get it from typeMetadata
+            if (routeInfo.id == 'new') {
+                //TODO:
             }
 
-            return surveyApi.get(routeInfo.id)
-                        .then(function (apiSurvey) {
+            //get the survey from the API
+            var surveyDeferred =
+                surveyApi.get(routeInfo.id)
+                    .then(function (apiSurvey) {
 
-                            //do some custom stuff inside survey class in addition to doing a ko.mapping on it
-                            self.survey = new survey(apiSurvey);
-                            //apply validation to the entire model and object graph using metadata from C# TypeMetadataHelper.EmitTypeMetadataArray()
-                            typeMetadataHelper.applyValidation(self.survey);
-                        });
+                        //extend the c# definition of a survey for a good UI experience
+                        //inside survey class. (Also just does a ko.mapping on it)
+                        self.survey = new survey(apiSurvey);
+                        
+                        //apply validation to the entire model and object graph using metadata from C#
+                        //TypeMetadataHelper.EmitTypeMetadataArray()
+                        typeMetadataHelper.applyValidation(self.survey);
+                    });
+            
+            //load color dropdown from the API
+            var colorsDeferred =
+                colorApi.getAll()
+                    .then(function(colors) {
+                        self.colors = colors;
+                    });
+
+
+            //the promise resolves 'when' the above deferreds complete.
+            //the promising resolving allows durandal to go ahead with composition
+            //because the view model is 'ready'
+            return $.when(surveyDeferred, colorsDeferred);
         };
         
         //#region Autocomplete
@@ -54,12 +81,14 @@ function (app, surveyApi, locationInfo, geocoderApi, router, survey, addEditTech
 
         //this is more coupled to 'jquery autocomplete' than it should be and could be moved into an elaborate plugin
         self.selectLocation = function (e, ui) {
-            ko.mapping.fromJS(ui.item.value, {}, self.survey.FavoritePlace);
+            ko.mapping.fromJS(ui.item.value, {}, self.survey.HomeLocation);
             e.target.value = "";
             return false;
         };
         //#endregion
 
+
+        //#region Computeds
         self.headerText = ko.computed(function() {
 
             var message = (self.isNew() ? "New" : "Update") + " Survey";
@@ -81,7 +110,17 @@ function (app, surveyApi, locationInfo, geocoderApi, router, survey, addEditTech
         });
 
 
-        //#region Click Events
+        self.selectedColorObj = ko.computed(function () {
+            return ko.utils.arrayFirst(self.colors, function (c) {
+                return c.ColorId == self.survey.FavoriteColorId();
+            }) || { };
+        }, this, { deferEvaluation: true });
+
+
+        //#endregion
+
+
+        //#region Save/Cancel Events
         self.save = function() {
             surveyApi.post(ko.mapping.toJS(self.survey))
                 .done(function() {
@@ -95,7 +134,7 @@ function (app, surveyApi, locationInfo, geocoderApi, router, survey, addEditTech
         //#endregion
         
 
-        //#region Tech Product
+        //#region Tech Product CRUD
         self.addTechProduct = function () {
             app.showModal(new addEditTechProductModal())
                 .then(function (newTechProduct) {

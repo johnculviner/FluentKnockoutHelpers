@@ -8,14 +8,13 @@ using SurveyApp.Model.Models;
 
 namespace SurveyApp.Model.Persistance
 {
-    //TODO fix leaky abstraction of DbSet once access patterns are known
     public interface IUnitOfWork
     {
-        DbSet<Survey> Surveys { get; }
-        DbSet<Food> Foods { get; }
-        DbSet<FoodGroup> FoodGroups { get; }
-        DbSet<Relation> Relations { get; }
-        DbSet<TechProduct> TechProducts { get; }
+        IQueryable<Survey> Surveys { get; }
+        IQueryable<Food> Foods { get; }
+        IQueryable<FoodGroup> FoodGroups { get; }
+        IQueryable<Relation> Relations { get; }
+        IQueryable<TechProduct> TechProducts { get; }
         
         int Commit();
     }

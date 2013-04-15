@@ -7,26 +7,42 @@ namespace FluentKnockoutHelpers.Core.NodeBuilding
     {
         public string TagName { get; set; }
         public string InnerHtml { get; set; }
+        public bool WriteFullEndTag { get; set; }
 
         /// <summary>
-        /// constuctor
+        /// A self closing element
+        /// <para>&#160;</para>
+        /// <para>Example:</para>
+        /// <para> &lt;input type="submit" /&gt;</para>
+        /// <para>&#160;</para>
         /// </summary>
-        /// <param name="tagName">the name of the element</param>
+        /// <param name="tagName">The name of the tag for the element</param>
         public SelfClosingHtmlElement(string tagName)
-            : this(tagName, null)
+            : this(tagName, false)
         {
         }
 
         /// <summary>
-        /// constructor
+        /// A self closing element that will will optionally write an end tag if writeFullEndTag == true
         /// </summary>
-        /// <param name="tagName">the name of the element</param>
-        /// <param name="innerHtml">the inner html</param>
+        /// <para>&#160;</para>
+        /// <para>Example:</para>
+        /// <para> &lt;select&gt;&lt;/select&gt;</para>
+        /// <para>&#160;</para>
+        /// <param name="tagName">The name of the tag to write</param>
+        /// <param name="writeFullEndTag">Write a full end tag?</param>
+        public SelfClosingHtmlElement(string tagName, bool writeFullEndTag)
+            : this(tagName, null)
+        {
+            WriteFullEndTag = writeFullEndTag;
+        }
+
         public SelfClosingHtmlElement(string tagName, string innerHtml)
         {
             TagName = tagName;
             InnerHtml = innerHtml;
         }
+
 
         /// <summary>
         /// Returns the beginning element tag
@@ -43,7 +59,7 @@ namespace FluentKnockoutHelpers.Core.NodeBuilding
         {
             get
             {
-                if (!string.IsNullOrWhiteSpace(InnerHtml))
+                if (!string.IsNullOrWhiteSpace(InnerHtml) || WriteFullEndTag)
                     return string.Format(">{0}</{1}>", InnerHtml, TagName);
                 
                 return " />"; 

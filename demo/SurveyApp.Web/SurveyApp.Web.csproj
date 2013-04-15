@@ -138,6 +138,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiControllers\ColorController.cs" />
     <Compile Include="ApiControllers\TechProductController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -156,6 +157,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\api\colorApi.js" />
     <Content Include="App\api\techProductApi.js" />
     <Content Include="App\api\geocoderApi.js" />
     <Content Include="App\api\surveyApi.js" />

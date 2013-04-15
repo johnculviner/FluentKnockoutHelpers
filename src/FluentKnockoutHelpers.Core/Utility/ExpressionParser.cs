@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
@@ -53,10 +54,10 @@ namespace FluentKnockoutHelpers.Core.Utility
             return propMetadata.DisplayName ?? propMetadata.PropertyName;
         }
 
-        //TODO remove dependency on MVC
-        public static string GetExpressionText(LambdaExpression le)
+        //TODO: support nesting in the future if needed
+        public static string GetExpressionText(LambdaExpression expr)
         {
-            return ExpressionHelper.GetExpressionText(le);
+            return ToMemberExpression(expr).Member.Name;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Linq;
 using SurveyApp.Model.Models;
 
 namespace SurveyApp.Model.Persistance
@@ -19,11 +20,11 @@ namespace SurveyApp.Model.Persistance
             TechProducts = _ctx.TechProducts;
         }
 
-        public DbSet<Survey> Surveys { get; private set; }
-        public DbSet<Food> Foods { get; private set; }
-        public DbSet<FoodGroup> FoodGroups { get; private set; }
-        public DbSet<Relation> Relations { get; private set; }
-        public DbSet<TechProduct> TechProducts { get; private set; }
+        public IQueryable<Survey> Surveys { get; private set; }
+        public IQueryable<Food> Foods { get; private set; }
+        public IQueryable<FoodGroup> FoodGroups { get; private set; }
+        public IQueryable<Relation> Relations { get; private set; }
+        public IQueryable<TechProduct> TechProducts { get; private set; }
 
         public int Commit()
         {

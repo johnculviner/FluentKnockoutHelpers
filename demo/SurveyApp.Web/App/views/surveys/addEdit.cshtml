@@ -1,4 +1,5 @@
 ﻿@using SurveyApp.Model.Models
+@using SurveyApp.Web.ApiControllers
 
 @{
     var surveyHelper = this.KnockoutHelperForType<Survey>("survey", false);
@@ -36,7 +37,7 @@
                 </div>
 
                 <div class="control-group">
-                    <label for="FindLocation" class="control-label">Enter favorite location</label>
+                    <label for="FindLocation" class="control-label">New home location</label>
                     <div class="controls">
                         <input type="text" id="FindLocation" data-bind="autocomplete: { source: getMatchingLocations, select: selectLocation }" />
                     </div>
@@ -45,7 +46,7 @@
                 <div class="control-group" data-bind="if: survey.Location !== null" style="max-width: 375px;">
                     @*Inject a 'shared view' into the DOM specifiying the model and view to compose together*@
 
-                    <!-- ko compose: { model: new locationInfo(@surveyHelper.PropStringFor(x => x.FavoritePlace)), view: 'views/surveys/shared/locationInfo' } -->
+                    <!-- ko compose: { model: new locationInfo(@surveyHelper.PropStringFor(x => x.HomeLocation)), view: 'views/surveys/shared/locationInfo' } -->
                     <!-- /ko -->
                 </div>
 
@@ -94,7 +95,7 @@
                 
                 @*Likes Booleans*@
                 <div class="control-group">
-                    @surveyHelper.LabelFor(x => x.LikesBooleans).Class("control-label")
+                    @surveyHelper.BootstrapLabelFor(x => x.LikesBooleans)
                     <div class="controls">
                         @surveyHelper.BoundCheckBoxFor(x => x.LikesBooleans)
                     </div>
@@ -102,12 +103,22 @@
                 
                 @*Favorite Website*@
                 <div class="control-group">
-                    @surveyHelper.LabelFor(x => x.FavoriteWebsite).Class("control-label")
+                    @surveyHelper.BootstrapLabelFor(x => x.FavoriteWebsite)
                     <div class="controls">
                         @surveyHelper.BoundTextBoxFor(x => x.FavoriteWebsite)
                     </div>
                 </div>
                 
+                @*Favorite Color*@
+                <div class="control-group">
+                    @surveyHelper.BootstrapLabelFor(x => x.FavoriteColorId)
+                    <div class="controls">
+                        @(surveyHelper.BoundSelectListFor<ColorData>(x => x.FavoriteColorId, "colors", c => c.ColorId, c => c.ColorName, "Select a color.."))
+                        <span class="color-preview"
+                            data-bind="style: { backgroundColor: selectedColorObj().ColorCode }"
+                            ></span>
+                    </div>
+                </div>
 
             </fieldset>
 

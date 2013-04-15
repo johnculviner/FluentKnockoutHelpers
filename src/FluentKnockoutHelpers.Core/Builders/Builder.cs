@@ -44,20 +44,31 @@ namespace FluentKnockoutHelpers.Core.Builders
         }
 
         /// <summary>
-        /// Begin building a self closing element for the given 'elementTag'
+        /// Begin building a self closing element for the specified elementTag
+        /// <para>&#160;</para>
+        /// <para>Example (writeFullEndTag == false, default):</para>
+        /// <para> &lt;input type="submit" /&gt;</para>
+        /// <para>&#160;</para>
+        /// <para>Example (writeFullEndTag == true):</para>
+        /// <para> &lt;span&gt;&lt;/span&gt;</para>
         /// </summary>
-        /// <param name="elementTag"></param>
+        /// <param name="elementTag">The name of the tag for the element</param>
+        /// <param name="writeFullEndTag"> </param>
         /// <returns></returns>
-        public virtual StringReturningBuilder<TModel> ElementSelfClosing(string elementTag)
+        public virtual StringReturningBuilder<TModel> ElementSelfClosing(string elementTag, bool writeFullEndTag = false)
         {
-            return new StringReturningBuilder<TModel>(this, new NodeBuilder(new SelfClosingHtmlElement(elementTag)));
+            return new StringReturningBuilder<TModel>(this, new NodeBuilder(new SelfClosingHtmlElement(elementTag, writeFullEndTag)));
         }
 
         /// <summary>
-        /// Begin building a self closing element for the given 'elementTag' with the specified 'innerHtml'
+        /// Begin building a self closing element for the specified elementTag
+        /// <para>&#160;</para>
+        /// <para>Example:</para>
+        /// <para> &lt;span&gt; innerHTML &lt;/span&gt;</para>
+        /// <para>&#160;</para>
         /// </summary>
-        /// <param name="elementTag"></param>
-        /// <param name="innerHtml"></param>
+        /// <param name="elementTag">The name of the tag for the element</param>
+        /// <param name="innerHtml">InnerHTML to put in that tag</param>
         /// <returns></returns>
         public virtual StringReturningBuilder<TModel> ElementSelfClosing(string elementTag, string innerHtml)
         {
@@ -269,6 +280,36 @@ namespace FluentKnockoutHelpers.Core.Builders
                     .Attr("type", "radio")
                     .Name(name ?? exprText)
                     .DataBind(db => db.Checked(propExpr, value));
+        }
+
+        /// <summary>
+        /// Start building a select list bound to a particular view model property. AKA a knockout 'options' binding
+        /// <para>&#160;</para>
+        /// <para>Usage Example:</para>
+        /// <para> @helper.BoundSelectListFor&lt;State&gt;(vm => vm.StateId, "states", s => s.StateId, s => s.StateName, "Select a state...")</para>
+        /// <para>&#160;</para>
+        /// <para>Result:</para>
+        /// <para> &lt;select data-bind="value: survey.StateId, options: states, optionsValue: 'StateId', optionsText: 'StateName', optionsCaption: 'Select a state..'"&gt;&lt;/select&gt;</para>
+        /// <para>&#160;</para>
+        /// </summary>
+        /// <typeparam name="TOptions">The C# type of array the options list is</typeparam>
+        /// <param name="selectedValue">The view model property to read/write the selected option to/from</param>
+        /// <param name="optionSourceArray">The array in your viewModel that the options of type TOption source from</param>
+        /// <param name="optionValueSelector">An expresson on TOption indicating what the option value should be</param>
+        /// <param name="optionTextSelector">A expression on TOption indicating what the option text should be</param>
+        /// <param name="defaultUnselectedText">The default text in the select list when an option isn't chosen</param>
+        /// <returns></returns>
+        public virtual StringReturningBuilder<TModel> BoundSelectListFor<TOptions>(
+            Expression<Func<TModel, object>> selectedValue,
+            string optionSourceArray,
+            Expression<Func<TOptions, object>> optionValueSelector,
+            Expression<Func<TOptions, object>> optionTextSelector,
+            string defaultUnselectedText = null
+            )
+        {
+            return ElementSelfClosing("select", true)
+                    .Id(ExpressionParser.GetExpressionText(selectedValue))
+                    .DataBind(db => db.Options(selectedValue, optionSourceArray, optionValueSelector, optionTextSelector, defaultUnselectedText));
         }
 
         #endregion

@@ -125,3 +125,10 @@ legend + .control-group {
     border: 1px solid #f00 !important;
     background-color: #fee !important;
 }
+
+
+.color-preview {
+    display: inline-block;
+    width: 30px;
+    height: 18px;
+}

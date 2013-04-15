@@ -79,6 +79,36 @@ namespace FluentKnockoutHelpers.Core
 
             return Builder.ViewModelPropertyName + "." + propName;
         }
+
+
+        /// <summary>
+        /// Create a knockout data-bind for a select list
+        /// </summary>
+        /// <typeparam name="TOptions">The C# type of array the options list is</typeparam>
+        /// <param name="selectedValue">The view model property to read/write the selected option to/from</param>
+        /// <param name="optionSourceArray">The array that the options of type TOption source from</param>
+        /// <param name="optionTextSelector">A expression on TOption indicating what the option text should be</param>
+        /// <param name="optionValueSelector">An expresson on TOption indicating what the option value should be</param>
+        /// <param name="defaultUnselectedText">The default text in the select list when an option isn't chosen</param>
+        /// <returns></returns>
+        public DataBindBuilder<TModel> Options<TOptions>(
+            Expression<Func<TModel, object>> selectedValue,
+            string optionSourceArray,
+            Expression<Func<TOptions, object>> optionValueSelector,
+            Expression<Func<TOptions, object>> optionTextSelector,
+            string defaultUnselectedText = null
+            )
+        {
+            var binding = Custom("value", selectedValue)
+                            .AddBindingNoPrefix("options", optionSourceArray)
+                            .AddBindingNoPrefix("optionsValue", string.Format("'{0}'", ExpressionParser.GetExpressionText(optionValueSelector)))
+                            .AddBindingNoPrefix("optionsText", string.Format("'{0}'", ExpressionParser.GetExpressionText(optionTextSelector)));
+
+            if(defaultUnselectedText != null)
+                binding.AddBindingNoPrefix("optionsCaption", string.Format("'{0}'", defaultUnselectedText));
+
+            return binding;
+        }
     }
 
     public static class DataBindBuilderExtensions
