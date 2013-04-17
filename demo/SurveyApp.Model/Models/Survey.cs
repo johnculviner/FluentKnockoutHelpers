@@ -4,15 +4,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SurveyApp.Model.Models
 {
+    //NOTE: display attributes aren't needed unless we want to deviate from camel case is split convention
     public class Survey
     {
         public int SurveyId { get; set; }
         
-        [Display(Name = "First Name")]
         [Required]
         public string FirstName { get; set; }
 
-        [Display(Name = "Last Name")]
         [Required]
         public string LastName { get; set; }
 
@@ -21,31 +20,24 @@ namespace SurveyApp.Model.Models
         [Display(Name = "Gender")]
         public Gender Gender { get; set; }
 
-        [Display(Name = "Date Of Birth")]
         public DateTime DateOfBirth { get; set; }
 
-        [Display(Name = "Date Of Death")]
         public DateTime? DateOfDeath { get; set; }
 
-        [Display(Name = "Likes Booleans")]
         public bool LikesBooleans { get; set; }
 
-        [Display(Name = "Favorite Website")]
         [Url]
         [Required]
         public string FavoriteWebsite { get; set; }
 
-        [Display(Name = "Tech Products")]
-        public List<TechProduct> TechProducts { get; set; }
-
-        [Display(Name = "Favorite Color")]
         [Required]
+        [Display(Name = "Favorite Color")]
         public System.Drawing.KnownColor FavoriteColorId { get; set; }
-
-        [Display(Name = "Children")]
+        
         public List<Relation> Children { get; set; }
 
-        [Display(Name = "Favorite Foods")]
+        public List<TechProduct> TechProducts { get; set; }
+
         public List<Food> FavoriteFoods { get; set; }
     }
 }

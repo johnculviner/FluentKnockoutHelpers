@@ -1,0 +1,20 @@
+﻿@using SurveyApp.Model.Models
+
+<ul data-bind="sortable: { data: $data, options: { placeholder: 'sortable-placeholder' } }">
+    @{var relation = this.KnockoutHelperForType<Relation>();}
+    <li>
+        <div>
+            <i class="icon-reorder"></i>
+            @relation.BoundTextBoxFor(x => x.Name)
+            <button class="btn btn-success">
+                <i class="icon-plus"></i>
+                Add Child
+            </button>
+            <button class="btn btn-danger">
+                <i class="icon-minus"></i>
+                Remove
+            </button>
+        </div>
+        <!-- ko compose: { model: Children, view: 'views/surveys/relation' } --><!-- /ko -->
+    </li>
+</ul>  

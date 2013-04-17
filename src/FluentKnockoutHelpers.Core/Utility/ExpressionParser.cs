@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
 namespace FluentKnockoutHelpers.Core.Utility
@@ -49,9 +50,15 @@ namespace FluentKnockoutHelpers.Core.Utility
             var propMetadata = metaData.Properties.FirstOrDefault(p => p.PropertyName == propertyName);
 
             if (propMetadata == null)
-                return propertyName;
+                return CamelCaseSpacer(propertyName);
 
-            return propMetadata.DisplayName ?? propMetadata.PropertyName;
+            return propMetadata.DisplayName ?? CamelCaseSpacer(propMetadata.PropertyName);
+        }
+
+        //FirstName => First Name
+        private static string CamelCaseSpacer(string propName)
+        {
+            return Regex.Replace(propName, "([A-Z])", " $1", RegexOptions.Compiled);
         }
 
         //TODO: support nesting in the future if needed

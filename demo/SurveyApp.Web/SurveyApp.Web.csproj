@@ -187,14 +187,15 @@
     <Content Include="App\requirePlugins\async.js" />
     <Content Include="App\utility\typeMetadataHelper.js" />
     <Content Include="App\viewmodels\surveys\addEditTechProductModal.js" />
+    <Content Include="App\viewmodels\surveys\relation.js" />
     <Content Include="App\viewmodels\surveys\survey.js" />
     <Content Include="App\viewmodels\surveys\techProduct.js" />
-    <Content Include="App\viewmodels\surveys\addEdit.js" />
+    <Content Include="App\viewmodels\surveys\addEditPage.js" />
     <Content Include="App\viewmodels\surveys\deleteModal.js" />
     <Content Include="App\viewmodels\shell.js" />
     <Content Include="App\viewmodels\surveys.js" />
     <Content Include="App\views\surveys\deleteModal.cshtml" />
-    <Content Include="App\views\surveys\addEdit.cshtml" />
+    <Content Include="App\views\surveys\addEditPage.cshtml" />
     <Content Include="App\viewmodels\surveys\shared\locationInfo.js" />
     <None Include="App\views\shell.cshtml" />
     <Content Include="App\views\surveys.cshtml" />
@@ -238,6 +239,7 @@
     </Content>
     <Content Include="App\views\surveys\shared\locationInfo.cshtml" />
     <Content Include="App\views\surveys\addEditTechProductModal.cshtml" />
+    <Content Include="App\views\surveys\relation.cshtml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="App\knockoutPlugins\bindingHandlers\bingMap.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -256,6 +258,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\knockout-2.2.1.debug.js" />
     <Content Include="Scripts\knockout-2.2.1.js" />
+    <Content Include="Scripts\knockout-sortable.js" />
     <Content Include="Scripts\knockout.activity.js" />
     <Content Include="Scripts\knockout.command.js" />
     <Content Include="Scripts\knockout.dirtyFlag.js" />

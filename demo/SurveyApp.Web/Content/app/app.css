@@ -132,3 +132,17 @@ legend + .control-group {
     width: 30px;
     height: 18px;
 }
+
+.family-tree ul {
+    list-style-type: none;
+    min-height: 15px;
+}
+
+.family-tree li:first-child {
+    margin-top: 15px;
+}
+
+.sortable-placeholder {
+    background-color: rgb(255, 198, 198);
+    height: 25px;
+}

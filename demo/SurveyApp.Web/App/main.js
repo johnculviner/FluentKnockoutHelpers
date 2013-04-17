@@ -51,6 +51,6 @@ define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/vie
         //':id' extracts the value and it is passed as an argument into the 'activate' function of the viewmodel
         //mapRoute doesn't make the route visible in navigation
         //the viewmodel path doesn't follow the convention so it is explicitly specified
-        router.mapRoute('surveys/:id', 'viewmodels/surveys/addEdit');    
+        router.mapRoute('surveys/:id', 'viewmodels/surveys/addEditPage');    
     }
 });
