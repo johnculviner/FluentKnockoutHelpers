@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SurveyApp.Model.Models
 {
-    //NOTE: display attributes aren't needed unless we want to deviate from camel case is split convention
+    //Labels are automatically split on camel casing when using FluentKnockoutHelpers: FirstName => First Name
     public class Survey
     {
         public int SurveyId { get; set; }

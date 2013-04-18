@@ -6,21 +6,15 @@ using System.Data.Entity;
 
 namespace SurveyApp.Web.ApiModels.Survey
 {
+    //Labels are automatically split on camel casing when using FluentKnockoutHelpers: FirstName => First Name
     public class SurveySummary
     {
         public int SurveyId { get; set; }
         
-        [Display(Name = "Last Name")]
-        public string LastName { get; set; }
-
-        [Display(Name = "First Name")]
         public string FirstName { get; set; }
-
-        [Display(Name = "Date of Birth")]
+        public string LastName { get; set; }
         public string DateOfBirth { get; set; }
-
         public string Gender { get; set; }
-
         public Location Location { get; set; }
 
         [Display(Name = "# of Tech Products")]
@@ -29,7 +23,6 @@ namespace SurveyApp.Web.ApiModels.Survey
         [Display(Name = "# of Children")]
         public int NumberOfChildren { get; set; }
 
-        [Display(Name = "Overall Healthy Score")]
         public double OverallHealthyScore { get; set; }
     }
 
