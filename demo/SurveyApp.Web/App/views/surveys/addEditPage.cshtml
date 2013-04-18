@@ -166,25 +166,3 @@
         </form>
     </div>
 </section>
-
-
-<script type="text/html" id="children">
-    <ul data-bind="sortable: { data: Children, options: { placeholder: 'sortable-placeholder' } }">
-        @{var relation = this.KnockoutHelperForType<Relation>();}
-        <li>
-            <div>
-                <i class="icon-reorder"></i>
-                @relation.BoundTextBoxFor(x => x.Name)
-                <button class="btn btn-success">
-                    <i class="icon-plus"></i>
-                    Add Child
-                </button>
-                <button class="btn btn-danger">
-                    <i class="icon-minus"></i>
-                    Remove
-                </button>
-            </div>
-            <div data-bind="template: { name: 'children', data: $data}"></div>
-        </li>
-    </ul>  
-</script>
