@@ -1,20 +1,22 @@
 ﻿@using SurveyApp.Model.Models
 
-<ul data-bind="sortable: { data: $data, options: { placeholder: 'sortable-placeholder' } }">
+@*recursively display relations*@
+<ul data-bind="sortable: { data: Children, options: { placeholder: 'sortable-hierarchy-placeholder' } }">
     @{var relation = this.KnockoutHelperForType<Relation>();}
     <li>
         <div>
             <i class="icon-reorder"></i>
+
             @relation.BoundTextBoxFor(x => x.Name)
-            <button class="btn btn-success">
+
+            <button class="btn btn-success" data-bind="click: addChild">
                 <i class="icon-plus"></i>
                 Add Child
             </button>
-            <button class="btn btn-danger">
-                <i class="icon-minus"></i>
-                Remove
+            <button class="btn btn-danger"  data-bind="click: removeChild">
+                <i class="icon-remove-sign"></i>
             </button>
         </div>
-        <!-- ko compose: { model: Children, view: 'views/surveys/relation' } --><!-- /ko -->
+        <!-- ko compose: { model: $data, view: 'views/surveys/relation' } --><!-- /ko -->
     </li>
 </ul>  

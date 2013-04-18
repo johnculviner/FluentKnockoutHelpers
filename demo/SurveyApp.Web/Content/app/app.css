@@ -126,23 +126,33 @@ legend + .control-group {
     background-color: #fee !important;
 }
 
-
+/* Favorite Color */
 .color-preview {
     display: inline-block;
     width: 30px;
     height: 18px;
 }
 
-.family-tree ul {
+/* Family Tree */
+.sortable-hierarchy ul {
     list-style-type: none;
-    min-height: 15px;
+    min-height: 10px;
 }
 
-.family-tree li:first-child {
-    margin-top: 15px;
+.sortable-hierarchy i.icon-reorder {
+    cursor: move;
 }
 
-.sortable-placeholder {
+.sortable-hierarchy-placeholder {
     background-color: rgb(255, 198, 198);
-    height: 25px;
+    height: 30px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.sortable-hierarchy li:first-child {
+    margin-top: 10px;
+}
+.sortable-hierarchy li.sortable-hierarchy-placeholder {
+    margin-top: auto;
 }

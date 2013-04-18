@@ -12,7 +12,7 @@ function (relation, techProduct) {
         var settings = {
             Children: {
                 create: function (options) {
-                    return new relation(options.data);
+                    return new relation(options.data, self);
                 }    
             },
 

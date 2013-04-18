@@ -1,3 +1,4 @@
+//knockout-sortable 0.7.0 | (c) 2012 Ryan Niemeyer | http://www.opensource.org/licenses/mit-license
 (function(factory) {
     if (typeof define === "function" && define.amd) {
         // AMD anonymous module
@@ -10,8 +11,7 @@
     var ITEMKEY = "ko_sortItem",
         LISTKEY = "ko_sortList",
         PARENTKEY = "ko_parentList",
-        DRAGKEY = "ko_dragItem",
-        unwrap = ko.utils.unwrapObservable;
+        DRAGKEY = "ko_dragItem";
 
     //internal afterRender that adds meta-data to children
     var addMetaDataAfterRender = function(elements, data) {
@@ -26,7 +26,7 @@
     //prepare the proper options for the template binding
     var prepareTemplateOptions = function(valueAccessor, dataName) {
         var result = {},
-            options = unwrap(valueAccessor()),
+            options = ko.utils.unwrapObservable(valueAccessor()),
             actualAfterRender;
 
         //build our options to pass to the template engine
@@ -63,7 +63,7 @@
     ko.bindingHandlers.sortable = {
         init: function(element, valueAccessor, allBindingsAccessor, data, context) {
             var $element = $(element),
-                value = unwrap(valueAccessor()) || {},
+                value = ko.utils.unwrapObservable(valueAccessor()) || {},
                 templateOptions = prepareTemplateOptions(valueAccessor, "foreach"),
                 sortable = {},
                 startActual, updateActual;
@@ -87,7 +87,7 @@
             if (sortable.connectClass && (ko.isObservable(sortable.allowDrop) || typeof sortable.allowDrop == "function")) {
                 ko.computed({
                     read: function() {
-                        var value = unwrap(sortable.allowDrop),
+                        var value = ko.utils.unwrapObservable(sortable.allowDrop),
                             shouldAdd = typeof value == "function" ? value.call(this, templateOptions.foreach) : value;
                         ko.utils.toggleDomNodeCssClass(element, sortable.connectClass, shouldAdd);
                     },
@@ -132,13 +132,11 @@
                     update: function(event, ui) {
                         var sourceParent, targetParent, targetIndex, i, targetUnwrapped, arg,
                             el = ui.item[0],
-                            parentEl = ui.item.parent()[0],
                             item = ko.utils.domData.get(el, ITEMKEY) || dragItem;
 
                         dragItem = null;
 
-                        //make sure that moves only run once, as update fires on multiple containers
-                        if (item && (this === parentEl || $.contains(this, parentEl))) {
+                        if (this === ui.item.parent()[0] && item) {
                             //identify parents
                             sourceParent = ko.utils.domData.get(el, PARENTKEY);
                             targetParent = ko.utils.domData.get(el.parentNode, LISTKEY);
@@ -149,7 +147,7 @@
                                 targetUnwrapped = targetParent();
                                 for (i = 0; i < targetIndex; i++) {
                                     //add one for every destroyed item we find before the targetIndex in the target array
-                                    if (targetUnwrapped[i] && unwrap(targetUnwrapped[i]._destroy)) {
+                                    if (targetUnwrapped[i] && targetUnwrapped[i]._destroy) {
                                         targetIndex++;
                                     }
                                 }
@@ -159,7 +157,7 @@
                                 arg = {
                                     item: item,
                                     sourceParent: sourceParent,
-                                    sourceParentNode: sourceParent && ui.sender || el.parentNode,
+                                    sourceParentNode: sourceParent && el.parentNode,
                                     sourceIndex: sourceParent && sourceParent.indexOf(item),
                                     targetParent: targetParent,
                                     targetIndex: targetIndex,
@@ -222,7 +220,7 @@
                 if (sortable.isEnabled !== undefined) {
                     ko.computed({
                         read: function() {
-                            $element.sortable(unwrap(sortable.isEnabled) ? "enable" : "disable");
+                            $element.sortable(ko.utils.unwrapObservable(sortable.isEnabled) ? "enable" : "disable");
                         },
                         disposeWhenNodeIsRemoved: element
                     });
@@ -261,7 +259,7 @@
     //create a draggable that is appropriate for dropping into a sortable
     ko.bindingHandlers.draggable = {
         init: function(element, valueAccessor, allBindingsAccessor, data, context) {
-            var value = unwrap(valueAccessor()) || {},
+            var value = ko.utils.unwrapObservable(valueAccessor()) || {},
                 options = value.options || {},
                 draggableOptions = ko.utils.extend({}, ko.bindingHandlers.draggable.options),
                 templateOptions = prepareTemplateOptions(valueAccessor, "data"),
@@ -286,7 +284,7 @@
             if (isEnabled !== undefined) {
                 ko.computed({
                     read: function() {
-                        $(element).draggable(unwrap(isEnabled) ? "enable" : "disable");
+                        $(element).draggable(ko.utils.unwrapObservable(isEnabled) ? "enable" : "disable");
                     },
                     disposeWhenNodeIsRemoved: element
                 });

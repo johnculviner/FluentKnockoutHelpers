@@ -91,7 +91,7 @@ define(function () {
 
             }, settings);
 
-            var typeMetaData = this.getMetadata(typeNameContains);
+            var typeMetaData = this.getMetadata(ko.utils.unwrapObservable(typeNameContains));
             var instance = jQuery.extend({}, typeMetaData.Instance);
 
             var numericToNull = ['short', 'int', 'long', 'float', 'double', 'decimal']; //and DateTime
