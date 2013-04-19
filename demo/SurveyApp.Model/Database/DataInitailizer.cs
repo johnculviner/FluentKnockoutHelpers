@@ -1,30 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.SqlClient;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SurveyApp.Model.Helpers;
-using SurveyApp.Model.Models;
+using Raven.Client;
+using SurveyApp.Model.DomainModels;
 
-namespace SurveyApp.Model.Persistance
+namespace SurveyApp.Model.Database
 {
-    public class DataStoreInitializer : ForciblyDeleteDatabaseAlways<DataStore>
+    public static class DataInitializer
     {
-        protected override void Seed(DataStore context)
+        public static void PopulateData(IDocumentStore initializedStore)
         {
-            LoadFoodGroupsAndFoods(context);
-            LoadSurveys(context);
+            using (var session = initializedStore.OpenSession())
+            {
+                LoadFoodGroupsAndFoods(session);
+                session.SaveChanges();
+            }
 
-            base.Seed(context);
+            using (var session = initializedStore.OpenSession())
+            {
+                LoadSurveys(session);   //Load survey uses some randomness from above
+                session.SaveChanges();
+            }
         }
 
-        private static void LoadFoodGroupsAndFoods(DataStore context)
+        private static void LoadFoodGroupsAndFoods(IDocumentSession session)
         {
-            context.FoodGroups.Add(new FoodGroup
+            session.Store(new FoodGroup
             {
                 Name = "Fruits",
                 Foods = new List<Food>
@@ -36,8 +37,9 @@ namespace SurveyApp.Model.Persistance
                     new Food{Name = "Pears", HealthyScore = 8},				
                 }
             });
-			
-			context.FoodGroups.Add(new FoodGroup
+
+
+            session.Store(new FoodGroup
             {
                 Name = "Vegetable",
                 Foods = new List<Food>
@@ -49,8 +51,9 @@ namespace SurveyApp.Model.Persistance
                     new Food{Name = "Tomatoes", HealthyScore = 9},				
                 }
             });
-			
-			context.FoodGroups.Add(new FoodGroup
+
+
+            session.Store(new FoodGroup
             {
                 Name = "Grains",
                 Foods = new List<Food>
@@ -62,21 +65,23 @@ namespace SurveyApp.Model.Persistance
                     new Food{Name = "Tortillas", HealthyScore = 3},				
                 }
             });
-			
-			context.FoodGroups.Add(new FoodGroup
+
+
+            session.Store(new FoodGroup
             {
                 Name = "Protein Foods",
                 Foods = new List<Food>
                 {
-					new Food{Name = "Bacon", HealthyScore = 6},		
+                    new Food{Name = "Bacon", HealthyScore = 6},		
                     new Food{Name = "Beef", HealthyScore = 5},
                     new Food{Name = "Chicken", HealthyScore = 6},
                     new Food{Name = "Beans", HealthyScore = 8},
                     new Food{Name = "Tofu", HealthyScore = 8},
                 }
             });
-			
-			context.FoodGroups.Add(new FoodGroup
+
+
+            session.Store(new FoodGroup
             {
                 Name = "Dairy",
                 Foods = new List<Food>
@@ -90,9 +95,9 @@ namespace SurveyApp.Model.Persistance
             });
         }
 
-        private static void LoadSurveys(DataStore context)
+        private static void LoadSurveys(IDocumentSession session)
         {
-            context.Surveys.Add(new Survey
+            session.Store(new Survey
                 {
                     FirstName = "Bill",
                     LastName = "Gates",
@@ -100,11 +105,11 @@ namespace SurveyApp.Model.Persistance
                     DateOfBirth = new DateTime(1955, 10, 28),
                     FavoriteWebsite = "http://www.apple.com",
                     FavoriteColorId = KnownColor.Green,
-                    FavoriteFoods = new List<Food>
-                        {
-                            context.Foods.Local.Single(f => f.Name == "Broccoli"), 
-                            context.Foods.Local.Single(f => f.Name == "Cheese")
-                        },
+                    //FavoriteFoods = new List<Food>
+                    //    {
+                    //        session.Foods.Local.Single(f => f.Name == "Broccoli"), 
+                    //        session.Foods.Local.Single(f => f.Name == "Cheese")
+                    //    },
                     Children = new List<Relation>
                         {
                             new Relation{Name = "Jennifer"},
@@ -137,7 +142,8 @@ namespace SurveyApp.Model.Persistance
                         },
                 });
 
-            context.Surveys.Add(new Survey
+
+            session.Store(new Survey
             {
                 FirstName = "Steve",
                 LastName = "Jobs",
@@ -146,11 +152,11 @@ namespace SurveyApp.Model.Persistance
                 DateOfDeath = new DateTime(2011, 10, 5),
                 FavoriteWebsite = "http://www.google.com",
                 FavoriteColorId = KnownColor.Silver,
-                FavoriteFoods = new List<Food>
-                        {
-                            context.Foods.Local.Single(f => f.Name == "Rice"), 
-                            context.Foods.Local.Single(f => f.Name == "Tofu")
-                        },
+                //FavoriteFoods = new List<Food>
+                //        {
+                //            session.Foods.Local.Single(f => f.Name == "Rice"), 
+                //            session.Foods.Local.Single(f => f.Name == "Tofu")
+                //        },
                 Children = new List<Relation>
                         {
                             new Relation{Name = "Lisa"},
@@ -184,7 +190,8 @@ namespace SurveyApp.Model.Persistance
                 }
             });
 
-            context.Surveys.Add(new Survey
+
+            session.Store(new Survey
             {
                 FirstName = "Marissa",
                 LastName = "Mayer",
@@ -192,11 +199,11 @@ namespace SurveyApp.Model.Persistance
                 FavoriteWebsite = "http://www.yahoo.com",
                 DateOfBirth = new DateTime(1975, 5, 30),
                 FavoriteColorId = KnownColor.Red,
-                FavoriteFoods = new List<Food>
-                        {
-                            context.Foods.Local.Single(f => f.Name == "Yogurt"), 
-                            context.Foods.Local.Single(f => f.Name == "Carrots")
-                        },
+                //FavoriteFoods = new List<Food>
+                //        {
+                //            session.Foods.Local.Single(f => f.Name == "Yogurt"), 
+                //            session.Foods.Local.Single(f => f.Name == "Carrots")
+                //        },
                 Children = new List<Relation>
                         {
                             new Relation{Name = "Macallister"},
@@ -227,7 +234,8 @@ namespace SurveyApp.Model.Persistance
                 }
             });
 
-            context.Surveys.Add(new Survey
+
+            session.Store(new Survey
             {
                 FirstName = "Mark",
                 LastName = "Zuckerberg",
@@ -235,11 +243,11 @@ namespace SurveyApp.Model.Persistance
                 DateOfBirth = new DateTime(1984, 5, 14),
                 FavoriteWebsite = "http://www.linkedin.com",
                 FavoriteColorId = KnownColor.Blue,
-                FavoriteFoods = new List<Food>
-                        {
-                            context.Foods.Local.Single(f => f.Name == "Oatmeal"), 
-                            context.Foods.Local.Single(f => f.Name == "Cheese")
-                        },
+                //FavoriteFoods = new List<Food>
+                //        {
+                //            session.Foods.Local.Single(f => f.Name == "Oatmeal"), 
+                //            session.Foods.Local.Single(f => f.Name == "Cheese")
+                //        },
                 Gender = Gender.Male,
                 TechProducts = new List<TechProduct>
                         {
@@ -274,7 +282,8 @@ namespace SurveyApp.Model.Persistance
                 }
             });
 
-            context.Surveys.Add(new Survey
+
+            session.Store(new Survey
             {
                 FirstName = "Queen Elizabeth",
                 LastName = "II",
@@ -282,11 +291,11 @@ namespace SurveyApp.Model.Persistance
                 FavoriteWebsite = "http://www.bbc.co.uk/",
                 DateOfBirth = new DateTime(1926, 4, 21),
                 FavoriteColorId = KnownColor.Gold,
-                FavoriteFoods = new List<Food>
-                        {
-                            context.Foods.Local.Single(f => f.Name == "Ice Cream"), 
-                            context.Foods.Local.Single(f => f.Name == "Cheese")
-                        },
+                //FavoriteFoods = new List<Food>
+                //        {
+                //            session.Foods.Local.Single(f => f.Name == "Ice Cream"), 
+                //            session.Foods.Local.Single(f => f.Name == "Cheese")
+                //        },
                 Children = new List<Relation>
                         {
                             new Relation{Name = "Princess Anne", Children = new List<Relation>
@@ -319,23 +328,6 @@ namespace SurveyApp.Model.Persistance
                     Longitude = -0.14189
                 }
             });
-        }
-    }
-
-    public class ForciblyDeleteDatabaseAlways<TContext> : IDatabaseInitializer<TContext> where TContext : DbContext
-    {
-        public void InitializeDatabase(TContext context)
-        {
-            if (context.Database.Exists())
-                context.Database.Delete();
-
-            context.Database.Create();
-            this.Seed(context);
-            context.SaveChanges();
-        }
-
-        protected virtual void Seed(TContext context)
-        {
         }
     }
 }

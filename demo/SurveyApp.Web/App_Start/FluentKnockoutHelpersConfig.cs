@@ -1,10 +1,9 @@
-using System.Runtime.Serialization.Formatters;
 using System.Web.Http;
 using FluentKnockoutHelpers.Core;
 using FluentKnockoutHelpers.Core.TypeMetadata;
 using Newtonsoft.Json;
 
-namespace SurveyApp.Web
+namespace SurveyApp.Web.App_Start
 {
     public static class FluentKnockoutHelpersConfig
     {

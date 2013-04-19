@@ -7,7 +7,7 @@
             app.showMessage('Search not yet implemented...');
         },
         activate: function () {
-            return router.activate('surveys');
+            return router.activate('survey');
         }
     };
 });

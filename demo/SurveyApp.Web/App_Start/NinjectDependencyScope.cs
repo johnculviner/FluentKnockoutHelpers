@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Web.Http.Dependencies;
+using Ninject;
+using Ninject.Syntax;
 
-namespace SurveyApp.Client.App_Start
+namespace SurveyApp.Web.App_Start
 {
-    using System;
-    using System.Web.Http.Dependencies;
-    using Ninject;
-    using Ninject.Syntax;
-
     namespace MvcApplication.App_Start
     {
         // Provides a Ninject implementation of IDependencyScope

@@ -1,5 +1,5 @@
-﻿@using SurveyApp.Model.Models
-@using SurveyApp.Web.ApiControllers
+﻿@using SurveyApp.Model.DomainModels
+@using SurveyApp.Model.Models
 
 @{
     var survey = this.KnockoutHelperForType<Survey>("survey", false);
@@ -52,7 +52,7 @@
                 <div class="control-group" data-bind="if: survey.Location !== null" style="max-width: 375px;">
                     @*Inject a 'shared view' into the DOM specifiying the model and view to compose together*@
                     
-                    <!-- ko compose: { model: new locationInfo(@survey.PropStringFor(x => x.HomeLocation)), view: 'views/surveys/shared/locationInfo' } -->
+                    <!-- ko compose: { model: new locationInfo(@survey.PropStringFor(x => x.HomeLocation)), view: 'views/survey/shared/locationInfo' } -->
                     <!-- /ko -->
                 </div>
 
@@ -129,7 +129,7 @@
             @*Family Tree*@
             <fieldset>
                 <legend>Family Tree</legend>
-                <div class="sortable-hierarchy" data-bind="compose: { model: survey, view: 'views/surveys/relation' }"> </div>
+                <div class="sortable-hierarchy" data-bind="compose: { model: survey, view: 'views/survey/relation' }"> </div>
             </fieldset>
 
             @*Tech Products*@

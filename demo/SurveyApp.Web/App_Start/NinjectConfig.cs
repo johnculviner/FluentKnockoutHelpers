@@ -1,19 +1,20 @@
 using System.Web.Http;
-using SurveyApp.Client.App_Start.MvcApplication.App_Start;
-using SurveyApp.Model.Persistance;
+using Ninject.Extensions.Conventions;
+using System;
+using System.Web;
+using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+using Ninject;
+using Ninject.Web.Common;
+using SurveyApp.Model.Database;
+using SurveyApp.Web.App_Start;
+using SurveyApp.Web.App_Start.MvcApplication.App_Start;
 
-[assembly: WebActivator.PreApplicationStartMethod(typeof(SurveyApp.Client.App_Start.NinjectWebCommon), "Start")]
-[assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(SurveyApp.Client.App_Start.NinjectWebCommon), "Stop")]
+[assembly: WebActivator.PreApplicationStartMethod(typeof(NinjectConfig), "Start")]
+[assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(NinjectConfig), "Stop")]
 
-namespace SurveyApp.Client.App_Start
+namespace SurveyApp.Web.App_Start
 {
-    using System;
-    using System.Web;
-    using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-    using Ninject;
-    using Ninject.Web.Common;
-
-    public static class NinjectWebCommon 
+    public static class NinjectConfig 
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
 
@@ -58,7 +59,8 @@ namespace SurveyApp.Client.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind<IUnitOfWork>().To<EfUnitOfWork>();
+            kernel.Bind(x => x.FromAssembliesMatching("SurveyApp.*").SelectAllClasses().BindAllInterfaces());
+            kernel.Load<RavenDBNinjectModule>();
         }        
     }
 }

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
-namespace SurveyApp.Web
+namespace SurveyApp.Web.App_Start
 {
     public class BundleConfig
     {

@@ -10,6 +10,7 @@ using System.Web.Routing;
 using FluentKnockoutHelpers.Core;
 using FluentKnockoutHelpers.Core.TypeMetadata;
 using Newtonsoft.Json;
+using SurveyApp.Web.App_Start;
 
 namespace SurveyApp.Web
 {

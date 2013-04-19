@@ -6,7 +6,7 @@
         self.survey = ko.observable(survey);
 
         self.deleteSurvey = function () {
-            surveyApi.delete(survey.SurveyId());
+            surveyApi.delete(survey.Id());
             this.modal.close(survey);
         };
 

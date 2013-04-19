@@ -2,12 +2,19 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace SurveyApp.Model.Models
+namespace SurveyApp.Model.DomainModels
 {
     //Labels are automatically split on camel casing when using FluentKnockoutHelpers: FirstName => First Name
     public class Survey
     {
-        public int SurveyId { get; set; }
+        public Survey()
+        {
+            Children = new List<Relation>();
+            TechProducts = new List<TechProduct>();
+            FavoriteFoods = new List<Food>();
+        }
+
+        public string Id { get; set; }
         
         [Required]
         public string FirstName { get; set; }

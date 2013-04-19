@@ -1,4 +1,4 @@
-﻿namespace SurveyApp.Model.Models
+﻿namespace SurveyApp.Model.DomainModels
 {
     public enum Gender
     {

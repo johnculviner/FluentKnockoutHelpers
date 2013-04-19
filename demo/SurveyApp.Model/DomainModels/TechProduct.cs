@@ -1,12 +1,9 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace SurveyApp.Model.Models
+namespace SurveyApp.Model.DomainModels
 {
     public abstract class TechProduct
     {
-        public int? TechProductId { get; set; }
-
         [Required]
         [Display(Name = "Serial Number")]
         public string SerialNumber { get; set; }

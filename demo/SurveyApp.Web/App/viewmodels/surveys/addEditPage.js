@@ -27,7 +27,7 @@ function (app, surveyApi, colorApi, locationInfo, geocoderApi, router, survey, a
         //routeInfo contains the passed 'id' as configured in main.js
         self.activate = function (routeInfo) {
             
-            //'#/surveys/new' means new survey. get it from typeMetadata
+            //'#/survey/new' means new survey. get it from typeMetadata
             if (routeInfo.id == 'new') {
                 //TODO:
             }
@@ -124,12 +124,12 @@ function (app, surveyApi, colorApi, locationInfo, geocoderApi, router, survey, a
         self.save = function() {
             surveyApi.post(ko.mapping.toJS(self.survey))
                 .done(function() {
-                    router.navigateTo('surveys');
+                    router.navigateTo('survey');
                 });
         };
 
         self.cancel = function () {
-            router.navigateTo('surveys');
+            router.navigateTo('survey');
         };
         //#endregion
         

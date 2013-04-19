@@ -1,10 +1,13 @@
-﻿namespace SurveyApp.Web.Models
+﻿using SurveyApp.Model.Models;
+
+namespace SurveyApp.Web.Models
 {
     public class KnockoutValidationResult
     {
-        public KnockoutValidationResult()
+        public KnockoutValidationResult(ValidationResult validationResult)
         {
-            isValid = true;
+            isValid = !validationResult.HasError;
+            message = validationResult.ErrorMessage;
         }
 
         //named to be immediately compatiable with knockout.validation

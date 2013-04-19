@@ -5,30 +5,24 @@ using System.Web.Http;
 using FluentKnockoutHelpers.Core.TypeMetadata;
 using System.Drawing;
 using System.Linq;
+using SurveyApp.Model.Models;
+using SurveyApp.Model.Services;
 
 namespace SurveyApp.Web.ApiControllers
 {
     public class ColorController : ApiController
     {
+        private readonly IColorService _colorService;
+
+        public ColorController(IColorService colorService)
+        {
+            _colorService = colorService;
+        }
+
         [ExcludeMetadata]
         public IEnumerable<ColorData> Get()
         {
-            return Enum.GetValues(typeof (KnownColor))
-                .Cast<KnownColor>()
-                .Select(Color.FromKnownColor)
-                .Select(x => new ColorData
-                    {
-                        ColorId = x.ToKnownColor(),
-                        ColorCode = ColorTranslator.ToHtml(x),
-                        ColorName = Regex.Replace(x.Name, "([A-Z])", " $1", RegexOptions.Compiled)
-                    });
+            return _colorService.GetAllColors();
         }
-    }
-
-    public class ColorData
-    {
-        public KnownColor ColorId { get; set; }
-        public string ColorCode { get; set; }
-        public string ColorName { get; set; }
     }
 }

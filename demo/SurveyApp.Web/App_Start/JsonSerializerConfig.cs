@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace SurveyApp.Web
+namespace SurveyApp.Web.App_Start
 {
     public static class JsonSerializerConfig
     {

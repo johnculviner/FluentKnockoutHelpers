@@ -2,39 +2,34 @@
 using System.Linq;
 using System.Web.Http;
 using FluentKnockoutHelpers.Core.TypeMetadata;
-using SurveyApp.Model.Models;
-using SurveyApp.Model.Persistance;
 using System.Data.Entity;
-using SurveyApp.Web.ApiModels.Survey;
+using SurveyApp.Model.DomainModels;
+using SurveyApp.Model.Models;
+using SurveyApp.Model.Services;
 
 namespace SurveyApp.Web.ApiControllers
 {
     public class SurveyController : ApiController
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly ISurveyService _surveyService;
 
-        public SurveyController(IUnitOfWork unitOfWork)
+        public SurveyController(ISurveyService surveyService)
         {
-            _unitOfWork = unitOfWork;
+            _surveyService = surveyService;
         }
+
 
         // GET api/survey
         [ExcludeMetadata]
         public IEnumerable<SurveySummary> Get()
         {
-            return _unitOfWork.Surveys.ToSurveySummaries();
+            return _surveyService.GetSummaries();
         }
 
         // GET api/survey/5
-        public Survey Get(int id)
+        public Survey Get(string id)
         {
-            return _unitOfWork.Surveys
-                    .Include(x => x.TechProducts)
-                    .Include(x => x.Children)
-                    .Include("Children.Children")
-                    .Include(x => x.FavoriteFoods)
-                    .Include("FavoriteFoods.FoodGroup")
-                    .First(x => x.SurveyId == id);
+            return _surveyService.Get(id);
         }
 
         // POST api/survey
