@@ -24,7 +24,7 @@ function (http) {
         },
         
         validateIdNumberUnique: function (personIdNumber, currentSurveyId) {
-            return http.post("rpc/survey/ValidateIdNumberUnique", { PersonIdNumber: personIdNumber, CurrentSurveyId: currentSurveyId });
+            return http.post(root + "/ValidateIdNumberUnique", { PersonIdNumber: personIdNumber, CurrentSurveyId: currentSurveyId });
         }
     };
 })

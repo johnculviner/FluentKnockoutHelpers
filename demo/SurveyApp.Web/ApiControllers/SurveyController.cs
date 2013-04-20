@@ -35,7 +35,7 @@ namespace SurveyApp.Web.ApiControllers
         // POST api/survey
         public void Post(Survey survey)
         {
-
+            _surveyService.Save(survey);
         }
 
         // DELETE api/survey/5

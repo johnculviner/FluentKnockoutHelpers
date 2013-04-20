@@ -25,7 +25,7 @@ function (app, typeMetadataHelper) {
             //get an instance of this C# type from typeMetaDataHelper
             //wrap it in THIS custom javascript object.
             var newChildRelation = new relation(typeMetadataHelper.getInstance(self.$type), self);
-            self.Children.push(newChildRelation);
+            self.Children.unshift(newChildRelation);
         };
 
         self.removeChild = function () {

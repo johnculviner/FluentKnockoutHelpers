@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Raven.Abstractions.Commands;
 using Raven.Client;
 using Raven.Client.Linq;
 using SurveyApp.Model.Models;
@@ -14,6 +15,7 @@ namespace SurveyApp.Model.Services
     {
         IEnumerable<SurveySummary> GetSummaries();
         Survey Get(string id);
+        void Save(Survey survey);
         ValidationResult ValidatePersonIdNumberUnique(ValidatePersonIdNumberUnique dto);
     }
 
@@ -47,6 +49,16 @@ namespace SurveyApp.Model.Services
         public Survey Get(string id)
         {
             return _documentSession.Load<Survey>(id);
+        }
+
+        public void Save(Survey survey)
+        {
+            _documentSession.Store(survey);
+        }
+
+        public void Delete(string surveyId)
+        {
+            _documentSession.Advanced.Defer(new DeleteCommandData { Key = surveyId });
         }
 
         public ValidationResult ValidatePersonIdNumberUnique(ValidatePersonIdNumberUnique dto)

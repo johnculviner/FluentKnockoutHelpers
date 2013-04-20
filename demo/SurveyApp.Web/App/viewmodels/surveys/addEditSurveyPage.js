@@ -17,7 +17,7 @@ function (app, surveyApi, colorApi, locationInfo, geocoderApi, router, survey, a
         var self = this;
 
         //assigned in activate
-        self.survey = ko.observable();
+        self.survey = null;
         self.colors = [];
         
         self.isNew = ko.observable(false);
@@ -39,7 +39,7 @@ function (app, surveyApi, colorApi, locationInfo, geocoderApi, router, survey, a
 
                         //extend the c# definition of a survey for a good UI experience
                         //inside survey class. (Also just does a ko.mapping on it)
-                        self.survey(new survey(apiSurvey));
+                        self.survey = new survey(apiSurvey);
                         
                         //apply validation to the entire model and object graph using metadata from C#
                         //TypeMetadataHelper.EmitTypeMetadataArray()
@@ -57,16 +57,80 @@ function (app, surveyApi, colorApi, locationInfo, geocoderApi, router, survey, a
             //the promise resolves 'when' the above deferreds complete.
             //the promising resolving allows durandal to go ahead with composition
             //because the view model is 'ready'
-            return $.when(surveyDeferred, colorsDeferred);
+            return $.when(surveyDeferred, colorsDeferred)
+                        .then(postActivate);
         };
         
-        //#region Autocomplete
+
+        //wire up computeds that need data populated to complete
+        function postActivate() {
+            
+            //#region Computeds
+            self.headerText = ko.computed(function() {
+
+                var message = (self.isNew() ? "New" : "Update") + " Survey";
+
+                var firstNameVal = self.survey.FirstName();
+                var lastNameVal = self.survey.LastName();
+
+                if (firstNameVal && lastNameVal) {
+                    message += " for: " + lastNameVal + ", " + firstNameVal;
+                }
+
+                return message;
+                //wait until first access of computed for eval. otherwise eval would occur *immediately* on object creation
+                //which is before the data is loaded from ajax
+            }); 
+
+            self.saveText = ko.computed(function() {
+                return (self.isNew() ? "Create New" : "Update");
+            });
+
+
+            self.selectedColorObj = ko.computed(function () {
+                return ko.utils.arrayFirst(self.colors, function (c) {
+                    return c.ColorId == self.survey.FavoriteColorId();
+                }) || { };
+            });
+            //#endregion
+
+
+
+            //#region Save/Cancel 
+            self.dirtyFlag = new ko.DirtyFlag(self.survey, false, ko.mapping.toJSON);   //kolite plugin
+            self.validator = ko.validatedObservable(self.survey);                       //knockout validation plugin
+
+
+            self.save = ko.asyncCommand({ //kolite plugin
+                execute: function () {
+                    surveyApi.post(ko.mapping.toJS(self.survey))
+                        .then(function() {
+                            router.navigateTo('surveys');
+                        });
+                },
+                canExecute: function (isExecuting) {
+                    return !isExecuting && self.dirtyFlag().isDirty() && self.validator().isValid();
+                }
+            });
+
+            var resetCopy = ko.mapping.toJS(self.survey);
+            self.reset = function () {
+                ko.mapping.fromJS(resetCopy, {}, self.survey);
+            };
+
+            self.cancel = function () {
+                router.navigateTo('surveys');
+            };
+            //#endregion
+        }
+
+        //#region Home Location Autocomplete
         //query google maps for address
         //this is more coupled to 'jquery autocomplete' than it should be and could be moved into an elaborate plugin
-        self.getMatchingLocations = function(request, response) {
+        self.getMatchingLocations = function (request, response) {
 
             geocoderApi.search(request.term)
-                .done(function(locations) {
+                .done(function (locations) {
 
                     var resp = $.map(locations, function (location) {
                         return {
@@ -87,62 +151,6 @@ function (app, surveyApi, colorApi, locationInfo, geocoderApi, router, survey, a
         };
         //#endregion
 
-
-        //#region Computeds
-        self.headerText = ko.computed(function() {
-
-            var message = (self.isNew() ? "New" : "Update") + " Survey";
-
-            var firstNameVal = self.survey.FirstName();
-            var lastNameVal = self.survey.LastName();
-
-            if (firstNameVal && lastNameVal) {
-                message += " for: " + lastNameVal + ", " + firstNameVal;
-            }
-
-            return message;
-            //wait until first access of computed for eval. otherwise eval would occur *immediately* on object creation
-            //which is before the data is loaded from ajax
-        }, this, { deferEvaluation: true }); 
-
-        self.saveText = ko.computed(function() {
-            return (self.isNew() ? "Create New" : "Update");
-        });
-
-
-        self.selectedColorObj = ko.computed(function () {
-            return ko.utils.arrayFirst(self.colors, function (c) {
-                return c.ColorId == self.survey.FavoriteColorId();
-            }) || { };
-        }, this, { deferEvaluation: true });
-
-
-        //#endregion
-
-
-        self.dirtyFlag = new ko.DirtyFlag(self.survey, false, ko.mapping.toJSON);   //kolite plugin
-        self.validator = ko.validatedObservable(self.survey);                       //knockout validation plugin
-
-        //#region Save/Cancel 
-
-
-        self.save = ko.asyncCommand({ //kolite plugin
-            execute: function () {
-                surveyApi.post(ko.mapping.toJS(self.survey))
-                    .then(function() {
-                        router.navigateTo('survey');
-                    });
-            },
-            canExecute: function (isExecuting) {
-                return !isExecuting && self.dirtyFlag().isDirty() && self.validator().isValid();
-            }
-        });
-
-        self.cancel = function () {
-            router.navigateTo('survey');
-        };
-        //#endregion
-        
 
         //#region Tech Product CRUD
         self.addTechProduct = function () {
