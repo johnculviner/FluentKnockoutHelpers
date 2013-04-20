@@ -1,12 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SurveyApp.Model.DomainModels
+namespace SurveyApp.Model.Models
 {
     public abstract class TechProduct
     {
-        [Required]
-        [Display(Name = "Serial Number")]
-        public string SerialNumber { get; set; }
     }
 
     #region Computer

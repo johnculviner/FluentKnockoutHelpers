@@ -137,7 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiControllers\ColorController.cs" />
-    <Compile Include="ApiControllers\TechProductController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\JsonSerializerConfig.cs" />
@@ -155,7 +154,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App\api\colorApi.js" />
-    <Content Include="App\api\techProductApi.js" />
     <Content Include="App\api\geocoderApi.js" />
     <Content Include="App\api\surveyApi.js" />
     <Content Include="App\durandal\amd\almond-custom.js" />
@@ -187,12 +185,12 @@
     <Content Include="App\viewmodels\surveys\relation.js" />
     <Content Include="App\viewmodels\surveys\survey.js" />
     <Content Include="App\viewmodels\surveys\techProduct.js" />
-    <Content Include="App\viewmodels\surveys\addEditPage.js" />
+    <Content Include="App\viewmodels\surveys\addEditSurveyPage.js" />
     <Content Include="App\viewmodels\surveys\deleteModal.js" />
     <Content Include="App\viewmodels\shell.js" />
     <Content Include="App\viewmodels\surveys.js" />
     <Content Include="App\views\surveys\deleteModal.cshtml" />
-    <Content Include="App\views\surveys\addEditPage.cshtml" />
+    <Content Include="App\views\surveys\addEditSurveyPage.cshtml" />
     <Content Include="App\viewmodels\surveys\shared\locationInfo.js" />
     <None Include="App\views\shell.cshtml" />
     <Content Include="App\views\surveys.cshtml" />

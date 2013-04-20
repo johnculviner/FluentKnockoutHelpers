@@ -1,7 +1,9 @@
-﻿define(['./relation', './techProduct', 'api/surveyApi'],
-function (relation, techProduct, surveyApi) {
+﻿define(['./relation', './techProduct'],
+function (relation, techProduct) {
     return function (apiSurvey) {
         var self = this;
+        thevm = self;
+
 
         //perform custom mappings for child fields of the C# type Survey here
         //otherwise fields will be recursively turned into observables automatically
@@ -16,17 +18,11 @@ function (relation, techProduct, surveyApi) {
 
             TechProducts: { //tech products have special functionality and display logic so we substitue our own .NET type
                 create: function (options) {
-                    return new techProduct(options.data /*this is the C# TechProduct*/, self);
+                    return new techProduct(options.data /*this is the C# TechProduct*/);
                 }
             }
         };
 
         ko.mapping.fromJS(apiSurvey, settings, self);
-        
-        self.PersonIdNumber.extend({
-            asyncValidation: function () {
-                return surveyApi.validateIdNumberUnique(self.PersonIdNumber(), self.Id());
-            }
-        });
     };
 });

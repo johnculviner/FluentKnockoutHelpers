@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Raven.Client;
 using Raven.Client.Linq;
-using SurveyApp.Model.DomainModels;
+using SurveyApp.Model.Models;
 using SurveyApp.Model.Models;
 
 namespace SurveyApp.Model.Services
@@ -14,6 +14,7 @@ namespace SurveyApp.Model.Services
     {
         IEnumerable<SurveySummary> GetSummaries();
         Survey Get(string id);
+        ValidationResult ValidatePersonIdNumberUnique(ValidatePersonIdNumberUnique dto);
     }
 
     public class SurveyService : ISurveyService
@@ -46,6 +47,21 @@ namespace SurveyApp.Model.Services
         public Survey Get(string id)
         {
             return _documentSession.Load<Survey>(id);
+        }
+
+        public ValidationResult ValidatePersonIdNumberUnique(ValidatePersonIdNumberUnique dto)
+        {
+            var existingSurvey = _documentSession.Query<Survey>()
+                .FirstOrDefault(s => s.Id != dto.CurrentSurveyId && s.PersonIdNumber == dto.PersonIdNumber);
+
+            if (existingSurvey != null)
+                return new ValidationResult
+                {
+                    HasError = true,
+                    ErrorMessage = string.Format("{0} {1} already has this ID number!", existingSurvey.FirstName, existingSurvey.LastName)
+                };
+
+            return new ValidationResult(); //no problems...
         }
     }
 }

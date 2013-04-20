@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace SurveyApp.Model.DomainModels
+namespace SurveyApp.Model.Models
 {
     //Labels are automatically split on camel casing when using FluentKnockoutHelpers: FirstName => First Name
     public class Survey
@@ -21,6 +21,8 @@ namespace SurveyApp.Model.DomainModels
 
         [Required]
         public string LastName { get; set; }
+
+        public int PersonIdNumber { get; set; }
 
         public Location HomeLocation { get; set; }
 

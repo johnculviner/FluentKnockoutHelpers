@@ -33,7 +33,7 @@
                     <td class="actions">
                         @*EDIT*@
                         <a class="btn btn-info"
-                           data-bind="attr: { href: '#/survey/' + @summary.EvalObservableFor(x => x.Id)}">
+                           data-bind="attr: { href: '#/surveys/' + @summary.EvalObservableFor(x => x.Id)}">
                             <i class="icon-edit"></i>
                         </a>
                         @*DELETE*@
@@ -74,7 +74,7 @@
             </div>
             
             @*Inject a 'shared view' into the DOM specifiying the model and view to compose together*@
-            <div class="control-group" data-bind="compose: { model: new locationInfo(selectedSurvey().Location), view: 'views/survey/shared/locationInfo' }">
+            <div class="control-group" data-bind="compose: { model: new locationInfo(selectedSurvey().Location), view: 'views/surveys/shared/locationInfo' }">
             </div>
         </form>
     </fieldset>

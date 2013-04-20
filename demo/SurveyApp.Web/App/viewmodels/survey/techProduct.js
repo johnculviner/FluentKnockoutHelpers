@@ -1,15 +1,17 @@
-﻿define(['utility/typeMetadataHelper'],
-function (typeMetadataHelper) {
+﻿define(['utility/typeMetadataHelper', 'api/techProductApi'],
+function (typeMetadataHelper, api) {
     return function (apiTechProduct /*undefined on add since we don't know what type the user will pick*/) {
         var self = this;
 
         if (!apiTechProduct)
             self.$type = ko.observable(); //type will be set once it is choosen
-        else 
+        else {
+            
             //here NO custom mappings being performed here but we want a
             //javascript representation (on 'this') of a C# TechProduct
             ko.mapping.fromJS(apiTechProduct, {}, self);
-
+            wireAddlValidationRules();
+        }
 
         self.productType = ko.computed({
             read: function () {
@@ -18,7 +20,7 @@ function (typeMetadataHelper) {
             },
             write: function (typeName) {
                 //UI requesting to change the type. find the type in typeMetadata, assign it to "this" and wire up validation internally
-                typeMetadataHelper.getInstanceAndAssign(typeName, self);
+                typeMetadataHelper.getInstanceAndAssign(typeName, self, { validation: wireAddlValidationRules });
             }
         });
 
@@ -89,5 +91,19 @@ function (typeMetadataHelper) {
                 return digitalCameraBasicSpecs();
         });
         //#endregion
+
+        //this is more complicated than normal because we have to support NO techProduct being defined at start because the user picks it
+        //the self.SerialNumber *doesn't* exist until after a type is picked by the user and created on the instance below
+        function wireAddlValidationRules() {
+            self.SerialNumber.extend(
+                {
+                    asyncValidation: function () {
+                            //peek should be used below to prevent knockout from creating a computed dependency chain on the below parameters
+                            //ex: without the peek knockout's dependency tracking would think that any time 'SerialNumber' or 'Id' changed
+                            //validation needs to run. It is the case here for SerialNumber but not Id.
+                            return api.ValidateSerialNumberUnique(self.SerialNumber.peek(), self.TechProductId.peek());   
+                        }
+                });
+        }
     };
 });

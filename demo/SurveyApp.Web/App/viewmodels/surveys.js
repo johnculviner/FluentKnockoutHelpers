@@ -1,4 +1,4 @@
-﻿define(['durandal/app', 'api/surveyApi', './survey/deleteModal', './survey/shared/locationInfo'],
+﻿define(['durandal/app', 'api/surveyApi', './surveys/deleteModal', './surveys/shared/locationInfo'],
     function (app, surveyApi, deleteModal, locationInfo) {
 
         return function () {
@@ -12,10 +12,10 @@
             //transitioning the view in and eventually calling ko.applyBindings
             self.activate = function (routeInfo) {
                 return surveyApi.getAll()
-                            .then(function (survey) {
+                            .then(function (surveys) {
 
                                 //use ko.mapping library to convert the array to be observable for the summary view
-                                self.surveySummaries = ko.mapping.fromJS(survey);
+                                self.surveySummaries = ko.mapping.fromJS(surveys);
                                 
                                 if (self.surveySummaries().length > 0)
                                     self.toggleSelected(self.surveySummaries()[0]);

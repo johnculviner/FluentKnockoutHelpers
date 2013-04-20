@@ -3,9 +3,9 @@ using System.Linq;
 using System.Web.Http;
 using FluentKnockoutHelpers.Core.TypeMetadata;
 using System.Data.Entity;
-using SurveyApp.Model.DomainModels;
 using SurveyApp.Model.Models;
 using SurveyApp.Model.Services;
+using SurveyApp.Web.Models;
 
 namespace SurveyApp.Web.ApiControllers
 {
@@ -42,6 +42,13 @@ namespace SurveyApp.Web.ApiControllers
         public void Delete(int id)
         {
 
+        }
+
+        //  rpc/survey/ValidateIdNumberUnique
+        [HttpPost]
+        public KnockoutValidationResult ValidateIdNumberUnique(ValidatePersonIdNumberUnique dto)
+        {
+            return new KnockoutValidationResult(_surveyService.ValidatePersonIdNumberUnique(dto));
         }
     }
 }

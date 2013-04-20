@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using Raven.Client;
-using SurveyApp.Model.DomainModels;
+using SurveyApp.Model.Models;
 
 namespace SurveyApp.Model.Database
 {
@@ -101,6 +101,7 @@ namespace SurveyApp.Model.Database
                 {
                     FirstName = "Bill",
                     LastName = "Gates",
+                    PersonIdNumber = 1234,
                     LikesBooleans = true,
                     DateOfBirth = new DateTime(1955, 10, 28),
                     FavoriteWebsite = "http://www.apple.com",
@@ -121,7 +122,6 @@ namespace SurveyApp.Model.Database
                         {
                             new Desktop
                                 {
-                                    SerialNumber = "A",
                                     Mhz = 4000,
                                     GigsOfRam = 32,
                                     HasSsd = true,
@@ -129,7 +129,6 @@ namespace SurveyApp.Model.Database
                                 },
                             new PointAndShoot
                                 {
-                                    SerialNumber = "B",
                                     MegaPixels = 20,
                                     XZoom = 30
                                 }
@@ -147,6 +146,7 @@ namespace SurveyApp.Model.Database
             {
                 FirstName = "Steve",
                 LastName = "Jobs",
+                PersonIdNumber = 2345,
                 LikesBooleans = true,
                 DateOfBirth = new DateTime(1955, 2, 24),
                 DateOfDeath = new DateTime(2011, 10, 5),
@@ -169,7 +169,6 @@ namespace SurveyApp.Model.Database
                         {
                             new Laptop
                                 {
-                                    SerialNumber = "C",
                                     Mhz = 2500,
                                     GigsOfRam = 16,
                                     HasSsd = true,
@@ -177,7 +176,6 @@ namespace SurveyApp.Model.Database
                                 },
                             new Slr
                                 {
-                                    SerialNumber = "D",
                                     MegaPixels = 18.2,
                                     NumberOfLenses = 10
                                 }
@@ -195,6 +193,7 @@ namespace SurveyApp.Model.Database
             {
                 FirstName = "Marissa",
                 LastName = "Mayer",
+                PersonIdNumber = 3456,
                 LikesBooleans = false,
                 FavoriteWebsite = "http://www.yahoo.com",
                 DateOfBirth = new DateTime(1975, 5, 30),
@@ -213,7 +212,6 @@ namespace SurveyApp.Model.Database
                         {
                             new Laptop
                                 {
-                                    SerialNumber = "E",
                                     Mhz = 2600,
                                     GigsOfRam = 8,
                                     HasSsd = false,
@@ -221,7 +219,6 @@ namespace SurveyApp.Model.Database
                                 },
                             new PointAndShoot
                                 {
-                                    SerialNumber = "F",
                                     MegaPixels = 18.2,
                                     XZoom = 22
                                 }
@@ -239,6 +236,7 @@ namespace SurveyApp.Model.Database
             {
                 FirstName = "Mark",
                 LastName = "Zuckerberg",
+                PersonIdNumber = 4567,
                 LikesBooleans = true,
                 DateOfBirth = new DateTime(1984, 5, 14),
                 FavoriteWebsite = "http://www.linkedin.com",
@@ -253,7 +251,6 @@ namespace SurveyApp.Model.Database
                         {
                             new Laptop
                                 {
-                                    SerialNumber = "G",
                                     Mhz = 2200,
                                     GigsOfRam = 8,
                                     HasSsd = false,
@@ -261,7 +258,6 @@ namespace SurveyApp.Model.Database
                                 },
                             new Desktop
                                 {
-                                    SerialNumber = "H",
                                     Mhz = 3200,
                                     GigsOfRam = 32,
                                     HasSsd = true,
@@ -269,7 +265,6 @@ namespace SurveyApp.Model.Database
                                 },
                             new PointAndShoot
                                 {
-                                    SerialNumber = "I",
                                     MegaPixels = 18.2,
                                     XZoom = 22
                                 }
@@ -287,6 +282,7 @@ namespace SurveyApp.Model.Database
             {
                 FirstName = "Queen Elizabeth",
                 LastName = "II",
+                PersonIdNumber = 5678,
                 LikesBooleans = false,
                 FavoriteWebsite = "http://www.bbc.co.uk/",
                 DateOfBirth = new DateTime(1926, 4, 21),
@@ -314,7 +310,6 @@ namespace SurveyApp.Model.Database
                         {
                             new Desktop()
                                 {
-                                    SerialNumber = "J",
                                     Mhz = 1800,
                                     GigsOfRam = 4,
                                     HasSsd = false,

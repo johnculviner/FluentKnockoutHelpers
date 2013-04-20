@@ -1,4 +1,4 @@
-﻿namespace SurveyApp.Model.DomainModels
+﻿namespace SurveyApp.Model.Models
 {
     public class Food
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SurveyApp.Model.DomainModels
+namespace SurveyApp.Model.Models
 {
     public class FoodGroup
     {

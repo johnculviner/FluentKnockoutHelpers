@@ -13,6 +13,7 @@ function (techProductViewModel) {
                 return ko.validatedObservable(self.techProduct);
             else 
                 return ko.validatedObservable();
+             
         });
 
         

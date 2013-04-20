@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using SurveyApp.Model.DomainModels;
+using SurveyApp.Model.Models;
 
 namespace SurveyApp.Model.Models
 {

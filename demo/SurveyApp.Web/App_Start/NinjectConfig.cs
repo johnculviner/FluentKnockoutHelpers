@@ -60,7 +60,7 @@ namespace SurveyApp.Web.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind(x => x.FromAssembliesMatching("SurveyApp.*").SelectAllClasses().BindAllInterfaces());
-            kernel.Load<RavenDBNinjectModule>();
+            kernel.Load<RavenDbNinjectModule>();
         }        
     }
 }

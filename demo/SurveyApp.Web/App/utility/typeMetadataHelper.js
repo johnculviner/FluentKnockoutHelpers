@@ -166,6 +166,8 @@ define(function () {
 
             var self = this;
 
+            object = ko.utils.unwrapObservable(object);
+
             if (!object || !object[this.typeFieldName])
                 return; //no type info here...
 

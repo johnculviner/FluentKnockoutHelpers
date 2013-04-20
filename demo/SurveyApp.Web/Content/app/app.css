@@ -144,10 +144,11 @@ legend + .control-group {
 }
 
 .sortable-hierarchy-placeholder {
-    background-color: rgb(255, 198, 198);
+    background-color: rgb(255, 205, 205);
     height: 30px;
     margin-top: 5px;
     margin-bottom: 5px;
+    border-radius: 10px;
 }
 
 .sortable-hierarchy li:first-child {

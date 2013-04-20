@@ -1,7 +1,7 @@
 ﻿define(['durandal/http'],
 function (http) {
 
-    var root = 'api/Survey';
+    var root = 'api/survey';
 
     return {
         getAll : function() {
@@ -22,5 +22,9 @@ function (http) {
                 type: 'DELETE'
             });
         },
+        
+        validateIdNumberUnique: function (personIdNumber, currentSurveyId) {
+            return http.post("rpc/survey/ValidateIdNumberUnique", { PersonIdNumber: personIdNumber, CurrentSurveyId: currentSurveyId });
+        }
     };
 })

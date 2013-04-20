@@ -1,5 +1,5 @@
-﻿@using SurveyApp.Model.DomainModels
-@using SurveyApp.Model.DomainModels
+﻿@using SurveyApp.Model.Models
+@using SurveyApp.Model.Models
 
 @*recursively display relations*@
 <ul data-bind="sortable: { data: Children, options: { placeholder: 'sortable-hierarchy-placeholder' } }">
@@ -18,6 +18,6 @@
                 <i class="icon-remove-sign"></i>
             </button>
         </div>
-        <!-- ko compose: { model: $data, view: 'views/survey/relation' } --><!-- /ko -->
+        <!-- ko compose: { model: $data, view: 'views/surveys/relation' } --><!-- /ko -->
     </li>
 </ul>  

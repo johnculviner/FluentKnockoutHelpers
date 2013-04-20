@@ -74,22 +74,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\RavenDbNinjectModule.cs" />
-    <Compile Include="DomainModels\Food.cs" />
-    <Compile Include="DomainModels\FoodGroup.cs" />
-    <Compile Include="DomainModels\Gender.cs" />
-    <Compile Include="DomainModels\Location.cs" />
-    <Compile Include="DomainModels\Relation.cs" />
-    <Compile Include="DomainModels\Survey.cs" />
+    <Compile Include="Models\Food.cs" />
+    <Compile Include="Models\FoodGroup.cs" />
+    <Compile Include="Models\Gender.cs" />
+    <Compile Include="Models\Location.cs" />
+    <Compile Include="Models\Relation.cs" />
+    <Compile Include="Models\Survey.cs" />
     <Compile Include="Database\DataInitailizer.cs" />
     <Compile Include="Models\SurveySummary.cs" />
-    <Compile Include="Models\ValidateSerialNumberUniqueDto.cs" />
+    <Compile Include="Models\ValidatePersonIdNumberUnique.cs" />
     <Compile Include="Models\ValidationResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DomainModels\TechProduct.cs" />
+    <Compile Include="Models\TechProduct.cs" />
     <Compile Include="Models\ColorData.cs" />
     <Compile Include="Services\ColorService.cs" />
     <Compile Include="Services\SurveyService.cs" />
-    <Compile Include="Services\TechProductService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

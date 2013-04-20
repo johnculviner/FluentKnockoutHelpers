@@ -6,10 +6,11 @@ using Ninject.Web.Common;
 using Raven.Client;
 using Raven.Client.Embedded;
 using Raven.Database.Server;
+using SurveyApp.Model.Models;
 
 namespace SurveyApp.Model.Database
 {
-    public class RavenDBNinjectModule : NinjectModule
+    public class RavenDbNinjectModule : NinjectModule
     {
         public override void Load()
         {
@@ -20,6 +21,8 @@ namespace SurveyApp.Model.Database
                 DataDirectory = "App_Data",
                 //UseEmbeddedHttpServer = true
             };
+
+            documentStore.Conventions.IdentityPartsSeparator = "-";
 
             var initializedStore = documentStore.Initialize();
 
