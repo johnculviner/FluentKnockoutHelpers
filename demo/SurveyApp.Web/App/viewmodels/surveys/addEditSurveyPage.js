@@ -7,10 +7,11 @@
         './survey',
         './addEditTechProductModal',
         'utility/typeMetadataHelper',
+        './relation',
     
     //custom bindings (could also be loaded into 'gloabal namespace' as an alternative)
     'knockoutPlugins/bindingHandlers/autoComplete', 'knockoutPlugins/bindingHandlers/datepicker'],
-function (app, surveyApi, colorApi, locationInfo, geocoderApi, router, survey, addEditTechProductModal, typeMetadataHelper) {
+function (app, surveyApi, colorApi, locationInfo, geocoderApi, router, survey, addEditTechProductModal, typeMetadataHelper, relation) {
 
     return function () {
 
@@ -172,6 +173,13 @@ function (app, surveyApi, colorApi, locationInfo, geocoderApi, router, survey, a
         };
         //#endregion
 
+
+        self.addChild = function () {
+            //get an instance of this C# type from typeMetaDataHelper
+            //wrap it in THIS custom javascript object.
+            var newChildRelation = new relation(typeMetadataHelper.getInstance('relation'), self.survey);
+            self.survey.Children.unshift(newChildRelation);
+        };
 
         //#region Tech Product CRUD
         self.addTechProduct = function () {

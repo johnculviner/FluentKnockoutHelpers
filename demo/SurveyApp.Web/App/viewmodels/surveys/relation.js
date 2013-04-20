@@ -18,7 +18,7 @@ function (app, typeMetadataHelper) {
         };
 
         ko.mapping.fromJS(apiRelation, settings, self);
-        
+
 
         self.addChild = function () {
 
