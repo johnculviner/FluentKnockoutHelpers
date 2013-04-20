@@ -10,7 +10,7 @@
 
             //the router's activator calls this function and waits for the .complete jQuery Promise before
             //transitioning the view in and eventually calling ko.applyBindings
-            self.activate = function (routeInfo) {
+            self.activate = function () {
                 return surveyApi.getAll()
                             .then(function (surveys) {
 
@@ -34,7 +34,8 @@
             self.deleteSurvey = function (surveySummary) {
                 app.showModal(new deleteModal(surveySummary))
                     .then(function (deletedSurvey) {
-                        if (deletedSurvey !== null)
+                        //promise returns the deleted survey if user clicks 'delete' in modal
+                        if (deletedSurvey)
                             self.surveySummaries.remove(deletedSurvey);
                     });
             };

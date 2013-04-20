@@ -17,6 +17,7 @@ namespace SurveyApp.Model.Services
         Survey Get(string id);
         void Save(Survey survey);
         ValidationResult ValidatePersonIdNumberUnique(ValidatePersonIdNumberUnique dto);
+        void Delete(string surveyId);
     }
 
     public class SurveyService : ISurveyService

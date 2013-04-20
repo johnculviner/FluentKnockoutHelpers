@@ -39,9 +39,9 @@ namespace SurveyApp.Web.ApiControllers
         }
 
         // DELETE api/survey/5
-        public void Delete(int id)
+        public void Delete(string id)
         {
-
+            _surveyService.Delete(id);
         }
 
         //  rpc/survey/ValidateIdNumberUnique
