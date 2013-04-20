@@ -104,8 +104,9 @@ function (app, surveyApi, colorApi, locationInfo, geocoderApi, router, survey, a
             self.save = ko.asyncCommand({ //kolite plugin
                 execute: function () {
                     surveyApi.post(ko.mapping.toJS(self.survey))
-                        .then(function() {
-                            router.navigateTo('surveys');
+                        .then(function () {
+                            self.dirtyFlag().reset();
+                            router.navigateTo('#/surveys');
                         });
                 },
                 canExecute: function (isExecuting) {
@@ -119,10 +120,30 @@ function (app, surveyApi, colorApi, locationInfo, geocoderApi, router, survey, a
             };
 
             self.cancel = function () {
-                router.navigateTo('surveys');
+                router.navigateTo('#/surveys');
             };
             //#endregion
         }
+
+
+        //user is trying to transition to another view. lets not allow this without a confirm if there are unsaved changes
+        self.canDeactivate = function () {
+            
+            if (!self.isDirty())
+                return true;
+
+            return app.showMessage(
+                "If you leave this page without saving you will lose your changes!",    //message
+                "Leave page without saving?",                                           //title
+                ['Cancel', 'Leave']                                                     //buttons, (first is default)
+            ).then(function (resp) {
+                //this promise resolves with the above selection when the modal is closed
+                return resp === 'Leave';
+            });
+        };
+
+
+        //remaining non-depedent functions
 
         //#region Home Location Autocomplete
         //query google maps for address
