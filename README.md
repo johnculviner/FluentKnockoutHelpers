@@ -96,7 +96,7 @@ We all love MVC (right?) lets pay it some hommage with a fluent twist! Note the 
 ```html
 <!-- Creation of the strongly-typed helper -->
 @{
-  var person = this.KnockoutHelperForApi<PersonController>().Endpoint(api => api.Get(default(int)), "person", true);
+  var person = this.KnockoutHelperForType<Person>("person", true);
 }
 
 <p>
@@ -119,7 +119,7 @@ Minimilastic markup for those that like almost vanilla HTML and/or lots of typin
 ```html
 <!-- Creation of the strongly-typed helper -->
 @{
-  var person = this.KnockoutHelperForApi<PersonController>().Endpoint(api => api.Get(default(int)), "person", true);
+  var person = this.KnockoutHelperForType<Person>("person", true);
 }
 
 <p>
