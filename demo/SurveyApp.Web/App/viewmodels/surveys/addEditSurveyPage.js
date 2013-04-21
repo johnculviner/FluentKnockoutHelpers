@@ -1,6 +1,7 @@
 ﻿define(['durandal/app',
         'api/surveyApi',
         'api/colorApi',
+        'api/foodGroupApi',
         './shared/locationInfo',
         'api/geocoderApi',
         'durandal/plugins/router',
@@ -11,7 +12,7 @@
     
     //custom bindings (could also be loaded into 'gloabal namespace' as an alternative)
     'knockoutPlugins/bindingHandlers/autoComplete', 'knockoutPlugins/bindingHandlers/datepicker'],
-function (app, surveyApi, colorApi, locationInfo, geocoderApi, router, survey, addEditTechProductModal, typeMetadataHelper, relation) {
+function (app, surveyApi, colorApi, foodGroupApi, locationInfo, geocoderApi, router, survey, addEditTechProductModal, typeMetadataHelper, relation) {
 
     return function () {
 
@@ -20,6 +21,7 @@ function (app, surveyApi, colorApi, locationInfo, geocoderApi, router, survey, a
         //assigned in activate
         self.survey = null;
         self.colors = [];
+        self.foodGroups = [];
         
         self.isNew = ko.observable(false);
 
@@ -32,7 +34,14 @@ function (app, surveyApi, colorApi, locationInfo, geocoderApi, router, survey, a
             if (routeInfo.id == 'new') {
                 //TODO:
             }
-
+            
+            var foodGroupDeferred =
+                foodGroupApi.getAll()
+                    .then(function(foodGroups) {
+                        self.foodGroups = foodGroups;
+                        return foodGroups;
+                    });
+            
             //get the survey from the API
             var surveyDeferred =
                 surveyApi.get(routeInfo.id)
@@ -40,7 +49,7 @@ function (app, surveyApi, colorApi, locationInfo, geocoderApi, router, survey, a
 
                         //extend the c# definition of a survey for a good UI experience
                         //inside survey class. (Also just does a ko.mapping on it)
-                        self.survey = new survey(apiSurvey);
+                        self.survey = new survey(apiSurvey, foodGroupDeferred);
                         
                         //apply validation to the entire model and object graph using metadata from C#
                         //TypeMetadataHelper.EmitTypeMetadataArray()
@@ -54,11 +63,10 @@ function (app, surveyApi, colorApi, locationInfo, geocoderApi, router, survey, a
                         self.colors = colors;
                     });
 
-
             //the promise resolves 'when' the above deferreds complete.
             //the promising resolving allows durandal to go ahead with composition
             //because the view model is 'ready'
-            return $.when(surveyDeferred, colorsDeferred)
+            return $.when(surveyDeferred, colorsDeferred, foodGroupDeferred)
                         .then(postActivate);
         };
         

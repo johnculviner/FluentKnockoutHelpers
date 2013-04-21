@@ -11,7 +11,6 @@ namespace SurveyApp.Model.Models
         {
             Children = new List<Relation>();
             TechProducts = new List<TechProduct>();
-            FavoriteFoods = new List<Food>();
         }
 
         public string Id { get; set; }
@@ -47,6 +46,7 @@ namespace SurveyApp.Model.Models
 
         public List<TechProduct> TechProducts { get; set; }
 
-        public List<Food> FavoriteFoods { get; set; }
+        [Display(Name = "Favorite Food")]
+        public Guid FavoriteFoodId { get; set; }
     }
 }

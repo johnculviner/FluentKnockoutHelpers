@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Drawing;
 using Raven.Client;
+using Raven.Database.Linq.PrivateExtensions;
 using SurveyApp.Model.Models;
 
 namespace SurveyApp.Model.Database
@@ -97,6 +99,8 @@ namespace SurveyApp.Model.Database
 
         private static void LoadSurveys(IDocumentSession session)
         {
+            var allFoods = session.Query<FoodGroup>().ToList().SelectMany(x => x.Foods).ToList();
+
             session.Store(new Survey
                 {
                     FirstName = "Bill",
@@ -106,11 +110,7 @@ namespace SurveyApp.Model.Database
                     DateOfBirth = new DateTime(1955, 10, 28),
                     FavoriteWebsite = "http://www.apple.com",
                     FavoriteColorId = KnownColor.Green,
-                    //FavoriteFoods = new List<Food>
-                    //    {
-                    //        session.Foods.Local.Single(f => f.Name == "Broccoli"), 
-                    //        session.Foods.Local.Single(f => f.Name == "Cheese")
-                    //    },
+                    FavoriteFoodId = GetRandomFood(allFoods),
                     Children = new List<Relation>
                         {
                             new Relation{Name = "Jennifer"},
@@ -152,11 +152,7 @@ namespace SurveyApp.Model.Database
                 DateOfDeath = new DateTime(2011, 10, 5),
                 FavoriteWebsite = "http://www.google.com",
                 FavoriteColorId = KnownColor.Silver,
-                //FavoriteFoods = new List<Food>
-                //        {
-                //            session.Foods.Local.Single(f => f.Name == "Rice"), 
-                //            session.Foods.Local.Single(f => f.Name == "Tofu")
-                //        },
+                FavoriteFoodId = GetRandomFood(allFoods),
                 Children = new List<Relation>
                         {
                             new Relation{Name = "Lisa"},
@@ -198,11 +194,7 @@ namespace SurveyApp.Model.Database
                 FavoriteWebsite = "http://www.yahoo.com",
                 DateOfBirth = new DateTime(1975, 5, 30),
                 FavoriteColorId = KnownColor.Red,
-                //FavoriteFoods = new List<Food>
-                //        {
-                //            session.Foods.Local.Single(f => f.Name == "Yogurt"), 
-                //            session.Foods.Local.Single(f => f.Name == "Carrots")
-                //        },
+                FavoriteFoodId = GetRandomFood(allFoods),
                 Children = new List<Relation>
                         {
                             new Relation{Name = "Macallister"},
@@ -241,11 +233,7 @@ namespace SurveyApp.Model.Database
                 DateOfBirth = new DateTime(1984, 5, 14),
                 FavoriteWebsite = "http://www.linkedin.com",
                 FavoriteColorId = KnownColor.Blue,
-                //FavoriteFoods = new List<Food>
-                //        {
-                //            session.Foods.Local.Single(f => f.Name == "Oatmeal"), 
-                //            session.Foods.Local.Single(f => f.Name == "Cheese")
-                //        },
+                FavoriteFoodId = GetRandomFood(allFoods),
                 Gender = Gender.Male,
                 TechProducts = new List<TechProduct>
                         {
@@ -287,11 +275,7 @@ namespace SurveyApp.Model.Database
                 FavoriteWebsite = "http://www.bbc.co.uk/",
                 DateOfBirth = new DateTime(1926, 4, 21),
                 FavoriteColorId = KnownColor.Gold,
-                //FavoriteFoods = new List<Food>
-                //        {
-                //            session.Foods.Local.Single(f => f.Name == "Ice Cream"), 
-                //            session.Foods.Local.Single(f => f.Name == "Cheese")
-                //        },
+                FavoriteFoodId = GetRandomFood(allFoods),
                 Children = new List<Relation>
                         {
                             new Relation{Name = "Princess Anne", Children = new List<Relation>
@@ -323,6 +307,12 @@ namespace SurveyApp.Model.Database
                     Longitude = -0.14189
                 }
             });
+        }
+
+        public static Guid GetRandomFood(List<Food> foods)
+        {
+            var rnd = new Random();
+            return foods[rnd.Next(0, foods.Count - 1)].Id;
         }
     }
 }

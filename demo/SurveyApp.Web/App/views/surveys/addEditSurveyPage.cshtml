@@ -13,7 +13,7 @@
 		<div class="pull-right">
 			<button class="btn" data-bind="click: reset">Reset</button>
 			<button class="btn" data-bind="click: cancel">Cancel</button>
-			<button class="btn btn-primary" data-bind="command: save, activity: save.isExecuting, text: saveText"></button>
+			<button class="btn btn-primary" data-bind="command: save, text: saveText"></button>
 		</div>
 	</div>
 	<div class="row">
@@ -63,52 +63,50 @@
 				<legend>Other Information</legend>
 				
 				@*Person Id Number*@                
-				<div class="control-group">
-					@survey.LabelFor(x => x.PersonIdNumber).Class("control-label")
-					<div class="controls">
-						@survey.BoundTextBoxFor(x => x.PersonIdNumber)
-					</div>
-				</div>
+                <div class="control-group">
+                    @*I'm sick of typing control-label for twitterbootstrap. Extend existing label with 3 lines of code total*@
+					@survey.BootstrapLabelFor(x => x.PersonIdNumber)
+                    <div class="controls">
+                        @survey.BoundTextBoxFor(x => x.PersonIdNumber)
+                    </div>
+                </div>
 
 				@*Gender*@
-				<div class="control-group">
-					@survey.LabelFor(x => x.Gender).Class("control-label")
-					<div class="controls">
-						<label class="radio inline">
-							@survey.BoundRadioButtonFor(x => x.Gender, (int)Gender.Male)
-							Male
-						</label>
-						<label class="radio inline">
-							@survey.BoundRadioButtonFor(x => x.Gender, (int)Gender.Female)
-							Female
-						</label>
-					</div>
-				</div>
+                <div class="control-group">
+                    @survey.BootstrapLabelFor(x => x.Gender)
+                    <div class="controls">
+                        <label class="radio inline">
+                            @survey.BoundRadioButtonFor(x => x.Gender, (int)Gender.Male)
+                            Male
+                        </label>
+                        <label class="radio inline">
+                            @survey.BoundRadioButtonFor(x => x.Gender, (int)Gender.Female)
+                            Female
+                        </label>
+                    </div>
+                </div>
 
 				@*Date of Birth*@
-				<div class="control-group">
-					@survey.LabelFor(x => x.DateOfBirth).Class("control-label")
-					<div class="controls">
+                <div class="control-group">
+                    @survey.BootstrapLabelFor(x => x.DateOfBirth)
+                    <div class="controls">
 						
-						@*wow this seems like alot of typing...*@
-						<input type="text" class="input-small" @survey.DataBind(db => db.Custom("datepicker", x => x.DateOfBirth)) />
-					</div>
-				</div>
+                        @*wow this seems like alot of typing...*@
+                        <input type="text" class="input-small" @survey.DataBind(db => db.Custom("datepicker", x => x.DateOfBirth)) />
+                    </div>
+                </div>
 				
 				@*Date of Death*@
-				<div class="control-group">
-					
-					@*I'm sick of typing control-label for twitterbootstrap. Extend existing label with 3 lines of code total*@
-					@survey.BootstrapLabelFor(x => x.DateOfDeath)
-
-					<div class="controls">
-						
-						@*Also sick of above code for datepickers. Make a custom helper with 3 lines of code total*@
-						@survey.BoundDatePickerFor(x => x.DateOfDeath)
-					</div>
-				</div>
+                <div class="control-group">
+                    @survey.BootstrapLabelFor(x => x.DateOfDeath)
+                    <div class="controls">
+                        @*sick of above code for datepickers. Make a custom helper with 3 lines of code total*@
+                        @survey.BoundDatePickerFor(x => x.DateOfDeath)
+                    </div>
+                </div>
 				
-				@*Likes Booleans*@
+                @*Likes Booleans*@
+                @*Example of a checkbox*@
 				<div class="control-group">
 					@survey.BootstrapLabelFor(x => x.LikesBooleans)
 					<div class="controls">
@@ -116,7 +114,8 @@
 					</div>
 				</div>
 				
-				@*Favorite Website*@
+                @*Favorite Website*@
+                @*Example of a textbox with a URL data annotation*@
 				<div class="control-group">
 					@survey.BootstrapLabelFor(x => x.FavoriteWebsite)
 					<div class="controls">
@@ -124,7 +123,8 @@
 					</div>
 				</div>
 				
-				@*Favorite Color*@
+                @*Favorite Color*@
+                @*Example of dropdown*@
 				<div class="control-group">
 					@survey.BootstrapLabelFor(x => x.FavoriteColorId)
 					<div class="controls">
@@ -133,9 +133,21 @@
 						</span>
 					</div>
 				</div>
+				
+                @*Favorite Food*@
+                @*Example of dependent drop downs*@
+				<div class="control-group">
+					@survey.BootstrapLabelFor(x => x.FavoriteFoodId)
+                    <div class="controls form-inline">
+                        <select data-bind="options: foodGroups, optionsText: 'Name', value: survey.selectedFoodGroup, optionsCaption: 'Select a food group...'"></select>
+                        @(survey.BoundSelectListFor<Food>(x => x.FavoriteFoodId, "survey.availableFoods", x => x.Id, x => x.Name, "Select a food...")
+                            .DataBind(db => db.Visible("isFoodGroupSelected")))
+                    </div>
+				</div>
 			</fieldset>
 			
-			@*Family Tree*@
+            @*Family Tree*@
+            @*Example of editable recursive hierarchy*@
 			<fieldset>
 				<legend>
 					Family Tree 
@@ -147,7 +159,8 @@
 				<div class="sortable-hierarchy" data-bind="compose: { model: survey, view: 'views/surveys/relation' }"> </div>
 			</fieldset>
 
-			@*Tech Products*@
+            @*Tech Products*@
+            @*Example of a grid editable via a popup*@
 			<fieldset>
 				<legend>Tech Products Owned</legend>
 				<table class="table table-bordered">

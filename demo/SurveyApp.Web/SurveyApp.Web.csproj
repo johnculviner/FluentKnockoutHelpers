@@ -137,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiControllers\ColorController.cs" />
+    <Compile Include="ApiControllers\FoodGroupController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\JsonSerializerConfig.cs" />
@@ -154,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App\api\colorApi.js" />
+    <Content Include="App\api\foodGroupApi.js" />
     <Content Include="App\api\geocoderApi.js" />
     <Content Include="App\api\surveyApi.js" />
     <Content Include="App\durandal\amd\almond-custom.js" />

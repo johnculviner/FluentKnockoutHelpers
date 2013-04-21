@@ -1,6 +1,6 @@
 ﻿define(['./relation', './techProduct', 'api/surveyApi'],
 function (relation, techProduct, surveyApi) {
-    return function (apiSurvey) {
+    return function (apiSurvey, foodGroupsDeferred) {
         var self = this;
 
         //perform custom mappings for child fields of the C# type Survey here
@@ -27,6 +27,35 @@ function (relation, techProduct, surveyApi) {
             asyncValidation: function () {
                 return surveyApi.validateIdNumberUnique(self.PersonIdNumber(), self.Id());
             }
+        });
+
+
+        //wire up food group, food, dependent drop down
+        foodGroupsDeferred.then(function(foodGroups) {
+
+            self.selectedFoodGroup = ko.observable();
+            
+            //select the correct foodgroup for displaying a previously created survey
+            if (self.FavoriteFoodId()) {
+                
+                var selectedFoodGroup = ko.utils.arrayFirst(foodGroups, function (group) {
+                    return ko.utils.arrayFirst(group.Foods, function (food) {
+                        return food.Id === self.FavoriteFoodId();
+                    }) != null;
+                });
+
+                self.selectedFoodGroup(selectedFoodGroup);
+            }
+
+            self.isFoodGroupSelected = ko.computed(function() {
+                return self.selectedFoodGroup() != null;
+            });
+
+            self.availableFoods = ko.computed(function () {
+                return self.isFoodGroupSelected() ? self.selectedFoodGroup().Foods : null;
+            });
+            
+            return foodGroups;
         });
     };
 });

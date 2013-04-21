@@ -88,6 +88,7 @@
     <Compile Include="Models\TechProduct.cs" />
     <Compile Include="Models\ColorData.cs" />
     <Compile Include="Services\ColorService.cs" />
+    <Compile Include="Services\FoodCategoryService.cs" />
     <Compile Include="Services\SurveyService.cs" />
   </ItemGroup>
   <ItemGroup>
