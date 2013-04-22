@@ -1,10 +1,12 @@
 ﻿@using FluentKnockoutHelpers.Core.NodeBuilding
+@using SurveyApp.Model.Models
 @using SurveyApp.Web.ApiControllers
 
 <section>
 	@*SURVEYS LIST*@
 	@{
-		var summaries = this.KnockoutHelperForApi<SurveyController>().Endpoint(api => api.Get(), "surveySummaries", true);
+        var summaries = this.KnockoutHelperForApi<SurveyController>().Endpoint(api => api.Get(), "surveySummaries", true);
+        // OR var summaries = this.KnockoutHelperForEnumerableType<SurveySummary>();
 	}
 
     <h1>

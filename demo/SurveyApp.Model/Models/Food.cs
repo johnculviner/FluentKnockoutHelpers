@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace SurveyApp.Model.Models
 {
@@ -10,8 +11,11 @@ namespace SurveyApp.Model.Models
         }
 
         public Guid Id { get; set; }
-        public FoodGroup FoodGroup { get; set; }
+
+        [StringLength(20)]
         public string Name { get; set; }
+
+        [Range(0, 10)]
         public int HealthyScore { get; set; }
     }
 }

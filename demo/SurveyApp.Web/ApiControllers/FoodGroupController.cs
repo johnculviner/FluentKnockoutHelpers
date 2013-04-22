@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -21,6 +22,11 @@ namespace SurveyApp.Web.ApiControllers
         public IEnumerable<FoodGroup> Get()
         {
             return _foodGroupService.GetAllFoodGroups();
-        } 
+        }
+
+        public void Post(IEnumerable<FoodGroup> foodGroups)
+        {
+            _foodGroupService.Save(foodGroups);
+        }
     }
 }

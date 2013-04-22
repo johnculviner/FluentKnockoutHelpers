@@ -1,0 +1,32 @@
+﻿@using SurveyApp.Model.Models
+
+@{
+    var foodGroups = this.KnockoutHelperForEnumerableType<FoodGroup>("foodGroups", false);
+    //OR var foodGroups = this.KnockoutHelperForApi<FoodGroupController>().Endpoint(api => api.Get(), "foodGroups", false);
+}
+<section>
+    <div class="row">
+        <h1>Edit Food Groups</h1>
+	    <button class="btn btn-success pull-right" data-bind="click: addFoodGroup">
+		    <i class="icon-plus"></i>
+		    Add Food Group
+	    </button>
+    </div>
+    
+    @using (var foodGroup = foodGroups.ForEachKoComment())
+    {
+        <fieldset>
+            <legend>
+                @foodGroup.BoundTextFor(x => x.Name)
+                <button class="btn btn-success pull-right" data-bind="click: addFood">
+		            <i class="icon-plus"></i>
+		            Add Food
+	            </button>
+            </legend>
+            @using (var food = foodGroup.ForEachKoComment(x => x.Foods))
+            {
+                @food.BoundTextFor(x => x.Name)
+            }
+        </fieldset>
+    }
+</section>

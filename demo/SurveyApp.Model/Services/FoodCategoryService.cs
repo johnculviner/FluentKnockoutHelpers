@@ -13,6 +13,7 @@ namespace SurveyApp.Model.Services
     public interface IFoodGroupService
     {
         IEnumerable<FoodGroup> GetAllFoodGroups();
+        void Save(IEnumerable<FoodGroup> foodGroups);
     }
 
     public class FoodGroupService : IFoodGroupService
@@ -27,6 +28,11 @@ namespace SurveyApp.Model.Services
         public IEnumerable<FoodGroup> GetAllFoodGroups()
         {
             return _documentSession.Query<FoodGroup>().ToList();
+        }
+
+        public void Save(IEnumerable<FoodGroup> foodGroups)
+        {
+            _documentSession.Store(foodGroups);
         }
     }
 }

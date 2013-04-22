@@ -113,6 +113,20 @@ define(function () {
             return instance;
         },
         
+        getMappedValidatedInstance: function (typeNameContains) {
+            
+            //get an instance of a C# (api) Food from the metaDatahelper
+            var instance = this.getInstance(typeNameContains);
+
+            //create observables on the instance members
+            var observableInstance = ko.mapping.fromJS(instance);
+
+            //apply validation
+            this.applyValidation(observableInstance);
+
+            return observableInstance;
+        },
+        
         getInstanceAndAssign: function (typeNameContains, referenceToAssign, settings /*optional*/) {
             /// <summary>lookup the passed typeName in the configured typeMetadata source and assign it with ko.mapping to the reference</summary>
             var self = this;
@@ -156,6 +170,7 @@ define(function () {
             //finally change the type on the object to the new type and fix mapping to recognize it on ko.mapping.toJSON
             referenceToAssign[self.typeFieldName](instance[self.typeFieldName]);
             referenceToAssign.__ko_mapping__.ignore.splice(self.typeFieldName);
+            referenceToAssign.__ko_mapping__.mappedProperties.$type = true;
         },
         
         //REQUIRES knockout.validation plugin in global namespace

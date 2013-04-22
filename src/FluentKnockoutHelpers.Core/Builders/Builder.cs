@@ -310,13 +310,10 @@ namespace FluentKnockoutHelpers.Core.Builders
         #endregion
 
 
-        //public ForEachBuilder<TModel, TInner> ForEach<TInner>(Node node, Action<StringReturningBuilder<TModel>> builder)
-        //{
-        //    var element = new StringReturningBuilder<TModel>(this, new NodeBuilder(node));
-        //    builder(element);
-        //    ImmediatelyWriteToResponse(element.ToHtmlString());
-        //    return new ForEachBuilder<TModel, TInner>(this);
-        //}
+        public ForEachBuilder<TInner> ForEachKoComment<TInner>(Expression<Func<TModel, IEnumerable<TInner>>> expr)
+        {
+            return new EnumerableBuilder<TInner>(WebPage, ViewModelPropertyName).ForEachKoComment();
+        }
 
 
         //Ugly way, but works
