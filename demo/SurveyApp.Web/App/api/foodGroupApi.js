@@ -8,7 +8,7 @@ function (http) {
             return $.getJSON(root);
         },
         post: function (foodGroups) {
-            return http.post(foodGroups);
+            return http.post(root, foodGroups);
         },
     };
 })

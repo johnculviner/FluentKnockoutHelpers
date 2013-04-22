@@ -78,12 +78,12 @@ function (app, surveyApi, colorApi, foodGroupApi, locationInfo, geocoderApi, rou
             //the promising resolving allows durandal to go ahead with composition
             //because the view model is 'ready'
             return $.when(surveyDeferred.promise(), colorsPromise, foodGroupPromise)
-                        .then(postActivate);
+                        .then(ajaxLoaded);
         };
         
 
         //wire up computeds that need data populated to complete
-        function postActivate() {
+        function ajaxLoaded() {
             
             //#region Computeds
             self.headerText = ko.computed(function() {
@@ -228,13 +228,16 @@ function (app, surveyApi, colorApi, foodGroupApi, locationInfo, geocoderApi, rou
         };
         
         self.deleteTechProduct = function (techProduct) {
-            app.showMessage("Are you sure you want to delete this " + techProduct.productTypeDisplay() + "?",
-                "Delete tech product?", ['Delete', 'Cancel'])
-                .then(function(result) {
-                    //this promise resolves with the above selection when the modal is closed
-                    if(result === 'Delete')
-                        self.survey.TechProducts.remove(techProduct);
-                });
+            app.showMessage(
+                "Are you sure you want to delete this " + techProduct.productTypeDisplay() + "?",   //message
+                "Delete tech product?",                                                             //title
+                ['Delete', 'Cancel']                                                                //button options (first is default)
+            )
+            .then(function(result) {
+                //this promise resolves with the above selection when the modal is closed
+                if(result === 'Delete')
+                    self.survey.TechProducts.remove(techProduct);
+            });
         };
         //#endregion
 

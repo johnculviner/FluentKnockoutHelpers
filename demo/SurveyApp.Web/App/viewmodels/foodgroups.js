@@ -1,13 +1,16 @@
-﻿define(['api/foodGroupApi', './foodGroups/foodGroup', 'utility/typeMetadataHelper'],
-function (foodGroupApi, foodGroup, typeMetadataHelper) {
-    return {
-        //assigned in activate
-        foodGroups: ko.observableArray(), 
+﻿define(['api/foodGroupApi', './foodGroups/foodGroup', 'utility/typeMetadataHelper', 'durandal/app', 'durandal/plugins/router'],
+function (foodGroupApi, foodGroup, typeMetadataHelper, app, router) {
+    return new function() {
+        var self = this;
 
-        //called before the viewModel and the view are 'composed' (ko.applyBindings among other things)
-        activate: function () {
-            var self = this;
-            //the viewModel and view aren't composed until this promise resolves
+        window.thevm = self;
+
+        //assigned in activate
+        self.foodGroups = ko.observableArray();
+
+        //called before the viewModel and the view are 'composed' by durandal (ko.applyBindings among other things)
+        self.activate = function() {
+            //the viewModel and view aren't composed by durandal until this promise resolves
             return foodGroupApi.getAll()
                 .then(function(apifoodGroups) {
 
@@ -17,20 +20,60 @@ function (foodGroupApi, foodGroup, typeMetadataHelper) {
                     });
 
                     self.foodGroups(wrappedFoodGroups);
+                    ajaxLoaded();
                 });
-        },
-        
-        addFoodGroup: function () {
+        };
+
+        self.addFoodGroup = function() {
             //get an instance of a C# (api) Food from the metaDatahelper
             //that is observable, validation enabled and ready to go...
-            var apiFoodGroupInstance = typeMetadataHelper.getMappedValidatedInstance('models.foodgroup');
+            var apiFoodGroupInstance = typeMetadataHelper.getMappedValidatedInstance('models.foodgroup,');
 
             //extend the C# definition of a food group with a JS class
-            this.foodGroups.push(new foodGroup(apiFoodGroupInstance));
-        },
+            self.foodGroups.push(new foodGroup(apiFoodGroupInstance));
+        };
         
-        removeFoodGroup: function (foodGroupToRemove) {
-            this.foodGroups.remove(foodGroupToRemove);
+        self.removeFoodGroup = function (foodGroupToRemove) {
+            app.showMessage(
+                "Are you sure you want to delete '" + foodGroupToRemove.Name() + "'?",      //message
+                "Delete food group?",                                                       //title
+                ['Delete', 'Cancel']                                                        //button options (first is default)
+            )
+            .then(function (result) {
+                //this promise resolves with the above selection when the modal is closed
+                if (result === 'Delete')
+                self.foodGroups.remove(foodGroupToRemove);
+            });
+        };
+        
+
+        function ajaxLoaded() {
+            self.dirtyFlag = new ko.DirtyFlag(self.foodGroups, false, ko.mapping.toJSON);       //kolite plugin
+
+            ko.validation.init({ grouping: { deep: true } });
+            self.validator = ko.validatedObservable(self.foodGroups());                         //knockout validation plugin
+
+            self.save = ko.asyncCommand({ //kolite plugin
+                execute: function () {
+                    foodGroupApi.post(ko.mapping.toJS(self.foodGroups))
+                        .then(function () {
+                            self.dirtyFlag().reset();
+                            router.navigateTo('#/surveys');
+                        });
+                },
+                canExecute: function (isExecuting) {
+                    return !isExecuting && self.dirtyFlag().isDirty() && self.validator().isValid();
+                }
+            });
+
+            var resetCopy = ko.mapping.toJS(self.foodGroups);
+            self.reset = function () {
+                ko.mapping.fromJS(resetCopy, {}, self.foodGroups);
+            };
+
+            self.cancel = function () {
+                router.navigateTo('#/surveys');
+            };
         }
     };
 });

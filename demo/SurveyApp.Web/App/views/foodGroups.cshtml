@@ -9,6 +9,11 @@
         <h1>
             Edit Food Groups
         </h1>
+        <div class="pull-right">
+			<button class="btn" data-bind="click: reset">Reset</button>
+			<button class="btn" data-bind="click: cancel">Cancel</button>
+			<button class="btn btn-primary" data-bind="command: save">Save</button>
+		</div>
     </div>
     
     @*a foreach on the top level element*@
@@ -23,9 +28,9 @@
                 Edit Name: 
                 @foodGroup.BoundTextBoxFor(x => x.Name)
                 
-                <button class="btn btn-success pull-right" data-bind="click: addFood">
-                    <i class="icon-plus"></i>
-                    Add Food
+                <button class="btn btn-danger pull-right" data-bind="click: $parent.removeFoodGroup">
+                    <i class="icon-remove-sign"></i>
+                    Delete Food Group
                 </button>
             </div>
             <table class="table table-bordered">
@@ -38,21 +43,25 @@
                 </thead>
                 <tbody>
                     
-                @*a foreach on a nested element*@
-                @using (var food = foodGroup.ForEachKoComment(x => x.Foods))
-                {
-                    <tr>
-                        <td>@food.BoundTextBoxFor(x => x.Name)</td>
-                        <td>@food.BoundTextBoxFor(x => x.HealthyScore).Class("input-mini")</td>
-                        <td class="actions">
-                            <button class="btn btn-danger" data-bind="click: $parent.removeFood">
-                                <i class="icon-remove-sign"></i>
-                            </button>
-                        </td>
-                    </tr>
-                }
+                    @*a foreach on a nested element*@
+                    @using (var food = foodGroup.ForEachKoComment(x => x.Foods))
+                    {
+                        <tr>
+                            <td>@food.BoundTextBoxFor(x => x.Name)</td>
+                            <td>@food.BoundTextBoxFor(x => x.HealthyScore).Class("input-mini")</td>
+                            <td class="actions">
+                                <button class="btn btn-danger" data-bind="click: $parent.removeFood">
+                                    <i class="icon-remove-sign"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
+            <button class="btn btn-success pull-right" data-bind="click: addFood">
+                <i class="icon-plus"></i>
+                Add Food
+            </button>
         </fieldset>
     }
     <div class="row">

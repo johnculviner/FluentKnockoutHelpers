@@ -32,7 +32,8 @@ namespace SurveyApp.Model.Services
 
         public void Save(IEnumerable<FoodGroup> foodGroups)
         {
-            _documentSession.Store(foodGroups);
+            foreach (var foodGroup in foodGroups)
+                _documentSession.Store(foodGroup);
         }
     }
 }

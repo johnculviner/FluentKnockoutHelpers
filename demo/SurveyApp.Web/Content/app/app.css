@@ -124,8 +124,7 @@ legend + .control-group {
 .validationMessage {
     font-weight: bold;
     color: #f00;
-    float: left;
-    clear: left;
+    display: block;
 }
 
 .validationElement {
@@ -168,7 +167,7 @@ legend + .control-group {
 /*food group*/
 section.food-groups {
     padding-bottom: 40px;
-    width: 600px;
+    width: 750px;
 }
 
 .food-groups fieldset {
