@@ -183,7 +183,7 @@
     <Content Include="App\main.js" />
     <Content Include="App\requirePlugins\async.js" />
     <Content Include="App\utility\typeMetadataHelper.js" />
-    <Content Include="App\viewmodels\foodgroups.js" />
+    <Content Include="App\viewmodels\foodGroups.js" />
     <Content Include="App\viewmodels\foodGroups\foodGroup.js" />
     <Content Include="App\viewmodels\surveys\addEditTechProductModal.js" />
     <Content Include="App\viewmodels\surveys\relation.js" />

@@ -20,7 +20,6 @@ function (foodGroupApi, foodGroup, typeMetadataHelper, app, router) {
                     });
 
                     self.foodGroups(wrappedFoodGroups);
-                    ajaxLoaded();
                 });
         };
 
@@ -46,34 +45,15 @@ function (foodGroupApi, foodGroup, typeMetadataHelper, app, router) {
             });
         };
         
+        self.save = function() {
+            foodGroupApi.post(ko.mapping.toJS(self.foodGroups))
+                .then(function() {
+                    router.navigateTo('#/surveys');
+                });
+        };
 
-        function ajaxLoaded() {
-            self.dirtyFlag = new ko.DirtyFlag(self.foodGroups, false, ko.mapping.toJSON);       //kolite plugin
-
-            ko.validation.init({ grouping: { deep: true } });
-            self.validator = ko.validatedObservable(self.foodGroups());                         //knockout validation plugin
-
-            self.save = ko.asyncCommand({ //kolite plugin
-                execute: function () {
-                    foodGroupApi.post(ko.mapping.toJS(self.foodGroups))
-                        .then(function () {
-                            self.dirtyFlag().reset();
-                            router.navigateTo('#/surveys');
-                        });
-                },
-                canExecute: function (isExecuting) {
-                    return !isExecuting && self.dirtyFlag().isDirty() && self.validator().isValid();
-                }
-            });
-
-            var resetCopy = ko.mapping.toJS(self.foodGroups);
-            self.reset = function () {
-                ko.mapping.fromJS(resetCopy, {}, self.foodGroups);
-            };
-
-            self.cancel = function () {
-                router.navigateTo('#/surveys');
-            };
-        }
+        self.cancel = function () {
+            router.navigateTo('#/surveys');
+        };
     };
 });

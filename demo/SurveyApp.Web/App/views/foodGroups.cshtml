@@ -10,9 +10,8 @@
             Edit Food Groups
         </h1>
         <div class="pull-right">
-			<button class="btn" data-bind="click: reset">Reset</button>
 			<button class="btn" data-bind="click: cancel">Cancel</button>
-			<button class="btn btn-primary" data-bind="command: save">Save</button>
+			<button class="btn btn-primary" data-bind="click: save">Save</button>
 		</div>
     </div>
     
@@ -43,7 +42,7 @@
                 </thead>
                 <tbody>
                     
-                    @*a foreach on a nested element*@
+                    @*a foreach on a nested element (foods)*@
                     @using (var food = foodGroup.ForEachKoComment(x => x.Foods))
                     {
                         <tr>
