@@ -164,3 +164,23 @@ legend + .control-group {
 .sortable-hierarchy li.sortable-hierarchy-placeholder {
     margin-top: auto;
 }
+
+/*food group*/
+section.food-groups {
+    padding-bottom: 40px;
+    width: 600px;
+}
+
+.food-groups fieldset {
+    padding-bottom: 40px;
+
+}
+
+.edit-group-name {
+    padding-bottom: 10px;
+}
+
+section.food-groups td.actions {
+    width: 40px;
+}
+

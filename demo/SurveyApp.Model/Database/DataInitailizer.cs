@@ -43,7 +43,7 @@ namespace SurveyApp.Model.Database
 
             session.Store(new FoodGroup
             {
-                Name = "Vegetable",
+                Name = "Vegetables",
                 Foods = new List<Food>
                 {
                     new Food{Name = "Broccoli", HealthyScore = 10},

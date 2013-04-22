@@ -310,9 +310,11 @@ namespace FluentKnockoutHelpers.Core.Builders
         #endregion
 
 
-        public ForEachBuilder<TInner> ForEachKoComment<TInner>(Expression<Func<TModel, IEnumerable<TInner>>> expr)
+        public ForEachBuilder<TInner> ForEachKoComment<TInner>(Expression<Func<TModel, IEnumerable<TInner>>> propExpr)
         {
-            return new EnumerableBuilder<TInner>(WebPage, ViewModelPropertyName).ForEachKoComment();
+            var newPath = string.Format("{0}.{1}",
+                ViewModelPropertyName, ExpressionParser.GetExpressionText(propExpr));
+            return new EnumerableBuilder<TInner>(WebPage, newPath).ForEachKoComment();
         }
 
 

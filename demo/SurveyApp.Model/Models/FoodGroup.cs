@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SurveyApp.Model.Models
 {
@@ -10,7 +11,10 @@ namespace SurveyApp.Model.Models
         }
 
         public string Id { get; set; }
+
+        [StringLength(20)]
         public string Name { get; set; }
+
         public List<Food> Foods { get; set; }
     }
 }

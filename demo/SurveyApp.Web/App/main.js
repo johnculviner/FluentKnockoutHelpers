@@ -47,7 +47,7 @@ define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/vie
         //ex: visiting '#/surveys' results in 'viewmodels/surveys'
         router.mapNav('surveys');
         
-        router.mapNav('foodgroups', 'foodgroups', 'Food Groups');
+        router.mapNav('foodgroups', 'viewmodels/foodgroups', 'Food Groups');
 
         //creates a route for showing a particular survey
         //':id' extracts the value and it is passed as an argument into the 'activate' function of the viewmodel

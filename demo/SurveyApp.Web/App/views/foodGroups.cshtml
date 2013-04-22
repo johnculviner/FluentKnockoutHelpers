@@ -4,29 +4,61 @@
     var foodGroups = this.KnockoutHelperForEnumerableType<FoodGroup>("foodGroups", false);
     //OR var foodGroups = this.KnockoutHelperForApi<FoodGroupController>().Endpoint(api => api.Get(), "foodGroups", false);
 }
-<section>
+<section class="form-horizontal food-groups">
     <div class="row">
-        <h1>Edit Food Groups</h1>
-	    <button class="btn btn-success pull-right" data-bind="click: addFoodGroup">
-		    <i class="icon-plus"></i>
-		    Add Food Group
-	    </button>
+        <h1>
+            Edit Food Groups
+        </h1>
     </div>
     
+    @*a foreach on the top level element*@
     @using (var foodGroup = foodGroups.ForEachKoComment())
     {
         <fieldset>
             <legend>
                 @foodGroup.BoundTextFor(x => x.Name)
-                <button class="btn btn-success pull-right" data-bind="click: addFood">
-		            <i class="icon-plus"></i>
-		            Add Food
-	            </button>
+                Food Group
             </legend>
-            @using (var food = foodGroup.ForEachKoComment(x => x.Foods))
-            {
-                @food.BoundTextFor(x => x.Name)
-            }
+            <div class="edit-group-name">
+                Edit Name: 
+                @foodGroup.BoundTextBoxFor(x => x.Name)
+                
+                <button class="btn btn-success pull-right" data-bind="click: addFood">
+                    <i class="icon-plus"></i>
+                    Add Food
+                </button>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Food Name</th>
+                        <th>Healthy Score</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                @*a foreach on a nested element*@
+                @using (var food = foodGroup.ForEachKoComment(x => x.Foods))
+                {
+                    <tr>
+                        <td>@food.BoundTextBoxFor(x => x.Name)</td>
+                        <td>@food.BoundTextBoxFor(x => x.HealthyScore).Class("input-mini")</td>
+                        <td class="actions">
+                            <button class="btn btn-danger" data-bind="click: $parent.removeFood">
+                                <i class="icon-remove-sign"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
         </fieldset>
     }
+    <div class="row">
+        <button class="btn btn-success pull-right" data-bind="click: addFoodGroup">
+		    <i class="icon-plus"></i>
+		    Add Food Group
+	    </button>
+    </div>
 </section>

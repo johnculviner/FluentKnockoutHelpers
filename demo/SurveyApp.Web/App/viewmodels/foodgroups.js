@@ -21,8 +21,9 @@ function (foodGroupApi, foodGroup, typeMetadataHelper) {
         },
         
         addFoodGroup: function () {
-            //get an instance of a C# (api) FoodGroup from the metaDatahelper
-            var apiFoodGroupInstance = typeMetadataHelper.getInstance('models.foodgroup');
+            //get an instance of a C# (api) Food from the metaDatahelper
+            //that is observable, validation enabled and ready to go...
+            var apiFoodGroupInstance = typeMetadataHelper.getMappedValidatedInstance('models.foodgroup');
 
             //extend the C# definition of a food group with a JS class
             this.foodGroups.push(new foodGroup(apiFoodGroupInstance));

@@ -4,7 +4,7 @@ function (typeMetadataHelper) {
         var self = this;
 
         //create observables for the C# apiFoodGroup on this class
-        self = ko.mapping.fromJS(apiFoodGroup);
+        ko.mapping.fromJS(apiFoodGroup, {}, self);
 
         self.addFood = function () {
             
@@ -14,7 +14,7 @@ function (typeMetadataHelper) {
 
             //no need to extend a c# food's definition
             //it already has everything we need
-            this.foodGroups.push(apiFood);
+            self.Foods.push(apiFood);
         };
 
         self.removeFood = function(foodToRemove) {
