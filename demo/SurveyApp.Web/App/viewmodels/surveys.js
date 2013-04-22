@@ -40,6 +40,7 @@
                     });
             };
 
+            //for locationInfo compose
             self.locationInfo = locationInfo;
         };
     });

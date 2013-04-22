@@ -18,8 +18,7 @@ function (/*maps API isn't an AMD*/) {
                         return {
                             FormattedLocation: match.formatted_address,
                             Latitude: match.geometry.location.lat(),
-                            Longitude: match.geometry.location.lng(),
-                            toString: function () { return this.FormattedLocation; }
+                            Longitude: match.geometry.location.lng()
                         };
                     });
 

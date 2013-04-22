@@ -79,11 +79,6 @@ namespace FluentKnockoutHelpers.Core.Builders
         {
             return new StringReturningBuilder<TModel>(this, new NodeBuilder(HtmlNode.SelfClosingKoComment()));
         }
-
-        public virtual IHtmlString KoCommentDisposable()
-        {
-            throw new NotImplementedException();
-        }
         #endregion
 
 

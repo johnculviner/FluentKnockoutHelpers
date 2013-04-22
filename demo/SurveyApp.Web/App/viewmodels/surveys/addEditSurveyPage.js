@@ -18,24 +18,21 @@ function (app, surveyApi, colorApi, foodGroupApi, locationInfo, geocoderApi, rou
 
         var self = this;
 
+        window.thevm = self;
+
         //assigned in activate
         self.survey = null;
         self.colors = [];
         self.foodGroups = [];
-        
-        self.isNew = ko.observable(false);
+        self.isNew = false;
+
 
         //the router's activator calls this function and waits for the .complete jQuery Promise before
         //transitioning the view in and eventually calling ko.applyBindings
         //routeInfo contains the passed 'id' as configured in main.js
         self.activate = function (routeInfo) {
             
-            //'#/survey/new' means new survey. get it from typeMetadata
-            if (routeInfo.id == 'new') {
-                //TODO:
-            }
-            
-            var foodGroupDeferred =
+            var foodGroupPromise =
                 foodGroupApi.getAll()
                     .then(function(foodGroups) {
                         self.foodGroups = foodGroups;
@@ -43,30 +40,44 @@ function (app, surveyApi, colorApi, foodGroupApi, locationInfo, geocoderApi, rou
                     });
             
             //get the survey from the API
-            var surveyDeferred =
+            
+
+            var surveyDeferred = $.Deferred();
+
+            //'#/survey/new' means new survey. get it from typeMetadata. otherwise retreieve from the API
+            self.isNew = routeInfo.id == 'new';
+
+            if (self.isNew) {
+                
+                self.survey = new survey(typeMetadataHelper.getInstance('models.survey'), foodGroupPromise);
+                typeMetadataHelper.applyValidation(self.survey);
+                surveyDeferred.resolve(); //resolve immediately as no AJAX is required...
+            }
+            else
                 surveyApi.get(routeInfo.id)
                     .then(function (apiSurvey) {
 
                         //extend the c# definition of a survey for a good UI experience
-                        //inside survey class. (Also just does a ko.mapping on it)
-                        self.survey = new survey(apiSurvey, foodGroupDeferred);
+                        self.survey = new survey(apiSurvey, foodGroupPromise);
                         
                         //apply validation to the entire model and object graph using metadata from C#
                         //TypeMetadataHelper.EmitTypeMetadataArray()
                         typeMetadataHelper.applyValidation(self.survey);
+
+                        surveyDeferred.resolve();
                     });
             
             //load color dropdown from the API
-            var colorsDeferred =
+            var colorsPromise =
                 colorApi.getAll()
                     .then(function(colors) {
                         self.colors = colors;
                     });
 
-            //the promise resolves 'when' the above deferreds complete.
+            //the promise resolves 'when' the above promises complete.
             //the promising resolving allows durandal to go ahead with composition
             //because the view model is 'ready'
-            return $.when(surveyDeferred, colorsDeferred, foodGroupDeferred)
+            return $.when(surveyDeferred.promise(), colorsPromise, foodGroupPromise)
                         .then(postActivate);
         };
         
@@ -77,7 +88,7 @@ function (app, surveyApi, colorApi, foodGroupApi, locationInfo, geocoderApi, rou
             //#region Computeds
             self.headerText = ko.computed(function() {
 
-                var message = (self.isNew() ? "New" : "Update") + " Survey";
+                var message = (self.isNew ? "New" : "Update") + " Survey";
 
                 var firstNameVal = self.survey.FirstName();
                 var lastNameVal = self.survey.LastName();
@@ -92,7 +103,7 @@ function (app, surveyApi, colorApi, foodGroupApi, locationInfo, geocoderApi, rou
             }); 
 
             self.saveText = ko.computed(function() {
-                return (self.isNew() ? "Create New" : "Update");
+                return (self.isNew ? "Create New" : "Update");
             });
 
 
@@ -163,8 +174,9 @@ function (app, surveyApi, colorApi, foodGroupApi, locationInfo, geocoderApi, rou
                 .done(function (locations) {
 
                     var resp = $.map(locations, function (location) {
+                        location.toString = function() { return this.FormattedLocation; }; //hack for bug in jQuery UI
                         return {
-                            label: location.FormattedAddress,
+                            label: location.FormattedLocation,
                             value: location
                         };
                     });
@@ -175,6 +187,7 @@ function (app, surveyApi, colorApi, foodGroupApi, locationInfo, geocoderApi, rou
 
         //this is more coupled to 'jquery autocomplete' than it should be and could be moved into an elaborate plugin
         self.selectLocation = function (e, ui) {
+            delete ui.item.value.toString; //remove tostring hack for bug in jQuery UI
             ko.mapping.fromJS(ui.item.value, {}, self.survey.HomeLocation);
             e.target.value = "";
             return false;

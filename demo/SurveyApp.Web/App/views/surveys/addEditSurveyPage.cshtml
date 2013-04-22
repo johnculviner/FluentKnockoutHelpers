@@ -49,8 +49,9 @@
 					</div>
 				</div>
 				
-				@*Home location 'shared view'*@
-				<div class="control-group" data-bind="if: survey.Location !== null" style="max-width: 375px;">
+                @*Home location 'shared view'*@
+
+                <div class="control-group" data-bind="if: survey.HomeLocation !== null" style="max-width: 375px;">
 					@*Inject a 'shared view' into the DOM specifiying the model and view to compose together*@
 					
 					<!-- ko compose: { model: new locationInfo(@survey.PropStringFor(x => x.HomeLocation)), view: 'views/surveys/shared/locationInfo' } -->
@@ -67,7 +68,7 @@
                     @*I'm sick of typing control-label for twitterbootstrap. Extend existing label with 3 lines of code total*@
 					@survey.BootstrapLabelFor(x => x.PersonIdNumber)
                     <div class="controls">
-                        @survey.BoundTextBoxFor(x => x.PersonIdNumber)
+                        @survey.BoundTextBoxFor(x => x.PersonIdNumber).Class("input-small")
                     </div>
                 </div>
 
@@ -139,7 +140,9 @@
 				<div class="control-group">
 					@survey.BootstrapLabelFor(x => x.FavoriteFoodId)
                     <div class="controls form-inline">
-                        <select data-bind="options: foodGroups, optionsText: 'Name', value: survey.selectedFoodGroup, optionsCaption: 'Select a food group...'"></select>
+                        <select 
+                            data-bind="options: foodGroups, optionsText: 'Name', value: survey.selectedFoodGroup, optionsCaption: 'Select a food group...'">
+                        </select>
                         @(survey.BoundSelectListFor<Food>(x => x.FavoriteFoodId, "survey.availableFoods", x => x.Id, x => x.Name, "Select a food...")
                             .DataBind(db => db.Visible("isFoodGroupSelected")))
                     </div>

@@ -1,6 +1,6 @@
 ﻿define(['./relation', './techProduct', 'api/surveyApi'],
 function (relation, techProduct, surveyApi) {
-    return function (apiSurvey, foodGroupsDeferred) {
+    return function (apiSurvey, foodGroupPromise) {
         var self = this;
 
         //perform custom mappings for child fields of the C# type Survey here
@@ -31,7 +31,7 @@ function (relation, techProduct, surveyApi) {
 
 
         //wire up food group, food, dependent drop down
-        foodGroupsDeferred.then(function(foodGroups) {
+        foodGroupPromise.then(function (foodGroups) {
 
             self.selectedFoodGroup = ko.observable();
             

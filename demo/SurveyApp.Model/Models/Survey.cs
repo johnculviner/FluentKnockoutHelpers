@@ -11,6 +11,7 @@ namespace SurveyApp.Model.Models
         {
             Children = new List<Relation>();
             TechProducts = new List<TechProduct>();
+            HomeLocation = new Location();
         }
 
         public string Id { get; set; }

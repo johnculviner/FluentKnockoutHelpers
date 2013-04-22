@@ -79,8 +79,15 @@ table.table tr:hover {
     user-select: none;
 }
 
-table.table.item-selected {
-    width: 50%
+.survey-table {
+    width: 49%;
+    float: left;
+}
+
+.survey-quickview {
+    width: 49%;
+    margin-left: 10px;
+    float: left;   
 }
 
 td.actions {
