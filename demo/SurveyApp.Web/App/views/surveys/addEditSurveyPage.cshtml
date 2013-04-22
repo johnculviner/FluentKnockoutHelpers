@@ -177,10 +177,10 @@
                         <td data-bind="text: productTypeDisplay"></td>
                         <td data-bind="text: specSummary"></td>
                         <td class="actions">
-                            <button class="btn btn-info" data-bind="click: function () { $root.editTechProduct($data) }">
+                            <button class="btn btn-info" data-bind="click: $root.editTechProduct">
                                 <i class="icon-edit"></i>
                             </button>
-                            <button class="btn btn-danger" data-bind="click: function () { $root.deleteTechProduct($data) }">
+                            <button class="btn btn-danger" data-bind="click: $root.deleteTechProduct">
                                 <i class="icon-remove-sign"></i>
                             </button>
                         </td>

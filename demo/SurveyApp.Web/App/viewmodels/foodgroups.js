@@ -3,8 +3,6 @@ function (foodGroupApi, foodGroup, typeMetadataHelper, app, router) {
     return new function() {
         var self = this;
 
-        window.thevm = self;
-
         //assigned in activate
         self.foodGroups = ko.observableArray();
 
