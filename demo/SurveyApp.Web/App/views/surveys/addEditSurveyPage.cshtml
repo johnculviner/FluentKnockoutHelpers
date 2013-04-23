@@ -89,18 +89,11 @@
             <div class="control-group">
                 @survey.BootstrapLabelFor(x => x.DateOfBirth)
                 <div class="controls">
-						
                     @*wow this seems like alot of typing...*@
-                    <input type="text" class="input-small" @survey.DataBind(db => db.Custom("datepicker", x => x.DateOfBirth)) />
-                </div>
-            </div>
-				
-            @*Date of Death*@
-            <div class="control-group">
-                @survey.BootstrapLabelFor(x => x.DateOfDeath)
-                <div class="controls">
-                    @*sick of above code for datepickers. Make a custom helper with 3 lines of code total*@
-                    @survey.BoundDatePickerFor(x => x.DateOfDeath)
+                    @*<input type="text" class="input-small" @survey.DataBind(db => db.Custom("datepicker", x => x.DateOfBirth)) />*@
+
+					@*Make a custom helper extension with 3 lines of code total*@
+                    @survey.BoundDatePickerFor(x => x.DateOfBirth)
                 </div>
             </div>
 				

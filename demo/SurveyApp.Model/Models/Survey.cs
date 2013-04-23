@@ -31,8 +31,6 @@ namespace SurveyApp.Model.Models
 
         public DateTime DateOfBirth { get; set; }
 
-        public DateTime? DateOfDeath { get; set; }
-
         public bool LikesBooleans { get; set; }
 
         [Url]

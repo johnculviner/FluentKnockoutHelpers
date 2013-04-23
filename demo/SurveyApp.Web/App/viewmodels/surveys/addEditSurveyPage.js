@@ -48,12 +48,24 @@ function (app, surveyApi, colorApi, foodGroupApi, locationInfo, geocoderApi, rou
             self.isNew = routeInfo.id == 'new';
 
             if (self.isNew) {
-                
+                //NEW SURVEY
+
                 self.survey = new survey(typeMetadataHelper.getInstance('models.survey'), foodGroupPromise);
+                
+                //only hack in the whole demo!:
+                //for dirtyFlag to work this needs to be done because knockout will set dropdown value fields to 'undefined' when it can't
+                //find the value in the select list which will break dirty handling for new surveys
+                if (!self.survey.FavoriteColorId())
+                    self.survey.FavoriteColorId(undefined);
+
+                //apply validation to the entire model and object graph using metadata from C#
+                //TypeMetadataHelper.EmitTypeMetadataArray()
                 typeMetadataHelper.applyValidation(self.survey);
+                
                 surveyDeferred.resolve(); //resolve immediately as no AJAX is required...
             }
             else
+                //EXISTING SURVEY
                 surveyApi.get(routeInfo.id)
                     .then(function (apiSurvey) {
 
@@ -199,7 +211,7 @@ function (app, surveyApi, colorApi, foodGroupApi, locationInfo, geocoderApi, rou
             //get an instance of this C# type from typeMetaDataHelper
             //wrap it in THIS custom javascript object.
             var newChildRelation = new relation(typeMetadataHelper.getInstance('relation'), self.survey);
-            self.survey.Children.unshift(newChildRelation);
+            self.survey.Children.push(newChildRelation);
         };
 
         //#region Tech Product CRUD
@@ -241,7 +253,6 @@ function (app, surveyApi, colorApi, foodGroupApi, locationInfo, geocoderApi, rou
         };
         //#endregion
 
-        
         //for locationInfo compose
         self.locationInfo = locationInfo;
     };

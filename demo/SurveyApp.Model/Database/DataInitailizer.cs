@@ -149,7 +149,6 @@ namespace SurveyApp.Model.Database
                 PersonIdNumber = 2345,
                 LikesBooleans = true,
                 DateOfBirth = new DateTime(1955, 2, 24),
-                DateOfDeath = new DateTime(2011, 10, 5),
                 FavoriteWebsite = "http://www.google.com",
                 FavoriteColorId = KnownColor.Silver,
                 FavoriteFoodId = GetRandomFood(allFoods),

@@ -243,6 +243,12 @@ namespace FluentKnockoutHelpers.Core.TypeMetadata
             if (typeof(IEnumerable).IsAssignableFrom(type))
                 return GetSimpleIEnumerableTypeName(type);
 
+            //guids
+            if(type == typeof(Guid))
+                return "Guid";
+            if (type == typeof(Guid?))
+                return "Guid?";
+
             
             //other
             return GetTypeName(type);

@@ -94,7 +94,7 @@ define(function () {
             var typeMetaData = this.getMetadata(ko.utils.unwrapObservable(typeNameContains));
             var instance = jQuery.extend({}, typeMetaData.Instance);
 
-            var numericToNull = ['short', 'int', 'long', 'float', 'double', 'decimal']; //and DateTime
+            var toNull = ['short', 'int', 'long', 'float', 'double', 'decimal']; //and DateTime, and GUID
             
             for (var field in instance) {
                 var fieldMetadata = getFieldMetadata(typeMetaData, field);
@@ -102,8 +102,9 @@ define(function () {
                 if (!fieldMetadata)
                     continue;
 
-                if((instance[field] === 0 && numericToNull.indexOf(fieldMetadata.Type) !== -1) || //numeric
-                    instance[field] === "0001-01-01T00:00:00" && //datetime
+                if((instance[field] === 0 && toNull.indexOf(fieldMetadata.Type) !== -1) ||  //numeric
+                    instance[field] === "0001-01-01T00:00:00" ||                            //datetime.min
+                    instance[field] === "00000000-0000-0000-0000-000000000000" &&           //guid.empty
                     settings.exclude.indexOf(field) == -1)
                     instance[field] = null;
                 
@@ -318,7 +319,7 @@ define(function () {
                 break;
 
 
-                //floats
+            //floats
             case "float":
                 fieldObservable.extend({ required: true, number: true });
                 break;
@@ -339,12 +340,17 @@ define(function () {
                 break;
 
 
-                //dates
+            //dates
             case "DateTime":
                 fieldObservable.extend({ required: true, date: true });
                 break;
             case "DateTime?":
                 fieldObservable.extend({ date: true });
+                break;
+                
+            //other
+            case "Guid":
+                fieldObservable.extend({ required: true});
                 break;
         }
         
