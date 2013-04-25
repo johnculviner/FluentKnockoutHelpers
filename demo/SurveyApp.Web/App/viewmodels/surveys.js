@@ -5,7 +5,6 @@
             var self = this;
 
             self.surveySummaries = null; //loaded from ajax as ko.observableArray()
-            self.loading = ko.observable(true);
             self.selectedSurvey = ko.observable(null);
 
             //the router's activator calls this function and waits for the .complete jQuery Promise before
@@ -19,8 +18,6 @@
                                 
                                 if (self.surveySummaries().length > 0)
                                     self.toggleSelected(self.surveySummaries()[0]);
-
-                                self.loading(false);
                             });
             };
 

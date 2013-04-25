@@ -29,10 +29,15 @@
 			    @using (var summary = summaries.ForEachKoComment())
 			    {
 				    <tr data-bind="click: $root.toggleSelected, css: { selected: $root.selectedSurvey() == $data }">
-					    <td @summary.DataBind(db => db.Text(x => x.LastName))></td>
+                        
+                        @*probably the preferred way*@
+                        <td @summary.DataBind(db => db.Text(x => x.LastName))></td>
 					    <td @summary.DataBind(db => db.Text(x => x.FirstName))></td>
 					    <td @summary.DataBind(db => db.Text(x => x.DateOfBirth))></td>
-					    <td @summary.DataBind(db => db.Text(x => x.Gender))></td>
+
+                        @*if you like pain*@
+                        @summary.ElementSelfClosing("td", true).DataBind(db => db.Text(x => x.Gender))
+
 					    <td class="actions">
 						    @*EDIT*@
 						    <a class="btn btn-info"
@@ -45,7 +50,7 @@
 				    </tr>
 			    }
 
-			    <tr data-bind="if: !loading() && surveySummaries().length == 0">
+			    <tr data-bind="if: surveySummaries().length == 0">
 				    <td colspan="5" style="text-align: center">
 					    No survey found
 				    </td>
@@ -56,7 +61,6 @@
 		    <i class="icon-plus"></i>
 		    New Survey
 	    </a>
-	    <div class="spinner" data-bind="visible: loading"></div>
     </div>
 	
 
@@ -64,22 +68,24 @@
 	@{
 		var detail = this.KnockoutHelperForApi<SurveyController>().Endpoint(api => api.Get().Single(), "selectedSurvey", true);
 	}
-	<fieldset class="survey-quickview">
-		<legend><span @detail.DataBind(db => db.Text(x => x.LastName))></span>, <span @detail.DataBind(db => db.Text(x => x.FirstName))></span></legend>
-		<form class ="form-horizontal">
-			<div class="control-group">
-				@detail.LabelFor(x => x.NumberOfTechProducts).Class("control-label")
-				<div @detail.DataBind(db => db.Text(x => x.NumberOfTechProducts)).Class("uneditable controls")></div>
-			</div>
-			<div class="control-group">
-				@detail.LabelFor(x => x.NumberOfChildren).Class("control-label")
-				<div @detail.DataBind(db => db.Text(x => x.NumberOfChildren)).Class("uneditable controls")></div>
-			</div>
+    <fieldset class="survey-quickview">
+        
+        <legend>@detail.BoundTextFor(x => x.LastName), @detail.BoundTextFor(x => x.FirstName)</legend>
+
+        <form class ="form-horizontal">
+            <div class="control-group">
+                @detail.LabelFor(x => x.NumberOfTechProducts).Class("control-label")
+                <div @detail.DataBind(db => db.Text(x => x.NumberOfTechProducts)).Class("uneditable controls")></div>
+            </div>
+            <div class="control-group">
+                @detail.LabelFor(x => x.NumberOfChildren).Class("control-label")
+                <div @detail.DataBind(db => db.Text(x => x.NumberOfChildren)).Class("uneditable controls")></div>
+            </div>
 			
-			@*Inject a 'shared view' into the DOM specifiying the model and view to compose together*@
-			<div class="control-group" data-bind="compose: { model: new locationInfo(selectedSurvey().Location), view: 'views/surveys/shared/locationInfo' }">
-			</div>
-		</form>
-	</fieldset>
+            @*Inject a 'shared view' into the DOM specifiying the model and view to compose together*@
+            <div class="control-group" data-bind="compose: { model: new locationInfo(selectedSurvey().Location), view: 'views/surveys/shared/locationInfo' }">
+            </div>
+        </form>
+    </fieldset>
 
 </section>
