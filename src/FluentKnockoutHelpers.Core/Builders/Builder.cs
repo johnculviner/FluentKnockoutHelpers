@@ -309,7 +309,22 @@ namespace FluentKnockoutHelpers.Core.Builders
 
         #endregion
 
-
+        /// <summary>
+        /// With a C# using block emit a ko comment bound to a particular property expression
+        /// <para>The resulting builder of this call will be scoped to 'propExprName_Singular'</para>
+        /// <para>&#160;</para>
+        /// <para>Usage Example:</para>
+        /// <para> @using (var child = parent.ForEachKoComment(x => x.Children))</para>
+        /// <para> {</para>
+        /// <para>&#160; @child.BoundTextBoxFor(x => x.Name)</para>
+        /// <para> }</para>
+        /// <para>&#160;</para>
+        /// <para>Result:</para>
+        /// <para> &lt;!-- ko foreach: {data:parent.Children,as:'parent.Children_Singular'} --&gt;</para>
+        /// <para> &#160;&lt;input type="text" id="Name" data-bind="value: parent.Children_Singular.Name" /&gt;</para>
+        /// <para> &lt;!-- /ko --&gt;</para> 
+        /// </summary>
+        /// <returns></returns>
         public ForEachBuilder<TInner> ForEachKoComment<TInner>(Expression<Func<TModel, IEnumerable<TInner>>> propExpr)
         {
             var newPath = string.Format("{0}.{1}",

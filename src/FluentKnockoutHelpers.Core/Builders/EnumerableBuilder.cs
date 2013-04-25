@@ -27,6 +27,22 @@ namespace FluentKnockoutHelpers.Core.Builders
         {
         }
 
+        /// <summary>
+        /// With a C# using block emit a ko comment foreach loop bound the the root of this builder
+        /// <para>The resulting builder of this call will be scoped to 'someArray_Singular'</para>
+        /// <para>&#160;</para>
+        /// <para>Usage Example:</para>
+        /// <para> @using (var arrayItem = foodGroups.ForEachKoComment())</para>
+        /// <para> {</para>
+        /// <para>&#160; @arrayItem.BoundTextBoxFor(x => x.Name)</para>
+        /// <para> }</para>
+        /// <para>&#160;</para>
+        /// <para>Result:</para>
+        /// <para> &lt;!-- ko foreach: {data:someArray,as:'someArray_Singular'} --&gt;</para>
+        /// <para> &#160;&lt;input type="text" id="Name" data-bind="value: someArray_Singular.Name" /&gt;</para>
+        /// <para> &lt;!-- /ko --&gt;</para> 
+        /// </summary>
+        /// <returns></returns>
         public ForEachBuilder<TModel> ForEachKoComment()
         {
             return ForEach(HtmlNode.DisposeClosingKoComment(), null);
