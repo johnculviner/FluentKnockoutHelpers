@@ -6,7 +6,6 @@ function (relation, techProduct, surveyApi) {
         //perform custom mappings for child fields of the C# type Survey here
         //otherwise fields will be recursively turned into observables automatically
         //we only do this on fields that we want to 'extend' the functionality of the .NET type
-
         var settings = {
             Children: {
                 create: function (options) {

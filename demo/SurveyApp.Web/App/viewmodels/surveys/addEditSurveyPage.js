@@ -118,7 +118,7 @@ function (app, surveyApi, colorApi, foodGroupApi, locationInfo, geocoderApi, rou
                 return (self.isNew ? "Create New" : "Update");
             });
 
-
+            //map from an array of objects (colors) to the single color id that is selected
             self.selectedColorObj = ko.computed(function () {
                 return ko.utils.arrayFirst(self.colors, function (c) {
                     return c.ColorId == self.survey.FavoriteColorId();
