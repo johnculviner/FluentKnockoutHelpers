@@ -1,4 +1,5 @@
-﻿define(['http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0'],
+﻿//define( //no internet
+define(['http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0'],
 function (/*maps API isn't an AMD*/) {
     
     //a simple binding for an embedded bing map on an element bound to an observable

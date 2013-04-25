@@ -9,6 +9,7 @@ function (typeMetadataHelper, app) {
         //apply validation recursively 
         typeMetadataHelper.applyValidation(self);
 
+        //#region Click Events
         self.addFood = function () {
             
             //get an instance of a C# (api) Food from the metaDatahelper
@@ -32,5 +33,6 @@ function (typeMetadataHelper, app) {
                     self.Foods.remove(foodToRemove);
             });
         };
+        //#endregion
     };
 });

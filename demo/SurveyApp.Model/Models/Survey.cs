@@ -17,9 +17,11 @@ namespace SurveyApp.Model.Models
         public string Id { get; set; }
         
         [Required]
+        [StringLength(20)]
         public string FirstName { get; set; }
 
         [Required]
+        [StringLength(20)]
         public string LastName { get; set; }
 
         public int PersonIdNumber { get; set; }

@@ -155,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App\api\colorApi.js" />
+    <Content Include="App\api\geocoderApi_NO-NET.js" />
     <Content Include="App\api\foodGroupApi.js" />
     <Content Include="App\api\geocoderApi.js" />
     <Content Include="App\api\surveyApi.js" />
