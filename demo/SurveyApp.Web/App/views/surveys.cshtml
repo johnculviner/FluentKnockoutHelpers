@@ -3,89 +3,90 @@
 @using SurveyApp.Web.ApiControllers
 
 <section>
-	@*SURVEYS LIST*@
-	@{
-        var summaries = this.KnockoutHelperForApi<SurveyController>().Endpoint(api => api.Get(), "surveySummaries", true);
-        // OR var summaries = this.KnockoutHelperForEnumerableType<SurveySummary>();
-	}
+@*SURVEYS LIST*@
+@{
+    var summaries = this.KnockoutHelperForApi<SurveyController>()
+        .Endpoint(api => api.Get(), "surveySummaries", true);
+    // OR var summaries = this.KnockoutHelperForEnumerableType<SurveySummary>();
+}
 
-    <h1>
-        Surveys
-    </h1>
-    <div class="survey-table">
-	    <table class="table table-bordered pull-left">
-		    <thead>
-			    <tr>
-				    <th>@summaries.DisplayNameFor(x => x.LastName)</th>
-				    <th>@summaries.DisplayNameFor(x => x.FirstName)</th>
-				    <th>@summaries.DisplayNameFor(x => x.DateOfBirth)</th>
-				    <th>@summaries.DisplayNameFor(x => x.Gender)</th>
-				    <th class="actions"></th>
-			    </tr>
-		    </thead>
-	
-		    <tbody>
-
-			    @using (var summary = summaries.ForEachKoComment())
-			    {
-				    <tr data-bind="click: $root.toggleSelected, css: { selected: $root.selectedSurvey() == $data }">
+<h1>
+    Surveys
+</h1>
+<div class="survey-table">
+	<table class="table table-bordered pull-left">
+		<thead>
+			<tr>
+				<th>@summaries.DisplayNameFor(x => x.LastName)</th>
+				<th>@summaries.DisplayNameFor(x => x.FirstName)</th>
+				<th>@summaries.DisplayNameFor(x => x.DateOfBirth)</th>
+				<th>@summaries.DisplayNameFor(x => x.Gender)</th>
+				<th class="actions"></th>
+			</tr>
+		</thead>
+		<tbody>
+			@using (var summary = summaries.ForEachKoComment())
+			{
+				<tr data-bind="click: $root.toggleSelected, css: { selected: $root.selectedSurvey() == $data }">
                         
-                        @*probably the preferred way*@
-                        <td @summary.DataBind(db => db.Text(x => x.LastName))></td>
-					    <td @summary.DataBind(db => db.Text(x => x.FirstName))></td>
-					    <td @summary.DataBind(db => db.Text(x => x.DateOfBirth))></td>
+                    @*probably the preferred way*@
+                    <td @summary.DataBind(db => db.Text(x => x.LastName))></td>
+					<td @summary.DataBind(db => db.Text(x => x.FirstName))></td>
+					<td @summary.DataBind(db => db.Text(x => x.DateOfBirth))></td>
 
-                        @*if you like pain*@
-                        @summary.ElementSelfClosing("td", true).DataBind(db => db.Text(x => x.Gender))
+                    @*if you like pain*@
+                    @summary.ElementSelfClosing("td", true).DataBind(db => db.Text(x => x.Gender))
 
-					    <td class="actions">
-						    @*EDIT*@
-						    <a class="btn btn-info"
-						       data-bind="attr: { href: '#/surveys/' + @summary.EvalObservableFor(x => x.Id)}">
-							    <i class="icon-edit"></i>
-						    </a>
-						    @*DELETE*@
-						    <button class="btn btn-danger" data-bind="click: $root.deleteSurvey, clickBubble: false"><i class="icon-remove-sign"></i></button>
-					    </td>
-				    </tr>
-			    }
-
-			    <tr data-bind="if: surveySummaries().length == 0">
-				    <td colspan="5" style="text-align: center">
-					    No survey found
-				    </td>
-			    </tr>
-		    </tbody>
-	    </table>
-	    <a href="#/surveys/new" class="btn btn-success pull-right">
-		    <i class="icon-plus"></i>
-		    New Survey
-	    </a>
-    </div>
+					<td class="actions">
+						@*EDIT*@
+						<a class="btn btn-info"
+						    data-bind="attr: { href: '#/surveys/' + @summary.EvalObservableFor(x => x.Id)}">
+							<i class="icon-edit"></i>
+						</a>
+						@*DELETE*@
+                        <button class="btn btn-danger" data-bind="click: $root.deleteSurvey, clickBubble: false">
+                            <i class="icon-remove-sign"></i>
+                        </button>
+					</td>
+				</tr>
+			}
+			<tr data-bind="if: surveySummaries().length == 0">
+				<td colspan="5" style="text-align: center">
+					No survey found
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<a href="#/surveys/new" class="btn btn-success pull-right">
+		<i class="icon-plus"></i>
+		New Survey
+	</a>
+</div>
 	
 
-	@*SELECTED SURVEY DETAIL*@
-	@{
-		var detail = this.KnockoutHelperForApi<SurveyController>().Endpoint(api => api.Get().Single(), "selectedSurvey", true);
-	}
-    <fieldset class="survey-quickview">
+@*SELECTED SURVEY DETAIL*@
+@{
+	var detail = this.KnockoutHelperForApi<SurveyController>().Endpoint(api => api.Get().Single(), "selectedSurvey", true);
+}
+<fieldset class="survey-quickview">
         
-        <legend>@detail.BoundTextFor(x => x.LastName), @detail.BoundTextFor(x => x.FirstName)</legend>
+    <legend>@detail.BoundTextFor(x => x.LastName), @detail.BoundTextFor(x => x.FirstName)</legend>
 
-        <form class ="form-horizontal">
-            <div class="control-group">
-                @detail.LabelFor(x => x.NumberOfTechProducts).Class("control-label")
-                <div @detail.DataBind(db => db.Text(x => x.NumberOfTechProducts)).Class("uneditable controls")></div>
-            </div>
-            <div class="control-group">
-                @detail.LabelFor(x => x.NumberOfChildren).Class("control-label")
-                <div @detail.DataBind(db => db.Text(x => x.NumberOfChildren)).Class("uneditable controls")></div>
-            </div>
+    <form class ="form-horizontal">
+        <div class="control-group">
+            @detail.LabelFor(x => x.NumberOfTechProducts).Class("control-label")
+            <div @detail.DataBind(db => db.Text(x => x.NumberOfTechProducts)).Class("uneditable controls")></div>
+        </div>
+        <div class="control-group">
+            @detail.LabelFor(x => x.NumberOfChildren).Class("control-label")
+            <div @detail.DataBind(db => db.Text(x => x.NumberOfChildren)).Class("uneditable controls")></div>
+        </div>
 			
-            @*Inject a 'shared view' into the DOM specifiying the model and view to compose together*@
-            <div class="control-group" data-bind="compose: { model: new locationInfo(selectedSurvey().Location), view: 'views/surveys/shared/locationInfo' }">
-            </div>
-        </form>
-    </fieldset>
+        @*Inject a 'shared view' into the DOM specifiying the model and view to compose together*@
+        <div class="control-group"
+            data-bind="compose: { model: new locationInfo(selectedSurvey().Location), view: 'views/surveys/shared/locationInfo' }">
+        </div>
+    </form>
+</fieldset>
 
 </section>

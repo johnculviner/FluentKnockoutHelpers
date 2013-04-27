@@ -12,8 +12,9 @@ function (relation, techProduct, surveyApi) {
                     return new relation(options.data, self);
                 }    
             },
-
-            TechProducts: { //tech products have special functionality and display logic so we substitue our own .NET type
+            
+            //tech products have special functionality and display logic so we substitue our own .NET type
+            TechProducts: { 
                 create: function (options) {
                     return new techProduct(options.data /*this is the C# TechProduct*/, self);
                 }

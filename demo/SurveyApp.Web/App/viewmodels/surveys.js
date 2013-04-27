@@ -7,18 +7,20 @@ function (app, surveyApi, deleteModal, locationInfo) {
         self.surveySummaries = null; //loaded from ajax as ko.observableArray()
         self.selectedSurvey = ko.observable(null);
 
-        //the router's activator calls this function and waits for the .complete jQuery Promise before
+        //the router's activator calls this function and
+        //waits for the .complete jQuery Promise before
         //transitioning the view in and eventually calling ko.applyBindings
         self.activate = function () {
             return surveyApi.getAll()
-                        .then(function (surveys) {
+                .then(function (surveys) {
 
-                            //use ko.mapping library to convert the array to be observable for the summary view
-                            self.surveySummaries = ko.mapping.fromJS(surveys);
+                    //use ko.mapping library to convert the array to be
+                    //observable for the summary view
+                    self.surveySummaries = ko.mapping.fromJS(surveys);
                                 
-                            if (self.surveySummaries().length > 0)
-                                self.toggleSelected(self.surveySummaries()[0]);
-                        });
+                    if (self.surveySummaries().length > 0)
+                        self.toggleSelected(self.surveySummaries()[0]);
+                });
         };
 
         //show summary information about a survey when selected

@@ -12,7 +12,8 @@
     
     //custom bindings (could also be loaded into 'gloabal namespace' as an alternative)
     'knockoutPlugins/bindingHandlers/autoComplete', 'knockoutPlugins/bindingHandlers/datepicker'],
-function (app, surveyApi, colorApi, foodGroupApi, locationInfo, geocoderApi, router, survey, addEditTechProductModal, typeMetadataHelper, relation) {
+function (app, surveyApi, colorApi, foodGroupApi, locationInfo,
+    geocoderApi, router, survey, addEditTechProductModal, typeMetadataHelper, relation) {
 
     return function () {
 
@@ -26,7 +27,6 @@ function (app, surveyApi, colorApi, foodGroupApi, locationInfo, geocoderApi, rou
         self.foodGroups = [];
         self.isNew = false;
 
-
         //the router's activator calls this function and waits for the .complete jQuery Promise before
         //transitioning the view in and eventually calling ko.applyBindings
         //routeInfo contains the passed 'id' as configured in main.js
@@ -38,9 +38,6 @@ function (app, surveyApi, colorApi, foodGroupApi, locationInfo, geocoderApi, rou
                         self.foodGroups = foodGroups;
                         return foodGroups;
                     });
-            
-            //get the survey from the API
-            
 
             var surveyDeferred = $.Deferred();
 
@@ -50,10 +47,11 @@ function (app, surveyApi, colorApi, foodGroupApi, locationInfo, geocoderApi, rou
             if (self.isNew) {
                 //NEW SURVEY
 
-                self.survey = new survey(typeMetadataHelper.getInstance('models.survey'), foodGroupPromise);
+                self.survey = new survey(typeMetadataHelper.getInstance('models.survey,'), foodGroupPromise);
                 
                 //only hack in the whole demo!:
-                //for dirtyFlag to work this needs to be done because knockout will set dropdown value fields to 'undefined' when it can't
+                //for dirtyFlag to work this needs to be done because knockout
+                //will set dropdown value fields to 'undefined' when it can't
                 //find the value in the select list which will break dirty handling for new surveys
                 if (!self.survey.FavoriteColorId())
                     self.survey.FavoriteColorId(undefined);
@@ -108,10 +106,7 @@ function (app, surveyApi, colorApi, foodGroupApi, locationInfo, geocoderApi, rou
                 if (firstNameVal && lastNameVal) {
                     message += " for: " + lastNameVal + ", " + firstNameVal;
                 }
-
                 return message;
-                //wait until first access of computed for eval. otherwise eval would occur *immediately* on object creation
-                //which is before the data is loaded from ajax
             }); 
 
             self.saveText = ko.computed(function() {
@@ -130,7 +125,7 @@ function (app, surveyApi, colorApi, foodGroupApi, locationInfo, geocoderApi, rou
 
             //#region Save/Cancel 
             self.dirtyFlag = new ko.DirtyFlag(self.survey, false, ko.mapping.toJSON);   //kolite plugin
-            self.validator = ko.validatedObservable(self.survey);                       //knockout validation plugin
+            self.validator = ko.validatedObservable(self.survey);          //knockout validation plugin
 
 
             self.save = ko.asyncCommand({ //kolite plugin
@@ -158,7 +153,8 @@ function (app, surveyApi, colorApi, foodGroupApi, locationInfo, geocoderApi, rou
         }
 
 
-        //user is trying to transition to another view. lets not allow this without a confirm if there are unsaved changes
+        //user is trying to transition to another view.
+        //lets not allow this without a confirm if there are unsaved changes
         self.canDeactivate = function () {
             
             if (!self.isDirty())
@@ -167,7 +163,7 @@ function (app, surveyApi, colorApi, foodGroupApi, locationInfo, geocoderApi, rou
             return app.showMessage(
                 "If you leave this page without saving you will lose your changes!",    //message
                 "Leave page without saving?",                                           //title
-                ['Cancel', 'Leave']                                                     //buttons, (first is default)
+                ['Cancel', 'Leave']                                  //buttons, (first is default)
             ).then(function (resp) {
                 //this promise resolves with the above selection when the modal is closed
                 return resp === 'Leave';
@@ -243,7 +239,7 @@ function (app, surveyApi, colorApi, foodGroupApi, locationInfo, geocoderApi, rou
             app.showMessage(
                 "Are you sure you want to delete this " + techProduct.productTypeDisplay() + "?",   //message
                 "Delete tech product?",                                                             //title
-                ['Delete', 'Cancel']                                                                //button options (first is default)
+                ['Delete', 'Cancel']                                      //button options (first is default)
             )
             .then(function(result) {
                 //this promise resolves with the above selection when the modal is closed

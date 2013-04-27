@@ -313,7 +313,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>8447</DevelopmentServerPort>
+          <DevelopmentServerPort>1771</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/SurveyApp.Web</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

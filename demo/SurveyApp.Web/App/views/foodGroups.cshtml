@@ -2,7 +2,8 @@
 
 @{
     var foodGroups = this.KnockoutHelperForEnumerableType<FoodGroup>("foodGroups", false);
-    //OR var foodGroups = this.KnockoutHelperForApi<FoodGroupController>().Endpoint(api => api.Get(), "foodGroups", false);
+    //OR var foodGroups = this.KnockoutHelperForApi<FoodGroupController>()
+    //          .Endpoint(api => api.Get(), "foodGroups", false);
 }
 <section class="form-horizontal food-groups">
     <div class="row">

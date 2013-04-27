@@ -26,7 +26,8 @@
                     @survey.DisplayNameFor(x => x.FirstName)
                 </label>
                 <div class="controls">
-                    <input type="text" @survey.DataBind(db => db.Value(x => x.FirstName)) id="@survey.GetExpressionTextFor(x => x.FirstName)">
+                    <input type="text" @survey.DataBind(db => db.Value(x => x.FirstName))
+                        id="@survey.GetExpressionTextFor(x => x.FirstName)">
                 </div>
             </div>
 
@@ -43,7 +44,8 @@
             <div class="control-group">
                 <label for="FindLocation" class="control-label">New home location</label>
                 <div class="controls">
-                    <input type="text" id="FindLocation" data-bind="autocomplete: { source: getMatchingLocations, select: selectLocation }" />
+                    <input type="text" id="FindLocation"
+                        data-bind="autocomplete: { source: getMatchingLocations, select: selectLocation }" />
                 </div>
             </div>
 				

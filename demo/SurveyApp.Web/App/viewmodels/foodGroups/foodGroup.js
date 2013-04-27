@@ -4,9 +4,11 @@ function (typeMetadataHelper, app) {
         var self = this;
 
         //create observables for the C# apiFoodGroup on this class
+        //child foods are also mapped because ko.mapping works recusively
+        //**my JavaScript ISNT EVEN AWARE of the fields on Food**
         ko.mapping.fromJS(apiFoodGroup, {}, self);
         
-        //apply validation recursively 
+        //apply validation 
         typeMetadataHelper.applyValidation(self);
 
         //#region Click Events
@@ -18,6 +20,7 @@ function (typeMetadataHelper, app) {
 
             //no need to extend a c# food's definition
             //it already has everything we need
+            //**my JavaScript ISNT EVEN AWARE of the fields on Food**
             self.Foods.push(apiFood);
         };
 
