@@ -1,6 +1,5 @@
 ﻿define(['durandal/app',
         'api/surveyApi',
-        'api/colorApi',
         'api/foodGroupApi',
         './shared/locationInfo',
         'api/geocoderApi',
@@ -12,7 +11,7 @@
     
     //custom bindings (could also be loaded into 'gloabal namespace' as an alternative)
     'knockoutPlugins/bindingHandlers/autoComplete', 'knockoutPlugins/bindingHandlers/datepicker'],
-function (app, surveyApi, colorApi, foodGroupApi, locationInfo,
+function (app, surveyApi, foodGroupApi, locationInfo,
     geocoderApi, router, survey, addEditTechProductModal, typeMetadataHelper, relation) {
 
     return function () {
@@ -23,7 +22,6 @@ function (app, surveyApi, colorApi, foodGroupApi, locationInfo,
 
         //assigned in activate
         self.survey = null;
-        self.colors = [];
         self.foodGroups = [];
         self.isNew = false;
 
@@ -77,17 +75,10 @@ function (app, surveyApi, colorApi, foodGroupApi, locationInfo,
                         surveyDeferred.resolve();
                     });
             
-            //load color dropdown from the API
-            var colorsPromise =
-                colorApi.getAll()
-                    .then(function(colors) {
-                        self.colors = colors;
-                    });
-
             //the promise resolves 'when' the above promises complete.
             //the promising resolving allows durandal to go ahead with composition
             //because the view model is 'ready'
-            return $.when(surveyDeferred.promise(), colorsPromise, foodGroupPromise)
+            return $.when(surveyDeferred.promise(), foodGroupPromise)
                         .then(ajaxLoaded);
         };
         
@@ -112,16 +103,6 @@ function (app, surveyApi, colorApi, foodGroupApi, locationInfo,
             self.saveText = ko.computed(function() {
                 return (self.isNew ? "Create New" : "Update");
             });
-
-            //map from an array of objects (colors) to the single color id that is selected
-            self.selectedColorObj = ko.computed(function () {
-                return ko.utils.arrayFirst(self.colors, function (c) {
-                    return c.ColorId == self.survey.FavoriteColorId();
-                }) || { };
-            });
-            //#endregion
-
-
 
             //#region Save/Cancel 
             self.dirtyFlag = new ko.DirtyFlag(self.survey, false, ko.mapping.toJSON);   //kolite plugin

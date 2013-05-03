@@ -109,7 +109,6 @@ namespace SurveyApp.Model.Database
                     LikesBooleans = true,
                     DateOfBirth = new DateTime(1955, 10, 28),
                     FavoriteWebsite = "http://www.apple.com",
-                    FavoriteColorId = KnownColor.Green,
                     FavoriteFoodId = GetRandomFood(allFoods),
                     Children = new List<Relation>
                         {
@@ -150,7 +149,6 @@ namespace SurveyApp.Model.Database
                 LikesBooleans = true,
                 DateOfBirth = new DateTime(1955, 2, 24),
                 FavoriteWebsite = "http://www.google.com",
-                FavoriteColorId = KnownColor.Silver,
                 FavoriteFoodId = GetRandomFood(allFoods),
                 Children = new List<Relation>
                         {
@@ -192,7 +190,6 @@ namespace SurveyApp.Model.Database
                 LikesBooleans = false,
                 FavoriteWebsite = "http://www.yahoo.com",
                 DateOfBirth = new DateTime(1975, 5, 30),
-                FavoriteColorId = KnownColor.Red,
                 FavoriteFoodId = GetRandomFood(allFoods),
                 Children = new List<Relation>
                         {
@@ -231,7 +228,6 @@ namespace SurveyApp.Model.Database
                 LikesBooleans = true,
                 DateOfBirth = new DateTime(1984, 5, 14),
                 FavoriteWebsite = "http://www.linkedin.com",
-                FavoriteColorId = KnownColor.Blue,
                 FavoriteFoodId = GetRandomFood(allFoods),
                 Gender = Gender.Male,
                 TechProducts = new List<TechProduct>
@@ -273,7 +269,6 @@ namespace SurveyApp.Model.Database
                 LikesBooleans = false,
                 FavoriteWebsite = "http://www.bbc.co.uk/",
                 DateOfBirth = new DateTime(1926, 4, 21),
-                FavoriteColorId = KnownColor.Gold,
                 FavoriteFoodId = GetRandomFood(allFoods),
                 Children = new List<Relation>
                         {

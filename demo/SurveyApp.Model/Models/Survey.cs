@@ -40,10 +40,6 @@ namespace SurveyApp.Model.Models
         [Url]
         [Required]
         public string FavoriteWebsite { get; set; }
-
-        [Required]
-        [Display(Name = "Favorite Color")]
-        public System.Drawing.KnownColor FavoriteColorId { get; set; }
         
         public List<Relation> Children { get; set; }
 
