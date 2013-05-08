@@ -1,23 +1,24 @@
 #Fluent Knockout Helpers Overview
 ##with a large Demo SPA using Durandal.js at _/demo/SurveyApp.sln_
 
-##FluentKnockoutHelpers Benefits
-- *Strongly typed* fluent lambda expression helpers similar to ASP.NET MVC's to painlessly generate knockout syntax
+##FluentKnockoutHelpers
+- Painlessly generate Knockout syntax with strongly typed, fluent, lambda expression helpers similar to ASP.NET MVC 
 - Rich intellisense and compiler support for syntax generation
 - Fluent syntax makes it a breeze to create custom helpers or extend whats built in
-- Painlessly provides *validation* based on .NET types and DataAnnotations with one line of code for all current and future application Types
-- Client side JavaScript object factory (based on C# types) to create new items in for example a list with zero headaches or server traffic
+- Painlessly provides validation based on .NET types and DataAnnotations in a few lines of code for all current/future application types and changes
+- Client side JavaScript object factory (based on C# types) to create new items in for example, a list, with zero headaches or server traffic
 
-##Durandal.js Benefits
-- Provides a FRAMEWORK to ORGANIZE your Controllers, ViewModels, and Views in a single page application
-- Implements common application paradigms (ex. modals, message boxes etc.) very easily with Knockout goodness baked in
+##Durandal.js
+- A single page application framework with Knockout.js baked in
+- Provides a FRAMEWORK to ORGANIZE your Controllers, ViewModels, and Views
 - Opinioned enough to allow for consitant file organization and efficiently avoids 'JavaScript hell'
+- Implements common application paradigms (ex. modals, message boxes etc.)
 - Flexible enough to be easily extended and built upon
 - Built on top of jQuery, Knockout & RequireJS so jQ Promises, MVVM, AMDs are baked in
-- Handles Navigation, Routing and Screen State Management are baked in.
+- Navigation, routing and screen state management are baked in.
 - Simple, effective app lifecycle events
 
-##Summary
+##Overview
 Knockout.js allows for a very powerful MVVM style binding that makes it very easy to create rich web applications very quickly and with little code. One downside coming from the world of .NET and strong typing is that Knockout bindings use lots of "magic strings". This is where FluentKnockoutHelpers comes in as an attempt to bring all the goodness of ASP.NET MVC-like property expressions to Knockout with a fluent twist.
 
 Instead of resorting to magic strings, no compile-time support and little intellisense when working with Knockout you can use FluentKnockoutHelpers to create property binding expressions just like how MVC does it for all the .NET defined types you are already using on the server to interact with your Knockout web client.
