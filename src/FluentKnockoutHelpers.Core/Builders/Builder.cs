@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
@@ -167,12 +168,12 @@ namespace FluentKnockoutHelpers.Core.Builders
         /// <typeparam name="TProp"></typeparam>
         /// <param name="propExpr"></param>
         /// <returns></returns>
-        public virtual StringReturningBuilder<TModel> LabelFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
+        public virtual StringReturningBuilder<TModel> LabelFor<TProp>(Expression<Func<TModel, TProp>> propExpr, bool displayStarIfRequired = true)
         {
-            return ElementSelfClosing("label", DisplayNameFor(propExpr).ToString()).Attr("for", ExpressionParser.GetExpressionText(propExpr));
+            var required = displayStarIfRequired && (!ExpressionParser.ExpressionCanBeAssignedNull(propExpr) || ExpressionParser.ExpressionHasAttribute(propExpr, typeof(RequiredAttribute)));
+
+            return ElementSelfClosing("label", (required ? "*" : "") + DisplayNameFor(propExpr).ToString()).Attr("for", ExpressionParser.GetExpressionText(propExpr));
         }
-
-
 
         #region Bound ___ For
         
