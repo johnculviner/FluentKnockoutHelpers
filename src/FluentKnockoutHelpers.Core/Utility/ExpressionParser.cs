@@ -49,10 +49,12 @@ namespace FluentKnockoutHelpers.Core.Utility
             var propertyName = memberExpression.Member.Name;
             var propMetadata = metaData.Properties.FirstOrDefault(p => p.PropertyName == propertyName);
 
+            var requiredToken = (GlobalSettings.UseRequiredToken && propMetadata.IsRequired ? GlobalSettings.RequiredToken : String.Empty);
+
             if (propMetadata == null)
                 return CamelCaseSpacer(propertyName);
 
-            return propMetadata.DisplayName ?? CamelCaseSpacer(propMetadata.PropertyName);
+            return requiredToken + (propMetadata.DisplayName ?? CamelCaseSpacer(propMetadata.PropertyName));
         }
 
         //FirstName => First Name

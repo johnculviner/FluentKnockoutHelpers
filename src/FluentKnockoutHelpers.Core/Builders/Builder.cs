@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
@@ -171,8 +172,6 @@ namespace FluentKnockoutHelpers.Core.Builders
         {
             return ElementSelfClosing("label", DisplayNameFor(propExpr).ToString()).Attr("for", ExpressionParser.GetExpressionText(propExpr));
         }
-
-
 
         #region Bound ___ For
         
