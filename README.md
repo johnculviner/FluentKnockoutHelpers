@@ -5,8 +5,10 @@
 - Painlessly generate Knockout syntax with strongly typed, fluent, lambda expression helpers similar to ASP.NET MVC 
 - Rich intellisense and compiler support for syntax generation
 - Fluent syntax makes it a breeze to create custom helpers or extend whats built in
+- OSS alternative to ASP.NET MVC helpers: feel free to add optional features that everyone in the community can use and I'll merge your pull in ASAP!
 - Painlessly provides validation based on .NET types and DataAnnotations in a few lines of code for all current/future application types and changes
 - Client side JavaScript object factory (based on C# types) to create new items in for example, a list, with zero headaches or server traffic
+
 
 ##Durandal.js
 - A single page application framework with Knockout.js baked in
