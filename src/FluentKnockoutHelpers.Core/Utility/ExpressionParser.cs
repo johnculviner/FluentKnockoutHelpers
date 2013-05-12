@@ -49,36 +49,12 @@ namespace FluentKnockoutHelpers.Core.Utility
             var propertyName = memberExpression.Member.Name;
             var propMetadata = metaData.Properties.FirstOrDefault(p => p.PropertyName == propertyName);
 
+            var requiredToken = (GlobalSettings.UseRequiredToken && propMetadata.IsRequired ? GlobalSettings.RequiredToken : String.Empty);
+
             if (propMetadata == null)
                 return CamelCaseSpacer(propertyName);
 
-            return propMetadata.DisplayName ?? CamelCaseSpacer(propMetadata.PropertyName);
-        }
-
-        /// <summary>
-        /// Determine if the property in the Lambda Expression can be assigned a null
-        /// </summary>
-        /// <param name="expr">Expression containing property to check</param>
-        /// <returns></returns>
-        public static bool ExpressionCanBeAssignedNull(LambdaExpression expr)
-        {
-            var type = ToMemberExpression(expr).Type;
-            return !type.IsValueType || (Nullable.GetUnderlyingType(type) != null);
-        }
-
-        /// <summary>
-        /// Determine if the property in the Lambda Expression has a paramater attribute type on it.
-        /// </summary>
-        /// <param name="expr">Expression containing the property</param>
-        /// <param name="type">The type of attribute to check for</param>
-        /// <returns></returns>
-        public static bool ExpressionHasAttribute(LambdaExpression expr, Type type)
-        {
-            /*TODO: 
-             * I'm assuming that the first paramater of the expression is the Class that contains the property to check. 
-             * May not be the best way of doing business, ifyaknowwhatimsaying. 
-            */
-            return expr.Parameters[0].Type.GetProperty(GetExpressionText(expr)).GetCustomAttributes(type, false).Length != 0;
+            return requiredToken + (propMetadata.DisplayName ?? CamelCaseSpacer(propMetadata.PropertyName));
         }
 
         //FirstName => First Name
