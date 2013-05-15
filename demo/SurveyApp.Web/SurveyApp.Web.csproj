@@ -168,7 +168,7 @@
     <Content Include="App\durandal\composition.js" />
     <Content Include="App\durandal\events.js" />
     <Content Include="App\durandal\http.js" />
-    <None Include="App\durandal\messageBox.cshtml" />
+    <Content Include="App\durandal\messageBox.cshtml" />
     <Content Include="App\durandal\messageBox.js" />
     <Content Include="App\durandal\modalDialog.js" />
     <Content Include="App\durandal\plugins\router.js" />
@@ -198,7 +198,7 @@
     <Content Include="App\views\surveys\addEditSurveyPage.cshtml" />
     <Content Include="App\viewmodels\surveys\shared\locationInfo.js" />
     <Content Include="App\views\foodGroups.cshtml" />
-    <None Include="App\views\shell.cshtml" />
+    <Content Include="App\views\shell.cshtml" />
     <Content Include="App\views\surveys.cshtml" />
     <Content Include="Content\app\app.css" />
     <Content Include="Content\app\durandal.css" />
