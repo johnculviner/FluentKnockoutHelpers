@@ -1,5 +1,7 @@
 #Fluent Knockout Helpers Overview
-##with a large Demo SPA using Durandal.js at _/demo/SurveyApp.sln_
+##Live Demo
+- __Live demo__ of the latest demo source is always running here: http://durandaldemo.apphb.com/
+- Source for non-trivial demo of both FluentKnockoutHelpers and Durandal.js located here: http://github.com/johnculviner/FluentKnockoutHelpers/tree/master/demo
 
 ##FluentKnockoutHelpers
 - Painlessly generate Knockout syntax with strongly typed, fluent, lambda expression helpers similar to ASP.NET MVC 
