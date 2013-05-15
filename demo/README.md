@@ -1,4 +1,4 @@
-#FluentKnockoutHelpers and Durandal.js demo is always running the latest source live here:
+####FluentKnockoutHelpers and Durandal.js demo is always running the latest source live here:
 http://durandaldemo.apphb.com/
 
 #Demo Instructions
