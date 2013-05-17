@@ -98,42 +98,54 @@ Well maybe that felt a little weird or you aren't using WebAPI or MVC. No proble
 Here is the bread and butter of FluentKnockoutHelpers. Since we have created a strongly-typed helper we now can use it to create strongly-typed expressions that at run time yield plain old Knockout code sans the magic strings. Since everyone likes to do their HTML in many different ways FluentKnockoutHelpers is flexible and extensible to accomodate many different ways of accomplishing the same markup result.
 ###The markup we want to generate
 ```html
-<p>
-	First name: 
-	<input type="text" class="fancy" data-bind="value: person().FirstName" />
-</p>
-<p>
-	Last name:
-	<input type="text" class="fancy" data-bind="value: person().LastName" />
-</p>
-<h2>
-	Hello,
-	<!-- ko text: person().FirstName --><!-- /ko -->
-	<!-- ko text: person().LastName --><!-- /ko -->
-</h2>
+    <div class="control-group">
+		<label for="FirstName" class="control-label">
+			First Name
+		</label>
+		<div class="controls">
+			<input type="text" data-bind="value: person.FirstName" id="FirstName" />
+		</div>
+	</div>
+    <div class="control-group">
+		<label for="LastName" class="control-label">
+			Last Name
+		</label>
+		<div class="controls">
+			<input type="text" data-bind="value: person.LastName" id="LastName" />
+		</div>
+	</div>
+    <h2>
+        Hello,
+        <!-- ko text: person.FirstName --><!-- /ko -->
+        <!-- ko text: person.LastName --><!-- /ko -->
+    </h2>
 ```
 
 ###All out C# via FluentKnockoutHelpers (Option A)
 We all love MVC (right?) lets pay it some hommage with a fluent twist! Note the DisplayNameFor(..) pulls from the [Display(..)] attribute. Don't worry there is a LabelFor(...) too..
 ```html
 <!-- Creation of the strongly-typed helper -->
-@{
-  var person = this.KnockoutHelperForType<Person>("person", true);
-}
-
-<p>
-	@person.DisplayNameFor(x => x.FirstName)
-	@person.BoundTextBoxFor(x => x.FirstName).Class("fancy")
-</p>
-<p>
-	@person.DisplayNameFor(x => x.LastName)
-	@person.BoundTextBoxFor(x => x.LastName).Class("fancy")
-</p>
-<h2>
-	Hello,
-	@person.BoundTextFor(x => x.FirstName)
-	@person.BoundTextFor(x => x.LastName)
-</h2>
+    @{
+      var person = this.KnockoutHelperForType<Person>("person", true);
+    }
+    
+	<div class="control-group">
+		@person.LabelFor(x => x.FirstName).Class("control-label")
+		<div class="controls">
+			@person.BoundTextBoxFor(x => x.FirstName)
+		</div>
+	</div>
+	<div class="control-group">
+		@person.LabelFor(x => x.LastName).Class("control-label")
+		<div class="controls">
+			@person.BoundTextBoxFor(x => x.LastName)
+		</div>
+	</div>
+    <h2>
+        Hello,
+        @person.BoundTextFor(x => x.FirstName)
+        @person.BoundTextFor(x => x.LastName)
+    </h2>
 ```
 
 ###Minimalistic markup generation via FluentKnockoutHelpers (Option B)
