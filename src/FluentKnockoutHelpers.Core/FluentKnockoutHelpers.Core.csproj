@@ -80,6 +80,7 @@
     <Compile Include="Builders\EnumerableBuilder.cs" />
     <Compile Include="NodeBuilding\IKoComment.cs" />
     <Compile Include="NodeBuilding\SelfClosingKoComment.cs" />
+    <Compile Include="Settings\RequiredTokenSettings.cs" />
     <Compile Include="TypeMetadata\ExcludeMetadata.cs" />
     <Compile Include="TypeMetadata\FieldMetadata.cs" />
     <Compile Include="TypeMetadata\TypeMetadata.cs" />
@@ -90,7 +91,7 @@
     <Compile Include="Builders\ForEachBuilder.cs" />
     <Compile Include="Builders\StringReturningBuilder.cs" />
     <Compile Include="DataBindBuilder.cs" />
-    <Compile Include="DefaultJsonSerializer.cs" />
+    <Compile Include="Settings\DefaultJsonSerializer.cs" />
     <Compile Include="Element.cs" />
     <Compile Include="Ensure.cs" />
     <Compile Include="GlobalSettings.cs" />

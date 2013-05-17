@@ -2,7 +2,7 @@
 using System.Web.Script.Serialization;
 using FluentKnockoutHelpers.Core.TypeMetadata;
 
-namespace FluentKnockoutHelpers.Core
+namespace FluentKnockoutHelpers.Core.Settings
 {
     /// <summary>
     /// The default json serializer

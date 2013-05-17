@@ -74,11 +74,11 @@
 
     <form class ="form-horizontal">
         <div class="control-group">
-            @detail.LabelFor(x => x.NumberOfTechProducts).Class("control-label")
+            @detail.LabelFor(x => x.NumberOfTechProducts, false).Class("control-label")
             <div @detail.DataBind(db => db.Text(x => x.NumberOfTechProducts)).Class("uneditable controls")></div>
         </div>
         <div class="control-group">
-            @detail.LabelFor(x => x.NumberOfChildren).Class("control-label")
+            @detail.LabelFor(x => x.NumberOfChildren, false).Class("control-label")
             <div @detail.DataBind(db => db.Text(x => x.NumberOfChildren)).Class("uneditable controls")></div>
         </div>
 			

@@ -20,19 +20,19 @@
             <legend>Basic Details</legend>
 				
             @*First Name*@
-            @*Full control over element creation if you want with 'strong typing'*@
+            @*What you would normally type doing a knockout databind (hope you don't fat finger anything...)*@
             <div class="control-group">
-                <label for="@survey.GetExpressionTextFor(x => x.FirstName)" class="control-label">
-                    @survey.DisplayNameFor(x => x.FirstName)
+                <label for="FirstName" class="control-label">
+                    * First Name
                 </label>
                 <div class="controls">
-                    <input type="text" @survey.DataBind(db => db.Value(x => x.FirstName))
-                        id="@survey.GetExpressionTextFor(x => x.FirstName)">
+                    <input type="text" data-bind="value: survey.FirstName" id="FirstName">
                 </div>
             </div>
 
             @*Last Name*@                
-            @* Use some helper wrappers to achieve the exact same result with less typing*@
+            @*Use FluentKnockoutHelpers to generate the same result strongly typed,
+            [Display] Name support, intellisense and most of all less typing!*@
             <div class="control-group">
                 @survey.LabelFor(x => x.LastName).Class("control-label")
                 <div class="controls">

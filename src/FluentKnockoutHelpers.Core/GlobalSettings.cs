@@ -1,4 +1,5 @@
-﻿using FluentKnockoutHelpers.Core.TypeMetadata;
+﻿using FluentKnockoutHelpers.Core.Settings;
+using FluentKnockoutHelpers.Core.TypeMetadata;
 
 namespace FluentKnockoutHelpers.Core
 {
@@ -7,35 +8,20 @@ namespace FluentKnockoutHelpers.Core
     /// </summary>
     public static class GlobalSettings
     {
-        private static IJsonSerializer _jsonSerializer = new DefaultJsonSerializer();
-        private static string _requiredToken = "*";
-        private static bool _useRequiredToken = true;
+        static GlobalSettings()
+        {
+            JsonSerializer = new DefaultJsonSerializer();
+            RequiredTokenSettings = new RequiredTokenSettings();
+        }
 
         /// <summary>
         /// Supply a custom IJsonSerializer to use something other than the default JSON.NET. Ex: ServiceStack
         /// </summary>
-        public static IJsonSerializer JsonSerializer
-        {
-            get { return _jsonSerializer; }
-            set { _jsonSerializer = value; }
-        }
+        public static IJsonSerializer JsonSerializer { get; set; }
 
         /// <summary>
-        /// Supply a custom required token to use something other than the default "*"
+        /// Required token settings to be used on labels for required ex: "First Name *"
         /// </summary>
-        public static string RequiredToken
-        {
-            get { return _requiredToken; }
-            set { _requiredToken = value; }
-        }
-
-        /// <summary>
-        /// Set whether or not to use a required token on the display name for non-nullable/required properties
-        /// </summary>
-        public static bool UseRequiredToken
-        {
-            get { return _useRequiredToken; }
-            set { _useRequiredToken = value; }
-        }
+        public static RequiredTokenSettings RequiredTokenSettings { get; set; }
     }
 }

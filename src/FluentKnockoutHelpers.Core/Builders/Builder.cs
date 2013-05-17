@@ -167,10 +167,15 @@ namespace FluentKnockoutHelpers.Core.Builders
         /// </summary>
         /// <typeparam name="TProp"></typeparam>
         /// <param name="propExpr"></param>
+        /// <param name="considerRequiredToken">generate the property name string considering any required token that may be setup globally</param>
         /// <returns></returns>
-        public virtual StringReturningBuilder<TModel> LabelFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
+        public virtual StringReturningBuilder<TModel> LabelFor<TProp>(Expression<Func<TModel, TProp>> propExpr, bool considerRequiredToken = true)
         {
-            return ElementSelfClosing("label", DisplayNameFor(propExpr).ToString()).Attr("for", ExpressionParser.GetExpressionText(propExpr));
+            return ElementSelfClosing("label",
+
+                considerRequiredToken ? ExpressionParser.DisplayNameForLabel(propExpr) : ExpressionParser.DisplayName(propExpr)
+                
+                ).Attr("for", ExpressionParser.GetExpressionText(propExpr));
         }
 
         #region Bound ___ For

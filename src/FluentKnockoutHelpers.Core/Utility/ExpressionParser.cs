@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
+using FluentKnockoutHelpers.Core.Settings;
 
 namespace FluentKnockoutHelpers.Core.Utility
 {
@@ -29,14 +30,13 @@ namespace FluentKnockoutHelpers.Core.Utility
         }
 
         /// <summary>
-        /// Resolve the [Display]Attribute with any localizations
+        /// Resolve the [Display]Attribute with any localizations resolving RequiredTokenSettings
         /// </summary>
         /// <typeparam name="TParameter"></typeparam>
         /// <typeparam name="TValue"></typeparam>
         /// <param name="expr"></param>
         /// <returns></returns>
-        //TODO remove dependency on MVC
-        public static string DisplayNameFor<TParameter, TValue>(Expression<Func<TParameter, TValue>> expr)
+        public static string DisplayNameForLabel<TParameter, TValue>(Expression<Func<TParameter, TValue>> expr)
         {
             var memberExpression = ToMemberExpression(expr);
             var type = typeof(TParameter);
@@ -49,12 +49,44 @@ namespace FluentKnockoutHelpers.Core.Utility
             var propertyName = memberExpression.Member.Name;
             var propMetadata = metaData.Properties.FirstOrDefault(p => p.PropertyName == propertyName);
 
-            var requiredToken = (GlobalSettings.UseRequiredToken && propMetadata.IsRequired ? GlobalSettings.RequiredToken : String.Empty);
+            if (propMetadata == null)
+                return CamelCaseSpacer(propertyName);
+
+            if (GlobalSettings.RequiredTokenSettings.IsEnabled)
+            {
+                if (GlobalSettings.RequiredTokenSettings.RequiredTokenPosition == RequiredTokenPosition.LeftOfLabel)
+                    return GlobalSettings.RequiredTokenSettings.RequiredToken + " " + (propMetadata.DisplayName ?? CamelCaseSpacer(propMetadata.PropertyName));
+
+                return (propMetadata.DisplayName ?? CamelCaseSpacer(propMetadata.PropertyName)) + " " + GlobalSettings.RequiredTokenSettings.RequiredToken;
+            }
+
+            return propMetadata.DisplayName ?? CamelCaseSpacer(propMetadata.PropertyName);
+        }
+
+        /// <summary>
+        /// Resolve the [Display]Attribute with any localizations
+        /// </summary>
+        /// <typeparam name="TParameter"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="expr"></param>
+        /// <returns></returns>
+        public static string DisplayName<TParameter, TValue>(Expression<Func<TParameter, TValue>> expr)
+        {
+            var memberExpression = ToMemberExpression(expr);
+            var type = typeof(TParameter);
+
+            if (memberExpression.Expression != null && memberExpression.Expression.NodeType != ExpressionType.Parameter)
+                type = memberExpression.Expression.Type;
+
+            var metaData = ModelMetadataProviders.Current.GetMetadataForType(null, type);
+
+            var propertyName = memberExpression.Member.Name;
+            var propMetadata = metaData.Properties.FirstOrDefault(p => p.PropertyName == propertyName);
 
             if (propMetadata == null)
                 return CamelCaseSpacer(propertyName);
 
-            return requiredToken + (propMetadata.DisplayName ?? CamelCaseSpacer(propMetadata.PropertyName));
+            return propMetadata.DisplayName ?? CamelCaseSpacer(propMetadata.PropertyName);
         }
 
         //FirstName => First Name

@@ -44,7 +44,7 @@ namespace FluentKnockoutHelpers.Core.Builders
         /// <returns></returns>
         public virtual IHtmlString DisplayNameFor<TProp>(Expression<Func<TModel, TProp>> propExpr)
         {
-            return new HtmlString(ExpressionParser.DisplayNameFor(propExpr));
+            return new HtmlString(ExpressionParser.DisplayName(propExpr));
         }
     }
 }
