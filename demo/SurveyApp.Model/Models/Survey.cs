@@ -35,6 +35,8 @@ namespace SurveyApp.Model.Models
 
         public bool LikesBooleans { get; set; }
 
+        public string OptionalField { get; set; }
+
         [Url]
         [Required]
         public string FavoriteWebsite { get; set; }

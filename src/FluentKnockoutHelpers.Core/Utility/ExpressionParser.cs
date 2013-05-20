@@ -52,7 +52,7 @@ namespace FluentKnockoutHelpers.Core.Utility
             if (propMetadata == null)
                 return CamelCaseSpacer(propertyName);
 
-            if (GlobalSettings.RequiredTokenSettings.IsEnabled)
+            if (GlobalSettings.RequiredTokenSettings.IsEnabled && propMetadata.IsRequired)
             {
                 if (GlobalSettings.RequiredTokenSettings.RequiredTokenPosition == RequiredTokenPosition.LeftOfLabel)
                     return GlobalSettings.RequiredTokenSettings.RequiredToken + " " + (propMetadata.DisplayName ?? CamelCaseSpacer(propMetadata.PropertyName));

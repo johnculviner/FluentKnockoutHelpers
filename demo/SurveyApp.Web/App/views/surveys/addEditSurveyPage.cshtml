@@ -63,16 +63,18 @@
         <fieldset>
             <legend>Other Information</legend>
 				
-            @*Person Id Number*@                
+            @*Person Id Number*@
+            @*Example of remote validation (try 1234, its taken)*@           
             <div class="control-group">
                 @*I'm sick of typing control-label for twitterbootstrap. Extend existing label with 3 lines of code total*@
-                @survey.BootstrapLabelFor(x => x.PersonIdNumber)
+                <label for="PersonIdNumber" class="control-label">* Person Id (try 3456)</label>
                 <div class="controls">
                     @survey.BoundTextBoxFor(x => x.PersonIdNumber).Class("input-small")
                 </div>
             </div>
 
             @*Gender*@
+            @*Example of a radio button*@
             <div class="control-group">
                 @survey.BootstrapLabelFor(x => x.Gender)
                 <div class="controls">
@@ -88,6 +90,7 @@
             </div>
 
             @*Date of Birth*@
+            @*Example of a date picker*@
             <div class="control-group">
                 @survey.BootstrapLabelFor(x => x.DateOfBirth)
                 <div class="controls">
@@ -107,7 +110,16 @@
                     @survey.BoundCheckBoxFor(x => x.LikesBooleans)
                 </div>
             </div>
-				
+		    
+            @*Optional Field*@
+            @*Example of a non required field*@
+            <div class="control-group">
+                @survey.BootstrapLabelFor(x => x.OptionalField)
+                <div class="controls">
+                    @survey.BoundTextBoxFor(x => x.OptionalField)
+                </div>
+            </div>
+
             @*Favorite Website*@
             @*Example of a textbox with a URL data annotation*@
             <div class="control-group">

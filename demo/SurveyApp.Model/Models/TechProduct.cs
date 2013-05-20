@@ -9,7 +9,7 @@ namespace SurveyApp.Model.Models
     #region Computer
     public abstract class Computer : TechProduct
     {
-        [Range(0, 10000, ErrorMessage = "The value must be a number less than 10000 (Not future proof!)")]
+        [Range(0, 10000)]
         public int Mhz { get; set; }
 
         [Display(Name = "GB RAM")]
