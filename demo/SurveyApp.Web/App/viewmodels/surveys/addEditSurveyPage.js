@@ -8,11 +8,12 @@
         './addEditTechProductModal',
         'utility/typeMetadataHelper',
         './relation',
+        'api/colorsApi',
     
     //custom bindings (could also be loaded into 'gloabal namespace' as an alternative)
     'knockoutPlugins/bindingHandlers/autoComplete', 'knockoutPlugins/bindingHandlers/datepicker'],
 function (app, surveyApi, foodGroupApi, locationInfo,
-    geocoderApi, router, survey, addEditTechProductModal, typeMetadataHelper, relation) {
+    geocoderApi, router, survey, addEditTechProductModal, typeMetadataHelper, relation, colorsApi) {
 
     return function () {
 
@@ -23,6 +24,7 @@ function (app, surveyApi, foodGroupApi, locationInfo,
         //assigned in activate
         self.survey = null;
         self.foodGroups = [];
+        self.colors = [];
         self.isNew = false;
 
         //the router's activator calls this function and waits for the .complete jQuery Promise before
@@ -37,6 +39,12 @@ function (app, surveyApi, foodGroupApi, locationInfo,
                         return foodGroups;
                     });
 
+
+            var colorsDeferred = colorsApi.getAll()
+                .then(function(colors) {
+                    self.colors = colors;
+                });
+
             var surveyDeferred = $.Deferred();
 
             //'#/survey/new' means new survey. get it from typeMetadata. otherwise retreieve from the API
@@ -47,13 +55,6 @@ function (app, surveyApi, foodGroupApi, locationInfo,
 
                 self.survey = new survey(typeMetadataHelper.getInstance('models.survey,'), foodGroupPromise);
                 
-                //only hack in the whole demo!:
-                //for dirtyFlag to work this needs to be done because knockout
-                //will set dropdown value fields to 'undefined' when it can't
-                //find the value in the select list which will break dirty handling for new surveys
-                if (!self.survey.FavoriteColorId())
-                    self.survey.FavoriteColorId(undefined);
-
                 //apply validation to the entire model and object graph using metadata from C#
                 //TypeMetadataHelper.EmitTypeMetadataArray()
                 typeMetadataHelper.applyValidation(self.survey);
@@ -74,17 +75,23 @@ function (app, surveyApi, foodGroupApi, locationInfo,
 
                         surveyDeferred.resolve();
                     });
-            
+
             //the promise resolves 'when' the above promises complete.
             //the promising resolving allows durandal to go ahead with composition
             //because the view model is 'ready'
-            return $.when(surveyDeferred.promise(), foodGroupPromise)
+            return $.when(surveyDeferred.promise(), foodGroupPromise, colorsDeferred)
                         .then(ajaxLoaded);
         };
         
 
         //wire up computeds that need data populated to complete
         function ajaxLoaded() {
+            
+            //fix dirty handler hashing issue
+            //because KO sets 
+            if (!self.survey.FavoriteColorId())
+                self.survey.FavoriteColorId(undefined);
+            
             
             //#region Computeds
             self.headerText = ko.computed(function() {
@@ -105,7 +112,9 @@ function (app, surveyApi, foodGroupApi, locationInfo,
             });
 
             //#region Save/Cancel 
+
             self.dirtyFlag = new ko.DirtyFlag(self.survey, false, ko.mapping.toJSON);   //kolite plugin
+
             self.validator = ko.validatedObservable(self.survey);          //knockout validation plugin
 
 

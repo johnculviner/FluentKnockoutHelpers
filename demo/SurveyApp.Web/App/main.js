@@ -31,6 +31,7 @@ define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/vie
         //by convention it determines that the viewmodel location is 'viewmodels/surveys'
         //ex: visiting '#/surveys' results in 'viewmodels/surveys'
         router.mapNav('surveys');
+        
 
         router.mapNav('foodGroups', 'viewmodels/foodGroups', 'Food Groups');
 
@@ -40,6 +41,8 @@ define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/vie
         //mapRoute doesn't make the route visible in navigation
         //the viewmodel path doesn't follow the convention so it is explicitly specified
         router.mapRoute('surveys/:id', 'viewmodels/surveys/addEditSurveyPage');
+
+        router.mapNav('colors');
         
         //#endregion
         

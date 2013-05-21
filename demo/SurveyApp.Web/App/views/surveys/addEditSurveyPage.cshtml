@@ -128,6 +128,14 @@
                     @survey.BoundTextBoxFor(x => x.FavoriteWebsite)
                 </div>
             </div>
+            
+            @*Colors*@
+            <div class="control-group">
+                @survey.BootstrapLabelFor(x => x.FavoriteColorId)
+                <div class="controls">
+                    @(survey.BoundSelectListFor<Color>(x => x.FavoriteColorId, "colors", x => x.Id, x => x.Name, "Select a color..."))
+                </div>
+            </div>
 				
             @*Favorite Food*@
             @*Example of dependent drop downs*@

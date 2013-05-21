@@ -1,0 +1,46 @@
+﻿<section>
+    
+    <h1>
+        Edit colors
+        
+
+        <button data-bind="click: save" class="pull-right btn btn-primary">
+            Save
+        </button>
+    </h1>
+    
+    @{
+//        var colors = this.KnockoutHelperForApi<ColorController>().Endpoint(x => x.Get());
+        var colors = this.KnockoutHelperForEnumerableType<SurveyApp.Model.Models.Color>("colors", true);
+    }
+
+
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <td>@colors.DisplayNameFor(x => x.Name)</td>
+                <td>@colors.DisplayNameFor(x => x.HexCode)</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            @using (var color = colors.ForEachKoComment())
+            {
+                <tr>
+                    <td>@color.BoundTextBoxFor(x => x.Name)</td>
+                    <td>@color.BoundTextBoxFor(x => x.HexCode)</td>
+                    <td>
+                        <button data-bind="click: $root.removeColor" class="btn btn-danger">
+                            Remove
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div>
+        <button class="btn btn-success pull-right" data-bind="click: addColor">Add New Color</button>
+    </div>
+
+</section>

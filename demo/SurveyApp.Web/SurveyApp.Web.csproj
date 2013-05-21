@@ -154,6 +154,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\api\colorsApi.js" />
     <Content Include="App\api\geocoderApi_NO-NET.js" />
     <Content Include="App\api\foodGroupApi.js" />
     <Content Include="App\api\geocoderApi.js" />
@@ -186,6 +187,7 @@
     <Content Include="App\utility\uuid.js" />
     <Content Include="App\viewmodels\foodGroups.js" />
     <Content Include="App\viewmodels\foodGroups\foodGroup.js" />
+    <Content Include="App\viewmodels\colors.js" />
     <Content Include="App\viewmodels\surveys\addEditTechProductModal.js" />
     <Content Include="App\viewmodels\surveys\relation.js" />
     <Content Include="App\viewmodels\surveys\survey.js" />
@@ -241,6 +243,7 @@
     <Content Include="App\views\surveys\shared\locationInfo.cshtml" />
     <Content Include="App\views\surveys\addEditTechProductModal.cshtml" />
     <Content Include="App\views\surveys\relation.cshtml" />
+    <Content Include="App\views\colors.cshtml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="App\knockoutPlugins\bindingHandlers\bingMap.js" />
     <Content Include="Scripts\bootstrap.js" />
