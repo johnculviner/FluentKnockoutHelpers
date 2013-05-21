@@ -5,6 +5,7 @@ using System.Drawing;
 using Raven.Client;
 using Raven.Database.Linq.PrivateExtensions;
 using SurveyApp.Model.Models;
+using Color = SurveyApp.Model.Models.Color;
 
 namespace SurveyApp.Model.Database
 {
@@ -21,6 +22,41 @@ namespace SurveyApp.Model.Database
             using (var session = initializedStore.OpenSession())
             {
                 LoadSurveys(session);   //Load survey uses some randomness from above
+                session.SaveChanges();
+            }
+
+            using (var session = initializedStore.OpenSession())
+            {
+                //add a few colors...
+                
+                session.Store(new Color
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    HexCode = "FF0000",
+                    Name = "Red"
+                });
+
+                session.Store(new Color
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    HexCode = "FFFF00",
+                    Name = "Yellow"
+                });
+
+                session.Store(new Color
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    HexCode = "0000FF",
+                    Name = "Blue"
+                });
+
+                session.Store(new Color
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    HexCode = "008000",
+                    Name = "Green"
+                });
+
                 session.SaveChanges();
             }
         }

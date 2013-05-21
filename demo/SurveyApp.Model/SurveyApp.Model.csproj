@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\RavenDbNinjectModule.cs" />
+    <Compile Include="Models\Color.cs" />
     <Compile Include="Models\Food.cs" />
     <Compile Include="Models\FoodGroup.cs" />
     <Compile Include="Models\Gender.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Models\ValidationResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\TechProduct.cs" />
+    <Compile Include="Services\ColorService.cs" />
     <Compile Include="Services\FoodCategoryService.cs" />
     <Compile Include="Services\SurveyService.cs" />
   </ItemGroup>

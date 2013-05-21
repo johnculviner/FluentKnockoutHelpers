@@ -47,5 +47,8 @@ namespace SurveyApp.Model.Models
 
         [Display(Name = "Favorite Food")]
         public Guid FavoriteFoodId { get; set; }
+
+        [Display(Name="Favorite Color")]
+        public Guid? FavoriteColorId { get; set; }
     }
 }
