@@ -11,10 +11,15 @@
             Edit Food Groups
         </h1>
         <div class="pull-right">
-			<button class="btn" data-bind="click: cancel">Cancel</button>
-			<button class="btn btn-primary" data-bind="click: save">Save</button>
-		</div>
+            <button class="btn" data-bind="click: cancel">Cancel</button>
+            <button class="btn btn-primary" data-bind="click: save">Save</button>
+        </div>
     </div>
+    <h4>
+        Simple nested list builder on the client. Can create a Food group and then foods as children. <br/>
+        Uses the 'client side factory' which allows for instantiation of C# types on the client. <br/>
+        DataAnnotation string length validation of name, range validation of healthy score
+	</h4>
     
     @*a foreach on the top level element*@
     @using (var foodGroup = foodGroups.ForEachKoComment())

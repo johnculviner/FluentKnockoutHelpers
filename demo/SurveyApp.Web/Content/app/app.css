@@ -183,3 +183,14 @@ section.food-groups td.actions {
     width: 40px;
 }
 
+.credit {
+    margin-top: 8px;
+}
+
+.credit a {
+    margin-left: 20px;
+}
+
+#applicationHost {
+    margin-bottom: 100px;
+}

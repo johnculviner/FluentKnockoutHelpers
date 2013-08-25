@@ -5,8 +5,12 @@
 }
 <section>
 	<div class="row">
-		<h1 data-bind="text: headerText">
-		</h1>
+	    <h1 data-bind="text: headerText">
+	    </h1>
+	    <h4>
+	        Complicated example demoing most of FluentKnockoutHelper's and Durandal's features <br/>
+	        Note form cannot be saved until it is valid and not 'dirty'
+	    </h4>
 	</div>
 	<div class="row">
 		<div class="pull-right">
@@ -18,7 +22,7 @@
 	<div class="row form-horizontal">
         <fieldset>
             <legend>Basic Details</legend>
-				
+		    <h5>Note required field validation and label * flows from C# [Required] Attribute. jQuery UI Integration.</h5>
             @*First Name*@
             @*What you would normally type doing a knockout databind (hope you don't fat finger anything...)*@
             <div class="control-group">
@@ -62,7 +66,11 @@
 
         <fieldset>
             <legend>Other Information</legend>
-				
+            <h5>
+                Demos extensive C# DataAnnotations integration. Remote validation. Dependent drop downs.
+                <br/>
+                Note that no code other than DataAnnotation attribute decoration in C# is required for this functionality
+            </h5>
             @*Person Id Number*@
             @*Example of remote validation (try 1234, its taken)*@           
             <div class="control-group">
@@ -161,6 +169,7 @@
                     Add Child
                 </button>
             </legend>
+            <h5>Hierarcheral list builder in client. Drag and drop 'hamburger' to change relationships</h5>
             <div class="sortable-hierarchy" data-bind="compose: { model: survey, view: 'views/surveys/relation' }"> </div>
         </fieldset>
 
@@ -168,6 +177,11 @@
         @*Example of a grid editable via a popup*@
         <fieldset>
             <legend>Tech Products Owned</legend>
+            <h5>
+                Demos 'Client side factory' for creation of types in JavaScript defined only in C# <br/>
+                Also demos polymorphism of C# types in the client. EX: Desktop : Computer : TechProduct <br/>
+                WebAPI creates the correct derived type when sent to the server
+            </h5>
             <table class="table table-bordered">
                 <thead>
                     <tr>
