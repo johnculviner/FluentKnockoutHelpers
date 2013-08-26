@@ -42,12 +42,12 @@
 
 					<td class="actions">
 						@*EDIT*@
-						<a class="btn btn-info"
+						<a class="btn btn-info" title="Edit Survey"
 						    data-bind="attr: { href: '#/surveys/' + @summary.EvalObservableFor(x => x.Id)}">
 							<i class="icon-edit"></i>
 						</a>
 						@*DELETE*@
-                        <button class="btn btn-danger" data-bind="click: $root.deleteSurvey, clickBubble: false">
+                        <button class="btn btn-danger" data-bind="click: $root.deleteSurvey, clickBubble: false" title="Delete Survey">
                             <i class="icon-remove-sign"></i>
                         </button>
 					</td>
