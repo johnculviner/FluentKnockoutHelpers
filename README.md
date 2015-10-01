@@ -95,7 +95,7 @@ Well maybe that felt a little weird or you aren't using WebAPI or MVC. No proble
 ```
 
 ##Putting it all together
-Here is the bread and butter of FluentKnockoutHelpers. Since we have created a strongly-typed helper we now can use it to create strongly-typed expressions that at run time yield plain old Knockout code sans the magic strings. Since everyone likes to do their HTML in many different ways FluentKnockoutHelpers is flexible and extensible to accomodate many different ways of accomplishing the same markup result.
+Here is the bread and butter of FluentKnockoutHelpers. Since we have created a strongly-typed helper we now can use it to create strongly-typed expressions that at run time yield plain old Knockout code sans the magic strings. Since everyone likes to do their HTML in many different ways FluentKnockoutHelpers is flexible and extensible to accommodate many different ways of accomplishing the same markup result.
 ###The markup we want to generate
 ```html
     <div class="control-group">
