@@ -1,9 +1,9 @@
-#Fluent Knockout Helpers Overview
-##Live Demo
+# Fluent Knockout Helpers Overview
+## Live Demo
 - __Live demo__ of the latest demo source is always running here: http://durandaldemo.apphb.com/
 - Source for non-trivial demo of both FluentKnockoutHelpers and Durandal.js located here: http://github.com/johnculviner/FluentKnockoutHelpers/tree/master/demo
 
-##FluentKnockoutHelpers
+## FluentKnockoutHelpers
 - Painlessly generate Knockout syntax with strongly typed, fluent, lambda expression helpers similar to ASP.NET MVC 
 - Rich intellisense and compiler support for syntax generation
 - Fluent syntax makes it a breeze to create custom helpers or extend whats built in
@@ -12,7 +12,7 @@
 - Client side JavaScript object factory (based on C# types) to create new items in for example, a list, with zero headaches or server traffic
 
 
-##Durandal.js
+## Durandal.js
 - A single page application framework with Knockout.js baked in
 - Provides a FRAMEWORK to ORGANIZE your Controllers, ViewModels, and Views
 - Opinioned enough to allow for consitant file organization and efficiently avoids 'JavaScript hell'
@@ -22,7 +22,7 @@
 - Navigation, routing and screen state management are baked in.
 - Simple, effective app lifecycle events
 
-##Overview
+## Overview
 Knockout.js allows for a very powerful MVVM style binding that makes it very easy to create rich web applications very quickly and with little code. One downside coming from the world of .NET and strong typing is that Knockout bindings use lots of "magic strings". This is where FluentKnockoutHelpers comes in as an attempt to bring all the goodness of ASP.NET MVC-like property expressions to Knockout with a fluent twist.
 
 Instead of resorting to magic strings, no compile-time support and little intellisense when working with Knockout you can use FluentKnockoutHelpers to create property binding expressions just like how MVC does it for all the .NET defined types you are already using on the server to interact with your Knockout web client.
@@ -34,7 +34,7 @@ Take a look at Survey App demo to see a full demo using Durandal.js
 #Quick Example
 Here is a quick example of what FluentKnockoutHelpers allows for using a classic Knocokout hello world example and an API endpoint to serve up the data (use of WebAPI isn't by any means required)
 
-##Person class defined in C# code
+## Person class defined in C# code
 ```c#
 public class Person
 {
@@ -43,7 +43,7 @@ public class Person
 }
 ```
 
-##API controller serving up a Person
+## API controller serving up a Person
 ```c#
 public class PersonController : ApiController
 {
@@ -55,7 +55,7 @@ public class PersonController : ApiController
 }
 ```
 
-##Knockout JavaScript ViewModel
+## Knockout JavaScript ViewModel
 ```javascript
 var PersonViewModel = function(personId) {
 	var self = this;
@@ -75,8 +75,8 @@ var PersonViewModel = function(personId) {
 ko.applyBindings(new PersonViewModel(1));
 ```
 
-##CSHTML Helper Creation
-###Create a Strongly-Typed Helper for an Endpoint (Option A)
+## CSHTML Helper Creation
+### Create a Strongly-Typed Helper for an Endpoint (Option A)
 Here we create a Knockout helper bound the the WebAPI endpoint that we know the model is coming from. (Don't worry MVC controllers work fine too.) The expression isn't actually executed it just allows us to having strong typing. We must inform the FluentKnockoutHelpers what JavaScript ViewModel field our _person_ is stored in, 'true' indicates it is observable. The 'this' below is an extension method off of WebPageBase meaning it works with MVC Razor views and "normal" Razor views alike.
 ```html
 <!-- The top of our CSHTML file -->
@@ -85,7 +85,7 @@ Here we create a Knockout helper bound the the WebAPI endpoint that we know the 
 }
 ```
 
-###Create a Strongly-Typed Helper for a Type (Option B)
+### Create a Strongly-Typed Helper for a Type (Option B)
 Well maybe that felt a little weird or you aren't using WebAPI or MVC. No problemo, here is another approach that yields the same result. We still must inform the FluentKnockoutHelpers what JavaScript ViewModel field our _person_ is stored in, 'true' indicates it is observable. The 'this' below is an extension method off of WebPageBase meaning it works with MVC Razor views and "normal" Razor views alike.
 ```html
 <!-- The top of our CSHTML file -->
@@ -94,9 +94,9 @@ Well maybe that felt a little weird or you aren't using WebAPI or MVC. No proble
 }
 ```
 
-##Putting it all together
+## Putting it all together
 Here is the bread and butter of FluentKnockoutHelpers. Since we have created a strongly-typed helper we now can use it to create strongly-typed expressions that at run time yield plain old Knockout code sans the magic strings. Since everyone likes to do their HTML in many different ways FluentKnockoutHelpers is flexible and extensible to accommodate many different ways of accomplishing the same markup result.
-###The markup we want to generate
+### The markup we want to generate
 ```html
     <div class="control-group">
 		<label for="FirstName" class="control-label">
@@ -121,7 +121,7 @@ Here is the bread and butter of FluentKnockoutHelpers. Since we have created a s
     </h2>
 ```
 
-###All out C# via FluentKnockoutHelpers (Option A)
+### All out C# via FluentKnockoutHelpers (Option A)
 We all love MVC (right?) lets pay it some hommage with a fluent twist! Note the DisplayNameFor(..) pulls from the [Display(..)] attribute. Don't worry there is a LabelFor(...) too..
 ```html
 <!-- Creation of the strongly-typed helper -->
@@ -148,7 +148,7 @@ We all love MVC (right?) lets pay it some hommage with a fluent twist! Note the 
     </h2>
 ```
 
-###Minimalistic markup generation via FluentKnockoutHelpers (Option B)
+### Minimalistic markup generation via FluentKnockoutHelpers (Option B)
 Minimilastic markup for those that like almost vanilla HTML and/or lots of typing
 ```html
 <!-- Creation of the strongly-typed helper -->
@@ -170,4 +170,4 @@ Minimilastic markup for those that like almost vanilla HTML and/or lots of typin
 </h2>
 ```
 
-####Take a look at the demo app at _/demo/SurveyApp.sln_ for an entire non-trival demo application that will cover almost all available Knockout bindings
+#### Take a look at the demo app at _/demo/SurveyApp.sln_ for an entire non-trival demo application that will cover almost all available Knockout bindings
